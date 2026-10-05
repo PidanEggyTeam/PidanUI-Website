@@ -57,10 +57,11 @@ export default defineConfig({
     'news/page/:page.md': 'posts/page/:page.md',
   },
   head: [
-    // <head> 同步脚本：在 DOM 解析时立即给 <html> 加 .no-js。
-    // - 浏览器禁用 JS 时：此脚本完全不执行，.no-js 保持 → CSS 生效降级样式
-    // - 启用 JS 时：立即移除 .no-js（比 Vue 组件挂载更早，避免闪烁）
-    ['script', {}, 'document.documentElement.classList.add("no-js");'],
+    // <head> 同步脚本：在 DOM 解析时立即给 <html> 加 .js 标记。
+    // - 浏览器禁用 JS 时：此脚本完全不执行，.js 永远不会被加上，
+    //   所有 html:not(.js) { ... } 的降级 CSS 规则自动生效
+    // - 启用 JS 时：.js 被加上，降级规则失效，Vue 正常接管
+    ['script', {}, 'document.documentElement.classList.add("js");'],
     ['meta', { name: 'author', content: SITE.author }],
     [
       'meta',
@@ -70,7 +71,7 @@ export default defineConfig({
           'PidanUI,蛋仔派对美化,Windows美化,蛋仔风格主题,PidanUI下载,蛋仔UI,桌面美化',
       },
     ],
-    ['link', { rel: 'icon', type: 'image/png', href: `${BASE}images/favicon.png` }],
+    ['link', { rel: 'icon', type: 'image/x-icon', href: `${BASE}images/favicon.ico` }],
     // Atom feed 自动发现：浏览器 / RSS 阅读器可通过这个 link 自动订阅
     [
       'link',

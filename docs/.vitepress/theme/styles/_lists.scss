@@ -1,4 +1,4 @@
-@use 'variables' as *;
+﻿@use 'variables' as *;
 @use 'mixins' as *;
 
 // ============================================================
@@ -212,7 +212,7 @@
 }
 
 // 禁用 JS 时的搜索框降级：隐藏表单控件，只显示 <noscript> 文本
-html.no-js {
+html:not(.js) {
   .news-search {
     display: block;
     padding: 0;

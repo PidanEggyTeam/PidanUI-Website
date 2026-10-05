@@ -65,10 +65,6 @@
     color: #fff;
     background: $brand-grad;
     box-shadow: $shadow-brand;
-
-    &:hover {
-      transform: translateY(-2px);
-    }
   }
 
   &--ghost {
@@ -151,7 +147,6 @@
   &:hover {
     background: rgba(255, 159, 26, 0.06);
     border-color: $brand-deep;
-    transform: translateX(2px);
   }
 
   .option-key {
@@ -197,7 +192,12 @@
 }
 
 .result-name {
-  margin-bottom: 10px;
+  // 显式覆盖 VitePress 全局 h2 样式带来的 left padding/margin，
+  // 保证人物名字在结果卡片里居中显示
+  padding-left: 0 !important;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: center;
   font-size: 28px;
   font-weight: 700;
   color: $ink;

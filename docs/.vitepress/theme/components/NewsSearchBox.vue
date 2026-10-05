@@ -52,10 +52,6 @@ function onSubmit() {
 
 onMounted(() => {
   mounted.value = true;
-  // 脱离「禁用 JS」状态（若框架初始时添加了 .no-js）
-  if (typeof document !== 'undefined') {
-    document.documentElement.classList.remove('no-js');
-  }
   // 直接访问 /search/?q=xxx 或从新闻页跳转过来时，回填关键词
   syncKeywordFromUrl();
   if (props.autofocus) inputEl.value?.focus({ preventScroll: true });

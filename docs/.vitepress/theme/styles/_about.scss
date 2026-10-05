@@ -1,4 +1,4 @@
-@use 'variables' as *;
+﻿@use 'variables' as *;
 @use 'mixins' as *;
 
 // ============================================================
@@ -14,14 +14,18 @@
   text-align: center;
 
   h1 {
-    font-size: clamp(32px, 5vw, 46px);
+    font-size: clamp(32px, 5vw, 48px);
     font-weight: 800;
     letter-spacing: 1px;
-    color: $ink;
+    // 与首页 hero 标题统一：品牌渐变文字
+    background: $brand-grad;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 
     em {
       font-style: normal;
-      color: $brand-deep;
+      // 渐变色本身已覆盖 em，无需额外改色
     }
   }
 
@@ -51,33 +55,48 @@
 }
 
 .about-layout {
+  // 关于页现在只有一列：about-main 撑满网格
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
 
-.about-main,
-.about-side {
+.about-main {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-// 通用卡片
+// 通用卡片 —— 与首页 .feature-card / .download-callout 统一：
+// 弱化容器，用极淡品牌色叠在 $card 上，无硬阴影
 .card {
+  position: relative;
   padding: 26px 30px;
-  background: $card;
+  background: linear-gradient(180deg, rgba(255, 197, 61, 0.10) 0%, transparent 100%), $card;
   border: 1px solid $line;
   border-radius: $radius-l;
-  box-shadow: $shadow-card;
+  box-shadow: none;
 
+  // 章节小徽章：tag 式细左边框 + 极淡背景，和首页 hero-warning 呼应
   h2 {
     margin-bottom: 14px;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
     color: $ink;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &::before {
+      content: '';
+      width: 3px;
+      height: 18px;
+      background: $brand-grad;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
   }
 
   p {
@@ -140,14 +159,16 @@
   }
 }
 
-// 性格测试入口
+// 性格测试入口 —— 保留独立暖色渐变，但去掉阴影以和整体风格统一
 .game-entry {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  background: linear-gradient(135deg, rgba(255, 197, 61, 0.16), rgba(255, 159, 26, 0.12));
+  // 覆盖 .card 的极淡品牌层，用独立的暖色渐变
+  background: linear-gradient(135deg, rgba(255, 197, 61, 0.16), rgba(255, 159, 26, 0.12)), $card;
   border-color: rgba(255, 159, 26, 0.28);
+  box-shadow: none;
 
   .game-entry-text {
     h2 {
@@ -158,6 +179,12 @@
       margin-bottom: 0;
       font-size: 14px;
     }
+  }
+
+  // 禁用 JavaScript 时隐藏：整个性格测试小游戏是客户端状态驱动的，
+  // 没有 JS 不仅做不了答题，入口也会误导用户。
+  html:not(.js) & {
+    display: none;
   }
 }
 
@@ -174,10 +201,6 @@
   border-radius: 30px;
   box-shadow: $shadow-brand;
   transition: transform 0.25s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
 }
 
 // 侧栏链接
@@ -239,12 +262,6 @@
 }
 
 // ---- 响应式 ----
-@include respond-below($bp-lg) {
-  .about-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
 @include respond-below($bp-sm) {
   .card {
     padding: 20px;

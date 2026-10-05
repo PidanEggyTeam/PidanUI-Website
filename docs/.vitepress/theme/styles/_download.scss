@@ -1,4 +1,4 @@
-@use 'variables' as *;
+﻿@use 'variables' as *;
 @use 'mixins' as *;
 
 // ============================================================
@@ -163,6 +163,21 @@
   padding: 0 24px 24px;
 }
 
+// 禁用 JavaScript 时强制展开所有手风琴：点击头部分页依赖 JS toggle，
+// 把 max-height 设为 none 让所有内容立即可读。
+html:not(.js) {
+  .accordion-item {
+    .accordion-body {
+      max-height: none;
+      padding: 0 24px 24px;
+    }
+
+    .accordion-header {
+      cursor: default;
+    }
+  }
+}
+
 .body-inner {
   display: flex;
   flex-direction: column;
@@ -264,10 +279,6 @@
   svg {
     width: 20px;
     height: 20px;
-  }
-
-  &:hover {
-    transform: translateY(-2px);
   }
 
   &:disabled {

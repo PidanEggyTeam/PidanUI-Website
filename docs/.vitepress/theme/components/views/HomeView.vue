@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress';
 
-// 首页：Hero 主视觉 + 核心特性卡片（版式对齐参考站 PidanUIWebsite_O）
+// 首页：Hero 主视觉 + 重要说明 + 下载卡片 + 核心特性
+// 结构参考 EggyUIWeb-Vue3，但去除容器卡片外观，与 VitePress 暖黄渐变背景融为一体
 const FEATURES = [
   {
     tag: '安全美化',
@@ -28,17 +29,48 @@ const FEATURES = [
 
 <template>
   <div class="home-view">
+    <!-- Hero 主视觉 -->
     <section class="hero">
-      <h1>Pidan<em>UI</em></h1>
+      <h1 class="hero-title">Pidan<em>UI</em></h1>
       <p class="hero-desc">
         一个由蛋仔爱好者发起的 Windows 桌面美化项目，专注于实现《蛋仔派对》风格的桌面视觉体验。
       </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" :href="withBase('/download.html')">前往下载</a>
-        <a class="btn btn-ghost" href="#features">了解更多</a>
+
+      <!-- 重要说明（警告条） -->
+      <div class="hero-warning" role="note">
+        <h3><span class="warn-icon">!</span> 温馨提示</h3>
+        <p>
+          PidanUI 是一个普通的 Windows 桌面美化包，不适用于手机系统或其他操作系统。本项目为《蛋仔派对》粉丝二次创作作品，严格禁止任何商业用途。
+        </p>
       </div>
     </section>
 
+    <!-- 下载引导卡片（与背景融合） -->
+    <section class="download-callout" aria-label="立即下载">
+      <div class="download-copy">
+        <span class="callout-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </span>
+        <h2>立即 <span class="highlight">下载</span></h2>
+        <p>获取最新版本 · Windows 7/10/11 · 完全免费</p>
+        <a class="arrow-hint" :href="withBase('/download.html')">
+          前往下载
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
+      <div class="download-visual" aria-hidden="true">
+        <img :src="withBase('/images/characters/yeggy.webp')" alt="" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- 项目特性 -->
     <section id="features" class="feature-grid" aria-label="项目特性">
       <article v-for="item in FEATURES" :key="item.title" class="feature-card">
         <span class="tag">{{ item.tag }}</span>

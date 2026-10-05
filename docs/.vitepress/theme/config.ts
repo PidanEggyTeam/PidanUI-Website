@@ -18,7 +18,7 @@ export const SOCIAL_LINKS = {
   RSS: '/atom.xml',
   GitHub: 'https://github.com/PidanEggyTeam',
   Bilibili: 'https://space.bilibili.com/3493144343612119',
-  QQ群: 'https://pidanui.eggycore.top',
+  QQ群: 'https://qm.qq.com/q/IIwIhrHycq',
 } as const;
 
 /** 列表页每页文章数 */
@@ -31,16 +31,16 @@ export const PAGE_SIZE = 10;
  * 后续请在 PidanUI 自己的仓库安装 giscus 应用后，整体替换为 PidanUI 的配置。
  */
 export const GISCUS = {
-  repo: 'StarLight-7693/EggyUIWeb-News',
-  repoId: 'R_kgDOUPbibQ',
+  repo: 'PidanEggyTeam/PidanUI-Website',
+  repoId: 'R_kgDOU8wvkw',
   category: 'Announcements',
-  categoryId: 'DIC_kwDOUPbibc4DE_I8',
+  categoryId: 'DIC_kwDOU8wvk84DHGnO',
   mapping: 'pathname',
   strict: '0',
   reactionsEnabled: '1',
   emitMetadata: '0',
   inputPosition: 'top',
-  theme: 'light_protanopia',
+  theme: 'preferred_color_scheme',
   lang: 'zh-CN',
   loading: 'lazy',
 } as const;

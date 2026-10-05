@@ -5,6 +5,7 @@ categories: [公告]
 tags: [公告, 项目]
 description: 汇总 PidanUI 的项目定位、分发方式、技术支持范围与常见问题，方便新用户快速了解这个非盈利的蛋仔风格 Windows 美化项目。
 stickypost: true
+cover: https://img.remit.ee/i/68SjqigbuR8x
 ---
 
 PidanUI 是一个由蛋仔爱好者发起的 **非盈利粉丝项目**，专注于在 Windows 桌面上实现《蛋仔派对》风格的视觉体验。本文汇总项目的基本信息与常见问题。

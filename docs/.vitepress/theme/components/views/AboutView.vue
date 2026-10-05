@@ -157,42 +157,8 @@ const COPYRIGHT = [
             <li v-for="item in COPYRIGHT" :key="item">{{ item }}</li>
           </ul>
         </section>
-      </main>
 
-      <!-- 侧栏 -->
-      <aside class="about-side">
-        <section class="card">
-          <h2>快速链接</h2>
-          <ul class="links">
-            <li>
-              <a :href="SOCIAL_LINKS.GitHub" target="_blank" rel="noopener">GitHub 仓库</a>
-            </li>
-            <li>
-              <a :href="SOCIAL_LINKS.Bilibili" target="_blank" rel="noopener">哔哩哔哩</a>
-            </li>
-            <li>
-              <a :href="withBase('/posts/')">新闻动态</a>
-            </li>
-            <li>
-              <a :href="withBase('/download.html')">前往下载</a>
-            </li>
-          </ul>
-        </section>
-
-        <section class="card">
-          <h2>维护者联系方式</h2>
-          <ul class="kv">
-            <li><span>GitHub</span><span>PidanEggyTeam</span></li>
-            <li><span>哔哩哔哩</span><span>Pidan-Eggy</span></li>
-            <li><span>QQ 交流群</span><span>见官网公告</span></li>
-          </ul>
-        </section>
-
-        <section class="card">
-          <h2>项目状态</h2>
-          <p class="note">PidanUI 项目组持续维护中，欢迎加入我们。</p>
-        </section>
-      </aside>
+        </main>
     </div>
 
     <p class="footnote">本站「关于」文案基于 PidanUI 项目说明整理。© {{ SITE.brand }}</p>

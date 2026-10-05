@@ -94,7 +94,7 @@ onBeforeUnmount(() => {
   <!-- 左侧导航 -->
   <aside class="sidebar-left" :class="{ open: navOpen }" aria-label="主导航">
     <a class="brand" :href="withBase('/')" :aria-label="SITE.brand">
-      <span class="brand-icon">P</span>
+      <img class="brand-logo" :src="withBase('/images/logo.webp')" :alt="SITE.brand" width="34" height="34" />
       <span class="brand-text">{{ SITE.brand }}</span>
     </a>
 

@@ -2,100 +2,198 @@
 @use 'mixins' as *;
 
 // ============================================================
-// 首页 · Hero + 特性卡片（对齐 PidanUIWebsite_O 版式）
+// 首页 · Hero + 警告条 + 下载引导 + 特性网格
+// 结构参考 EggyUIWeb-Vue3，但容器弱化，与暖黄渐变背景融为一体
 // ============================================================
 .home-view {
   max-width: $max-w;
   margin: 0 auto;
 }
 
+// ---- Hero 主视觉 ----
 .hero {
-  padding: 40px 0 48px;
+  padding: 40px 0 28px;
   text-align: center;
+}
 
-  h1 {
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 800;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-    color: $ink;
+.hero-title {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1.25;
+  margin: 0 0 16px;
+  background: $brand-grad;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 
-    em {
-      font-style: normal;
-      color: $brand-deep;
-    }
-  }
-
-  .hero-desc {
-    max-width: 600px;
-    margin: 0 auto 28px;
-    font-size: 16px;
-    color: $ink-2;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    justify-content: center;
+  em {
+    font-style: normal;
   }
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 28px;
-  font-size: 15px;
-  font-weight: 600;
-  border: none;
-  border-radius: $radius-full;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+.hero-desc {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.7;
+  color: $ink-2;
+}
 
-  &:active {
-    transform: scale(0.97);
+// ---- 重要说明 / 警告条（弱化外观：极浅背景 + 左边框） ----
+.hero-warning {
+  max-width: 720px;
+  margin: 24px auto 0;
+  padding: 14px 18px;
+  text-align: left;
+  color: $ink-2;
+  background: rgba(255, 197, 61, 0.14);
+  border-left: 4px solid $brand;
+  border-radius: 0 $radius-m $radius-m 0;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: $brand-deep;
   }
 
-  &.btn-primary {
+  .warn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
     color: #fff;
     background: $brand;
-    box-shadow: $shadow-brand;
+    border-radius: 50%;
+  }
 
-    &:hover {
-      background: $brand-deep;
+  p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: $ink-2;
+  }
+}
+
+// ---- 下载引导（左右分栏，弱化容器） ----
+.download-callout {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin: 32px 0 8px;
+  padding: 24px 28px;
+  color: $ink;
+  text-decoration: none;
+  // 弱化容器：只用一层极淡的背景，不设 border-radius / box-shadow
+  background: rgba(255, 197, 61, 0.10);
+  border-radius: $radius-m;
+}
+
+.download-copy {
+  flex: 1;
+  min-width: 0;
+
+  .callout-icon {
+    display: inline-flex;
+    margin-bottom: 10px;
+    color: $brand-deep;
+
+    svg {
+      width: 38px;
+      height: 38px;
     }
   }
 
-  &.btn-ghost {
-    color: $ink-2;
-    background: $card;
-    border: 1px solid $line;
+  h2 {
+    margin: 0 0 4px;
+    font-size: clamp(22px, 3.2vw, 28px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: $ink;
 
-    &:hover {
-      color: $brand-deep;
-      border-color: rgba(255, 159, 26, 0.35);
+    .highlight {
+      background: $brand-grad;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  > p {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: $ink-2;
+  }
+}
+
+.arrow-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $brand-deep;
+  text-decoration: none;
+  background: rgba(255, 159, 26, 0.08);
+  border: 1px solid rgba(255, 159, 26, 0.14);
+  border-radius: 30px;
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 159, 26, 0.16);
+
+    svg {
+      transform: translateX(3px);
     }
   }
 }
 
+.download-visual {
+  flex: 0 0 140px;
+  width: 140px;
+  height: 140px;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: $radius-m;
+  }
+}
+
+// ---- 项目特性网格 ----
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  gap: 18px;
   margin-top: 40px;
 }
 
 .feature-card {
-  padding: 24px;
-  background: $card;
+  padding: 22px 22px 20px;
+  // 用 CSS 变量承载深浅两套背景：
+  //   浅色：$card 是纯白底
+  //   深色：$card 是 #1f1f23 深灰底
+  // 再叠一层极弱的 brand-soft 让卡片与暖黄品牌色微微呼应
+  background: linear-gradient(180deg, #{'rgba(255, 197, 61, 0.10)'} 0%, transparent 100%), $card;
   border: 1px solid $line;
   border-radius: $radius-l;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-
-  &:hover {
-    box-shadow: $shadow-card;
-    border-color: rgba(255, 159, 26, 0.25);
-  }
 
   .tag {
     display: inline-block;
@@ -109,29 +207,61 @@
   }
 
   h3 {
-    margin-bottom: 8px;
-    font-size: 17px;
+    margin: 0 0 6px;
+    font-size: 16px;
     font-weight: 700;
     color: $ink;
   }
 
   p {
-    font-size: 14px;
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.7;
     color: $ink-2;
+  }
+}
+
+// ---- 响应式 ----
+@include respond-below($bp-md) {
+  .download-callout {
+    flex-direction: column;
+    text-align: center;
+    padding: 22px 20px;
+
+    .download-copy {
+      .callout-icon {
+        justify-content: center;
+      }
+    }
+
+    .arrow-hint {
+      justify-content: center;
+    }
+
+    .download-visual {
+      order: -1;
+      flex: 0 0 110px;
+      width: 110px;
+      height: 110px;
+    }
   }
 }
 
 @include respond-below($bp-xs) {
   .hero {
-    padding: 16px 0 32px;
+    padding-top: 20px;
+  }
 
-    h1 {
-      font-size: 28px;
-    }
+  .hero-title {
+    font-size: 28px;
   }
 
   .feature-grid {
     grid-template-columns: 1fr;
     margin-top: 28px;
+  }
+
+  .download-callout {
+    margin-top: 24px;
   }
 }

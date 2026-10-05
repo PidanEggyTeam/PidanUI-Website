@@ -1,0 +1,55 @@
+// ============================================================
+// PidanUI 官网 · SCSS 设计变量
+// 版式与品牌色对齐参考站 PidanUIWebsite_O：
+//   品牌黄 #FFC53D / 品牌橙 #FF9F1A / 品牌柔黄 #FFF7E0
+//   墨水色 #1D2129 / #4E5969 / #86909C
+// 主题色通过 CSS 自定义属性承载（见 _base.scss），以支持深色模式。
+// ============================================================
+
+// ---- 字体 ----
+$font-ui: 'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui,
+  -apple-system, 'Segoe UI', Roboto, sans-serif;
+$font-mono: 'Cascadia Code', 'Consolas', 'Menlo', monospace;
+
+// ---- 主题色（引用 CSS 变量，随深色模式切换）----
+$brand: var(--brand);
+$brand-deep: var(--brand-deep);
+$brand-soft: var(--brand-soft);
+$brand-grad: var(--brand-grad);
+$ink: var(--ink);
+$ink-2: var(--ink-2);
+$ink-3: var(--ink-3);
+$bg: var(--bg);
+$card: var(--card);
+$line: var(--line);
+$sidebar-bg: var(--sidebar-bg);
+
+// ---- 静态品牌色（不随主题切换，用于渐变/阴影等）----
+$brand-static: #ffc53d;
+$brand-deep-static: #ff9f1a;
+
+// ---- 圆角 ----
+$radius-l: 16px;
+$radius-m: 12px;
+$radius-s: 8px;
+$radius-full: 999px;
+
+// ---- 阴影 ----
+$shadow-card: 0 2px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+$shadow-float: 0 8px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+$shadow-brand: 0 6px 18px rgba(255, 159, 26, 0.28);
+
+// ---- 尺寸 ----
+$sidebar-left-w: 240px;
+$sidebar-right-w: 280px;
+$header-h: 0px;
+
+// ---- 断点 ----
+$bp-lg: 1024px;
+$bp-md: 960px;
+$bp-sm: 768px;
+$bp-xs: 640px;
+$bp-2xs: 480px;
+
+// ---- 最大宽度（用于内容居中）----
+$max-w: 1400px;

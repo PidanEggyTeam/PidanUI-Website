@@ -1,0 +1,137 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================================
+// 首页 · Hero + 特性卡片（对齐 PidanUIWebsite_O 版式）
+// ============================================================
+.home-view {
+  max-width: $max-w;
+  margin: 0 auto;
+}
+
+.hero {
+  padding: 40px 0 48px;
+  text-align: center;
+
+  h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: $ink;
+
+    em {
+      font-style: normal;
+      color: $brand-deep;
+    }
+  }
+
+  .hero-desc {
+    max-width: 600px;
+    margin: 0 auto 28px;
+    font-size: 16px;
+    color: $ink-2;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: $radius-full;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &.btn-primary {
+    color: #fff;
+    background: $brand;
+    box-shadow: $shadow-brand;
+
+    &:hover {
+      background: $brand-deep;
+    }
+  }
+
+  &.btn-ghost {
+    color: $ink-2;
+    background: $card;
+    border: 1px solid $line;
+
+    &:hover {
+      color: $brand-deep;
+      border-color: rgba(255, 159, 26, 0.35);
+    }
+  }
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.feature-card {
+  padding: 24px;
+  background: $card;
+  border: 1px solid $line;
+  border-radius: $radius-l;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
+  &:hover {
+    box-shadow: $shadow-card;
+    border-color: rgba(255, 159, 26, 0.25);
+  }
+
+  .tag {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: $brand-deep;
+    background: $brand-soft;
+    border-radius: $radius-full;
+  }
+
+  h3 {
+    margin-bottom: 8px;
+    font-size: 17px;
+    font-weight: 700;
+    color: $ink;
+  }
+
+  p {
+    font-size: 14px;
+    color: $ink-2;
+  }
+}
+
+@include respond-below($bp-xs) {
+  .hero {
+    padding: 16px 0 32px;
+
+    h1 {
+      font-size: 28px;
+    }
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+    margin-top: 28px;
+  }
+}

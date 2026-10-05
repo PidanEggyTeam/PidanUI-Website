@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+// ============================================================
+// 通用 mixins
+// ============================================================
+
+/// 响应式断点：传统 max-width 写法（避免 Media Queries Level 4 范围语法）
+@mixin respond-below($bp) {
+  @media (max-width: $bp) {
+    @content;
+  }
+}
+
+/// 通用卡片基底
+@mixin card-surface {
+  background: $card;
+  border: 1px solid $line;
+  border-radius: $radius-l;
+}
+
+/// 品牌渐变文字
+@mixin brand-text {
+  background: $brand-grad;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/// 多行文本截断
+@mixin clamp-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/// 细滚动条
+@mixin thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: $brand-static transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 197, 61, 0.6);
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}

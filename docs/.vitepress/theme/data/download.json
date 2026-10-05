@@ -1,0 +1,37 @@
+{
+  "title": "下载 PidanUI",
+  "version": "3.5",
+  "description": "选择适合你的版本。PidanUI 提供轻简版系统镜像、独立主题包与辅助组件，建议根据实际需求选择。",
+  "versions": [
+    {
+      "id": "pidanui-air",
+      "type": "PidanUI Air",
+      "version": "v3.5",
+      "fileSize": "4.27 GB",
+      "updateDate": "2026-09-28",
+      "description": "轻简版系统镜像。在保持系统可用性的前提下进行适量精简，降低资源占用，内置蛋仔风格主题与基础美化。",
+      "image": "",
+      "downloadUrl": "https://github.com/PidanEggyTeam"
+    },
+    {
+      "id": "pidanui-theme",
+      "type": "PidanUI 主题包",
+      "version": "v1.0",
+      "fileSize": "约 200 MB",
+      "updateDate": "2026-09-24",
+      "description": "独立主题包。以安全方式部署蛋仔风格外观，不替换系统核心文件，支持 Windows 7 ~ Windows 11。",
+      "image": "",
+      "downloadUrl": "https://github.com/PidanEggyTeam"
+    },
+    {
+      "id": "pidanui-helper",
+      "type": "PidanUI 辅助组件",
+      "version": "v1.0",
+      "fileSize": "约 50 MB",
+      "updateDate": "2026-09-20",
+      "description": "基于 .NET 10 开发的辅助程序，用于主题部署与组件管理，解决高 DPI 缩放适配与杀软误报问题。",
+      "image": "",
+      "downloadUrl": ""
+    }
+  ]
+}

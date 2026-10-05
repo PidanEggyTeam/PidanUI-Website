@@ -1,0 +1,47 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================================
+// 三栏布局：主内容区（左右侧栏为 fixed，见 _sidebar.scss）
+// .site-main 作为页面唯一纵向滚动容器，滚动条位于左栏右栏之间的内容区最右侧
+// ============================================================
+.site-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100vh;
+  margin-left: $sidebar-left-w;
+  margin-right: $sidebar-right-w;
+  padding: 32px 40px 60px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth; // 让页内锚点跳转平滑滚动（现在是 site-main 在滚动）
+  @include thin-scrollbar;
+}
+
+// 中等屏幕（≥960 但较窄）：收紧主内容内边距
+@media (max-width: 1200px) and (min-width: 961px) {
+  .site-main {
+    padding: 28px 28px 52px;
+  }
+}
+
+// 平板 / 手机：侧栏收起，主内容占满
+@include respond-below($bp-md) {
+  .site-main {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 72px 20px 40px;
+  }
+}
+
+@include respond-below($bp-xs) {
+  .site-main {
+    padding: 68px 16px 32px;
+  }
+}
+
+// 页面级通用容器（内页卡片式内容复用）
+.page-container {
+  max-width: 920px;
+  margin: 0 auto;
+}

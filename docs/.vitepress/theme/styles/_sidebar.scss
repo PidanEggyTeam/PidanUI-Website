@@ -1,0 +1,235 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================================
+// 左侧导航栏 + 右侧小部件栏 + 移动端抽屉
+// 版式与配色对齐参考站 PidanUIWebsite_O
+// ============================================================
+
+// ---- 左侧导航栏 ----
+.sidebar-left {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  width: $sidebar-left-w;
+  padding: 24px 16px;
+  background: $sidebar-bg;
+  border-right: 1px solid $line;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.3s ease;
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    margin-bottom: 24px;
+    font-size: 18px;
+    font-weight: 700;
+    color: $ink;
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: $brand;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: $radius-m;
+    color: $ink-2;
+    font-size: 14.5px;
+    transition: background 0.2s ease, color 0.2s ease;
+
+    .nav-icon {
+      display: inline-flex;
+      width: 20px;
+      height: 20px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    &:hover {
+      background: rgba(255, 197, 61, 0.1);
+      color: $brand-deep;
+    }
+
+    &.active {
+      background: $brand-soft;
+      color: $brand-deep;
+      font-weight: 600;
+    }
+  }
+}
+
+// ---- 右侧小部件栏 ----
+.sidebar-right {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+  width: $sidebar-right-w;
+  padding: 24px 20px;
+  background: $sidebar-bg;
+  border-left: 1px solid $line;
+  overflow-y: auto;
+  @include thin-scrollbar;
+
+  .widget {
+    padding: 16px;
+    margin-bottom: 16px;
+    background: $bg;
+    border: 1px solid $line;
+    border-radius: $radius-l;
+  }
+
+  .widget-title {
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: $ink-3;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .widget-list {
+    display: flex;
+    flex-direction: column;
+
+    a {
+      padding: 7px 0;
+      font-size: 14px;
+      color: $ink-2;
+      border-bottom: 1px dashed $line;
+      @include clamp-lines(2);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        color: $brand-deep;
+      }
+    }
+  }
+
+  .widget-empty {
+    font-size: 13px;
+    color: $ink-3;
+  }
+
+  .widget-more {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: $brand-deep;
+  }
+
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      font-size: 14px;
+      color: $ink-2;
+      background: $card;
+      border: 1px solid $line;
+      border-radius: $radius-m;
+      transition: border-color 0.25s ease, color 0.25s ease;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      &:hover {
+        color: $brand-deep;
+        border-color: rgba(255, 159, 26, 0.35);
+      }
+    }
+  }
+
+  .widget-note {
+    font-size: 13.5px;
+    color: $ink-2;
+  }
+}
+
+// ---- 移动端汉堡按钮 & 遮罩 ----
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  color: $ink;
+  background: $card;
+  border: 1px solid $line;
+  border-radius: $radius-m;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+// ---- 响应式：≤960px 收起左侧为抽屉、隐藏右侧 ----
+@include respond-below($bp-md) {
+  .sidebar-left {
+    transform: translateX(-100%);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.18);
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  .sidebar-overlay.open {
+    display: block;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .sidebar-right {
+    display: none;
+  }
+}

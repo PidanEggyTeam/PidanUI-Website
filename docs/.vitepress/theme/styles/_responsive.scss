@@ -1,0 +1,35 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================================
+// 全局响应式补充（页面级布局见 _layout.scss / _sidebar.scss）
+// ============================================================
+
+// 触屏设备避免 hover 粘滞
+@media (hover: none) {
+  [data-hover] {
+    pointer-events: auto;
+  }
+}
+
+// 小屏统一正文行高，避免拥挤
+@include respond-below($bp-sm) {
+  body {
+    font-size: 14.5px;
+  }
+}
+
+// 超小屏进一步收紧
+@include respond-below($bp-2xs) {
+  body {
+    font-size: 14px;
+  }
+}
+
+// 移动端：右侧栏与抽屉相关的全局过渡
+@media (max-width: $bp-md) {
+  body {
+    // 抽屉展开时的滚动锁由 JS 控制，这里保证不出现横向滚动
+    overflow-x: hidden;
+  }
+}

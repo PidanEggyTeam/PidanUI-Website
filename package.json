@@ -1,0 +1,21 @@
+{
+  "name": "pidanuiwebsite-vitepress",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs"
+  },
+  "dependencies": {
+    "vue": "^3.5.41"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "gray-matter": "^4.0.3",
+    "sass": "^1.104.0",
+    "typescript": "~6.0.2",
+    "vitepress": "^1.6.4"
+  }
+}

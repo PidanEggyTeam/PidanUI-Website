@@ -1,0 +1,239 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================================
+// 分类 / 标签索引、归档、搜索页
+// ============================================================
+
+// ---- 分类 / 标签索引 ----
+.terms-view {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.term-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.term-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  background: $card;
+  border: 1px solid $line;
+  border-radius: $radius-m;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 159, 26, 0.3);
+    box-shadow: $shadow-card;
+  }
+
+  .term-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: $ink;
+  }
+
+  .term-count {
+    font-size: 13px;
+    color: $ink-3;
+  }
+}
+
+.term-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    font-size: 14px;
+    color: $ink-2;
+    background: $card;
+    border: 1px solid $line;
+    border-radius: $radius-full;
+    transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+
+    &:hover {
+      color: $brand-deep;
+      background: $brand-soft;
+      border-color: rgba(255, 159, 26, 0.3);
+    }
+
+    .term-count {
+      font-size: 12px;
+      color: $ink-3;
+    }
+  }
+}
+
+// ---- 归档 ----
+.archive-view {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.archive-total {
+  margin: 8px 0 8px;
+  font-size: 14px;
+  color: $ink-3;
+}
+
+.archive-group {
+  margin-top: 24px;
+}
+
+.archive-year {
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: $brand-deep;
+}
+
+.post-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post-row {
+  border-bottom: 1px solid $line;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .row-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 6px;
+    color: inherit;
+
+    &:hover .row-title {
+      color: $brand-deep;
+    }
+
+    .row-title {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.5;
+      color: $ink;
+      transition: color 0.25s ease;
+    }
+
+    .row-date {
+      flex-shrink: 0;
+      font-size: 13px;
+      color: $ink-3;
+    }
+  }
+}
+
+// ---- 搜索页 ----
+.search-view {
+  max-width: 1000px;
+  margin: 0 auto;
+
+  // 搜索页：搜索框在上，标题在下，二者拉开呼吸感
+  .list-title {
+    margin-top: 8px;
+  }
+}
+
+// ---- 新闻搜索框（新闻页顶部 / 搜索页共用，无搜索按钮） ----
+.news-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0 0 18px;
+
+  // 禁用 JS 时 Vue 模板 <template v-if="mounted"> 不会渲染，此时整个
+  // <form> 里只剩 <noscript> 降级提示，用 .no-js 把它的 padding 收窄成段落。
+  .news-search-noscript {
+    padding: 0 2px;
+    font-size: 14px;
+    color: $ink-2;
+    text-align: center;
+
+    a {
+      color: $brand-deep;
+      text-decoration: underline;
+    }
+  }
+
+  .news-search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    display: flex;
+    color: $ink-3;
+    pointer-events: none;
+    transform: translateY(-50%);
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 18px 12px 46px;
+    font-size: 15px;
+    color: $ink;
+    background: $card;
+    border: 1px solid $line;
+    border-radius: 40px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &::placeholder {
+      color: $ink-3;
+    }
+
+    &:focus {
+      border-color: $brand-deep;
+      box-shadow: 0 0 0 4px rgba(255, 159, 26, 0.14);
+    }
+  }
+}
+
+// 禁用 JS 时的搜索框降级：隐藏表单控件，只显示 <noscript> 文本
+html.no-js {
+  .news-search {
+    display: block;
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+
+  .news-search-icon,
+  .news-search input {
+    display: none !important;
+  }
+}
+
+.search-tip {
+  margin: 8px 0 16px;
+  font-size: 14px;
+  color: $ink-3;
+}
+
+@include respond-below($bp-sm) {
+  .term-grid {
+    grid-template-columns: 1fr;
+  }
+}

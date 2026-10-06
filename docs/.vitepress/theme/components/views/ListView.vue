@@ -37,3 +37,40 @@ defineProps<{
     />
   </div>
 </template>
+
+<style scoped lang="scss">
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================================
+// 列表页通用外壳：新闻 / 分类 / 标签 列表共用
+// ============================================================
+.news-list {
+  max-width: $max-w;
+  margin: 0 auto;
+}
+
+.list-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+// 页面主标题（与搜索 / 归档 / 分类索引 / 标签索引页保持一致的排版）
+.list-title {
+  font-size: clamp(24px, 3.6vw, 32px);
+  font-weight: 700;
+  color: $ink;
+  letter-spacing: -0.01em;
+}
+
+@include respond-below($bp-sm) {
+  .list-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>

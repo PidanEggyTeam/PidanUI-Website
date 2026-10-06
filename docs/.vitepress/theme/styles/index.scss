@@ -1,16 +1,18 @@
 // ============================================================
-// PidanUI 官网 · 全局样式入口（仅整站引入一次：theme/index.ts）
+// PidanUI 官网 · 全局样式入口
+// 页面专属 scss（home / about / download / test / news / lists）
+// 已全部内聚到对应 .vue 的 <style scoped lang="scss"> 中。
+// 这里保留的只有：
+//   - variables / mixins（全局注入）
+//   - base / layout / sidebar（全站容器层）
+//   - post（文章正文：VitePress Markdown 生成的 DOM 在 <Content /> 子组件内，
+//           scoped 无法穿透，必须全局）
+//   - responsive（全站响应式断点）
 // ============================================================
 @use 'variables';
 @use 'mixins';
 @use 'base';
 @use 'layout';
 @use 'sidebar';
-@use 'home';
-@use 'download';
-@use 'news';
-@use 'lists';
 @use 'post';
-@use 'about';
-@use 'test';
 @use 'responsive';

@@ -127,3 +127,287 @@ function onImgError() {
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ---- 手风琴 item（单个版本块） ----
+.accordion-item {
+  overflow: hidden;
+  background: $card;
+  border: 1px solid $line;
+  border-radius: $radius-l;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: rgba(255, 159, 26, 0.25);
+    box-shadow: $shadow-card;
+  }
+
+  &.active {
+    border-color: $brand-deep;
+    box-shadow: 0 4px 24px rgba(255, 159, 26, 0.12);
+  }
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 24px;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: none;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 197, 61, 0.06);
+  }
+}
+
+.header-left {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+
+  .type {
+    font-size: 17px;
+    font-weight: 600;
+    color: $ink;
+  }
+
+  .ver,
+  .size-tag {
+    padding: 0 12px;
+    font-size: 13px;
+    line-height: 26px;
+    color: $ink-3;
+    background: $bg;
+    border-radius: $radius-full;
+  }
+
+  .ver {
+    font-size: 14px;
+    color: $ink-2;
+  }
+}
+
+.header-right {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    transition: background 0.3s ease;
+  }
+
+  .arrow {
+    transition: transform 0.3s ease;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      color: $ink-3;
+      transition: color 0.2s ease;
+    }
+  }
+}
+
+.accordion-item.active .header-right {
+  .status-dot {
+    background: $brand-deep;
+  }
+
+  .arrow {
+    transform: rotate(180deg);
+
+    svg {
+      color: $brand-deep;
+    }
+  }
+}
+
+.accordion-body {
+  max-height: 0;
+  padding: 0 24px;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.3s ease;
+}
+
+.accordion-item.active .accordion-body {
+  max-height: 1400px;
+  padding: 0 24px 24px;
+}
+
+// 禁用 JavaScript 时强制展开所有手风琴：点击头部分页依赖 JS toggle，
+// 把 max-height 设为 none 让所有内容立即可读。
+// 顶层 html 选择器 Vue scoped 不会加 data-v-xxx 前缀，仍能命中
+html:not(.js) {
+  .accordion-item {
+    .accordion-body {
+      max-height: none;
+      padding: 0 24px 24px;
+    }
+
+    .accordion-header {
+      cursor: default;
+    }
+  }
+}
+
+.body-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 4px;
+}
+
+.body-image {
+  width: 100%;
+  max-width: 560px;
+  overflow: hidden;
+  background: $bg;
+  border-radius: $radius-m;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .image-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    color: $ink-3;
+    background: $bg;
+
+    svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    span {
+      font-size: 13px;
+    }
+
+    &.error svg {
+      color: #ef4444;
+    }
+  }
+}
+
+.body-desc {
+  max-width: 560px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: $ink-2;
+  text-align: center;
+}
+
+.body-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 32px;
+  font-size: 14px;
+  color: $ink-3;
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .value {
+      font-weight: 500;
+      color: $ink;
+    }
+  }
+}
+
+.body-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 160px;
+  padding: 14px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: $brand-grad;
+  border: none;
+  border-radius: 60px;
+  box-shadow: $shadow-brand;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    background: linear-gradient(135deg, #94a3b8, #64748b);
+    box-shadow: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+@include respond-below($bp-xs) {
+  .accordion-header {
+    padding: 14px 16px;
+  }
+
+  .header-left .type {
+    font-size: 15px;
+  }
+
+  .accordion-body {
+    padding: 0 16px;
+  }
+
+  .accordion-item.active .accordion-body {
+    padding: 0 16px 18px;
+  }
+
+  .body-download-btn {
+    min-width: 140px;
+    padding: 12px 28px;
+    font-size: 15px;
+  }
+
+  .body-meta {
+    gap: 12px 20px;
+    font-size: 13px;
+  }
+}
+</style>

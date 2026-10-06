@@ -167,7 +167,12 @@ export default defineConfig({
     // 使用 Sass 现代 JS API（Vite 5.4+），避免 Dart Sass 2.0 移除 legacy API 后构建失败
     css: {
       preprocessorOptions: {
-        scss: { api: 'modern' },
+        scss: {
+          api: 'modern',
+          // 让 .vue 里的 scoped <style lang="scss"> 也能直接
+          // @use 'variables' / @use 'mixins'，无需写相对路径
+          loadPaths: [fileURLToPath(new URL('./theme/styles', import.meta.url))],
+        },
       },
     },
     // ------------------------------------------------------------

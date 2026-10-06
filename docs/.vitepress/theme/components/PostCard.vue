@@ -41,3 +41,96 @@ const coverSrc = computed(() => {
     </div>
   </a>
 </template>
+
+<style scoped lang="scss">
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: $card;
+  border: 1px solid $line;
+  border-radius: $radius-l;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
+  &:hover {
+    box-shadow: $shadow-card;
+    border-color: rgba(255, 159, 26, 0.25);
+
+    .card-arrow {
+      color: $brand-deep;
+      transform: translateX(4px);
+    }
+  }
+
+  .card-cover {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: $bg;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+  }
+
+  &:hover .card-cover img {
+    transform: scale(1.04);
+  }
+
+  .pin-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    background: $brand-deep;
+    border-radius: $radius-full;
+  }
+
+  .card-body {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+  }
+
+  .card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .card-title {
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: $ink;
+    @include clamp-lines(2);
+  }
+
+  .card-date {
+    font-size: 13px;
+    color: $ink-3;
+  }
+
+  .card-arrow {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: $ink-3;
+    transition: color 0.25s ease, transform 0.25s ease;
+  }
+}
+</style>

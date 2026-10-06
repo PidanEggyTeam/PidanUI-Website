@@ -1,6 +1,6 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { withBase } from 'vitepress';
-import { SITE, SOCIAL_LINKS } from '@/config';
+import { SITE } from '@/config';
 
 // 关于页内容基于 PidanUIWebsite_O/README.md
 const CREATION_REASONS = [
@@ -157,10 +157,235 @@ const COPYRIGHT = [
             <li v-for="item in COPYRIGHT" :key="item">{{ item }}</li>
           </ul>
         </section>
-
         </main>
     </div>
 
     <p class="footnote">本站「关于」文案基于 PidanUI 项目说明整理。© {{ SITE.brand }}</p>
   </div>
 </template>
+
+<style scoped lang="scss">
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ============================================================
+// 关于页 · 卡片式章节
+// ============================================================
+.about-view {
+  max-width: $max-w;
+  margin: 0 auto;
+}
+
+.about-hero {
+  padding: 32px 0 28px;
+  text-align: center;
+
+  h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: 1px;
+    // 与首页 hero 标题统一：品牌渐变文字
+    background: $brand-grad;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    em {
+      font-style: normal;
+      // 渐变色本身已覆盖 em，无需额外改色
+    }
+  }
+
+  .subtitle {
+    margin-top: 10px;
+    font-size: clamp(15px, 2vw, 18px);
+    color: $ink-2;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 16px;
+
+    .chip {
+      padding: 4px 14px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: $ink-2;
+      background: $brand-soft;
+      border: 1px solid $line;
+      border-radius: $radius-full;
+    }
+  }
+}
+
+.about-layout {
+  // 关于页现在只有一列：about-main 撑满网格
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.about-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+// 通用卡片 —— scoped 后只在 AboutView 内生效，不再污染别的页面。
+// 与首页 .feature-card / .download-callout 统一：弱化容器，用极淡品牌色叠在 $card 上，无硬阴影。
+.card {
+  position: relative;
+  padding: 26px 30px;
+  background: linear-gradient(180deg, rgba(255, 197, 61, 0.10) 0%, transparent 100%), $card;
+  border: 1px solid $line;
+  border-radius: $radius-l;
+  box-shadow: none;
+
+  // 章节小徽章：tag 式细左边框，和首页 hero-warning 呼应
+  h2 {
+    margin-bottom: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: $ink;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &::before {
+      content: '';
+      width: 3px;
+      height: 18px;
+      background: $brand-grad;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+  }
+
+  p {
+    margin-bottom: 10px;
+    font-size: 15px;
+    line-height: 1.85;
+    color: $ink-2;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ul,
+  ol {
+    margin: 6px 0 0 1.4em;
+    font-size: 15px;
+    line-height: 1.9;
+    color: $ink-2;
+
+    li {
+      margin: 0.25em 0;
+
+      &::marker {
+        color: $brand-deep;
+      }
+    }
+  }
+
+  strong {
+    color: $ink;
+  }
+
+  .note {
+    margin-top: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: $ink-2;
+    background: $bg;
+    border-radius: $radius-m;
+  }
+}
+
+.sub-block {
+  margin-bottom: 14px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h3 {
+    margin-bottom: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $brand-deep;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+// 性格测试入口 —— 保留独立暖色渐变，但去掉阴影以和整体风格统一
+.game-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  // 覆盖 .card 的极淡品牌层，用独立的暖色渐变
+  background: linear-gradient(135deg, rgba(255, 197, 61, 0.16), rgba(255, 159, 26, 0.12)), $card;
+  border-color: rgba(255, 159, 26, 0.28);
+  box-shadow: none;
+
+  .game-entry-text {
+    h2 {
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-bottom: 0;
+      font-size: 14px;
+    }
+  }
+
+  // 禁用 JavaScript 时隐藏：scoped 后 Vue 会把 `html:not(.js) &` 展开成
+  // `html:not(.js) .game-entry[data-v-xxx]`，外层 html 选择器保持原样仍然能命中
+  html:not(.js) & {
+    display: none;
+  }
+}
+
+.game-entry-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 24px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  background: $brand-grad;
+  border-radius: 30px;
+  box-shadow: $shadow-brand;
+  transition: transform 0.25s ease;
+}
+
+.footnote {
+  margin-top: 24px;
+  font-size: 12px;
+  color: $ink-3;
+  text-align: center;
+}
+
+// ---- 响应式 ----
+@include respond-below($bp-sm) {
+  .card {
+    padding: 20px;
+  }
+
+  .game-entry {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>

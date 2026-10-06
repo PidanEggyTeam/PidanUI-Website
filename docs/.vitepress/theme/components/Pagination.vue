@@ -26,3 +26,40 @@ const nextHref = computed(() => `${props.pagePrefix}${props.current + 1}`);
     <a v-if="current < totalPages" class="page-btn" :href="withBase(nextHref)">下一页 →</a>
   </nav>
 </template>
+
+<style scoped lang="scss">
+@use 'variables' as *;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
+
+  .page-btn {
+    display: inline-block;
+    padding: 6px 18px;
+    font-size: 13px;
+    color: $brand-deep;
+    background: $brand-soft;
+    border-radius: $radius-full;
+    transition: background 0.25s ease;
+
+    &:hover {
+      background: rgba(255, 159, 26, 0.2);
+    }
+
+    &.disabled {
+      color: $ink-3;
+      background: $bg;
+      cursor: not-allowed;
+    }
+  }
+
+  .page-info {
+    font-size: 13px;
+    color: $ink-3;
+  }
+}
+</style>

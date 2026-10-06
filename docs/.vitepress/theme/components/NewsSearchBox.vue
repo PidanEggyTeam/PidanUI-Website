@@ -85,3 +85,80 @@ onBeforeUnmount(() => clearTimeout(timer));
     </template>
   </form>
 </template>
+
+<style scoped lang="scss">
+@use 'variables' as *;
+
+.news-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0 0 18px;
+
+  // 禁用 JS 时 Vue 模板 <template v-if="mounted"> 不会渲染，此时整个
+  // <form> 里只剩 <noscript> 降级提示，用 .no-js 把它的 padding 收窄成段落。
+  .news-search-noscript {
+    padding: 0 2px;
+    font-size: 14px;
+    color: $ink-2;
+    text-align: center;
+
+    a {
+      color: $brand-deep;
+      text-decoration: underline;
+    }
+  }
+
+  .news-search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    display: flex;
+    color: $ink-3;
+    pointer-events: none;
+    transform: translateY(-50%);
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 18px 12px 46px;
+    font-size: 15px;
+    color: $ink;
+    background: $card;
+    border: 1px solid $line;
+    border-radius: 40px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &::placeholder {
+      color: $ink-3;
+    }
+
+    &:focus {
+      border-color: $brand-deep;
+      box-shadow: 0 0 0 4px rgba(255, 159, 26, 0.14);
+    }
+  }
+}
+
+// 禁用 JS 时的搜索框降级：隐藏表单控件，只显示 <noscript> 文本
+// 顶层 html 选择器 Vue scoped 不会加 data-v-xxx 前缀，仍能命中
+html:not(.js) {
+  .news-search {
+    display: block;
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+
+  .news-search-icon,
+  .news-search input {
+    display: none !important;
+  }
+}
+</style>

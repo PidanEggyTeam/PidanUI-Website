@@ -19,3 +19,28 @@ withDefaults(
     </template>
   </div>
 </template>
+
+<style scoped lang="scss">
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  padding: 40px 0;
+  font-size: 15px;
+  color: $ink-3;
+  text-align: center;
+}
+
+@include respond-below($bp-sm) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

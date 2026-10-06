@@ -1,7 +1,8 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute, useData, withBase } from 'vitepress';
 import { SITE } from '@/config';
+import ThemeToggle from './ThemeToggle.vue';
 
 // 左侧固定导航栏：品牌标识 + 四个导航项；移动端（≤960px）收起为抽屉
 const route = useRoute();
@@ -132,5 +133,7 @@ onBeforeUnmount(() => {
         <span class="nav-label">{{ item.label }}</span>
       </a>
     </nav>
+
+    <ThemeToggle />
   </aside>
 </template>

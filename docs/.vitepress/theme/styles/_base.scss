@@ -3,8 +3,37 @@
 
 // ============================================================
 // 主题 CSS 变量（浅色 / 深色）——全站唯一的主题源
+//
+// 模式由 <html data-theme="auto|light|dark"> 驱动（见 useTheme.ts）：
+//   - light：强制浅色
+//   - dark ：强制深色
+//   - auto ：跟随系统 prefers-color-scheme（默认）
+// 既保留「跟随系统」的默认行为，又允许用户手动覆盖。
 // ============================================================
+
+// 深色变量集合：被「显式 dark」与「auto + 系统深色」两处复用，避免重复维护
+@mixin theme-dark {
+  color-scheme: dark;
+  --brand: #ffc53d;
+  --brand-deep: #ff9f1a;
+  --brand-soft: #3a2e14;
+  --brand-grad: linear-gradient(135deg, #ffc53d 0%, #ff9f1a 60%);
+  --ink: #e5e6eb;
+  --ink-2: #c9cdd4;
+  --ink-3: #86909c;
+  --bg: #17171a;
+  --card: #1f1f23;
+  --line: #2a2f36;
+  --sidebar-bg: #1f1f23;
+  // 深色模式下代码块比卡片更深一档，形成"内嵌"层次
+  --code-bg: #141519;
+  --code-hd: #1b1c22;
+  --inline-code-bg: rgba(255, 197, 61, 0.14);
+  --inline-code-ink: #ffc53d;
+}
+
 :root {
+  color-scheme: light;
   --brand: #ffc53d;
   --brand-deep: #ff9f1a;
   --brand-soft: #fff7e0;
@@ -23,24 +52,15 @@
   --inline-code-ink: #a85a00;
 }
 
+// 显式深色
+:root[data-theme='dark'] {
+  @include theme-dark;
+}
+
+// auto（含未设置属性）且系统为深色；data-theme="light" 时被 :not 排除
 @media (prefers-color-scheme: dark) {
-  :root {
-    --brand: #ffc53d;
-    --brand-deep: #ff9f1a;
-    --brand-soft: #3a2e14;
-    --brand-grad: linear-gradient(135deg, #ffc53d 0%, #ff9f1a 60%);
-    --ink: #e5e6eb;
-    --ink-2: #c9cdd4;
-    --ink-3: #86909c;
-    --bg: #17171a;
-    --card: #1f1f23;
-    --line: #2a2f36;
-    --sidebar-bg: #1f1f23;
-    // 深色模式下代码块比卡片更深一档，形成"内嵌"层次
-    --code-bg: #141519;
-    --code-hd: #1b1c22;
-    --inline-code-bg: rgba(255, 197, 61, 0.14);
-    --inline-code-ink: #ffc53d;
+  :root:not([data-theme='light']) {
+    @include theme-dark;
   }
 }
 

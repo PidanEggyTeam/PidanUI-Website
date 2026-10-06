@@ -1,9 +1,12 @@
 import { nextTick } from 'vue';
+import { initTheme, onThemeChange, resolvedDark } from './useTheme';
 
 // ============================================================
 // 文章页客户端增强
 //   1. [TOC] 目录：读取正文中已渲染的标题 id，生成可跳转目录
 //   2. Mermaid 图表：把 mermaid 代码块交给 mermaid 渲染为 SVG
+//      （mermaid 体积约 4MB 且含大量图表引擎 chunk，若参与打包会让构建时间
+//        增加 5~6 倍，故改为运行时按需从 CDN 加载，见下方 loadMermaid）
 //   3. 代码块复制按钮：VitePress 只输出 <button class="copy">，自定义主题需自行接管
 // 三者都依赖渲染后的真实 DOM，只能运行在浏览器端，且均为渐进增强：
 // 禁用 JS 时正文（含 mermaid 源码、目录占位）仍可正常阅读。
@@ -73,10 +76,8 @@ let lastRoute = '';
 let themeBound = false;
 
 function currentTheme(): string {
-  return typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'neutral';
+  // 读取 useTheme 的解析结果：auto 时取系统偏好，手动切换时取用户选择
+  return resolvedDark.value ? 'dark' : 'neutral';
 }
 
 /** 首次调用：把 shiki 渲染的 mermaid 代码块替换为纯文本容器，并缓存源码 */
@@ -112,6 +113,59 @@ function restoreMermaid(): void {
   }
 }
 
+// ---- Mermaid 运行时按需加载（走 CDN，不参与打包）----
+// 版本需与 package.json 保持一致；按顺序尝试多个 CDN，全部失败则降级保留源码文本。
+const MERMAID_VERSION = '12.1.0';
+const MERMAID_CDNS = [
+  `https://cdn.jsdelivr.net/npm/mermaid@${MERMAID_VERSION}/dist/mermaid.min.js`,
+  `https://unpkg.com/mermaid@${MERMAID_VERSION}/dist/mermaid.min.js`,
+];
+
+interface MermaidApi {
+  initialize(config: Record<string, unknown>): void;
+  run(options: { nodes: HTMLElement[] }): Promise<void>;
+}
+
+let mermaidPromise: Promise<MermaidApi> | null = null;
+
+function loadScript(src: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => {
+      script.remove();
+      reject(new Error(`Failed to load script: ${src}`));
+    };
+    document.head.appendChild(script);
+  });
+}
+
+async function loadMermaid(): Promise<MermaidApi> {
+  if (mermaidPromise) return mermaidPromise;
+  mermaidPromise = (async () => {
+    const injected = (window as unknown as { mermaid?: MermaidApi }).mermaid;
+    if (injected) return injected;
+    let lastError: unknown;
+    for (const src of MERMAID_CDNS) {
+      try {
+        await loadScript(src);
+        const api = (window as unknown as { mermaid?: MermaidApi }).mermaid;
+        if (api) return api;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError ?? new Error('Mermaid CDN unavailable');
+  })();
+  // 加载失败时清空缓存，允许后续（如网络恢复）再次尝试
+  mermaidPromise.catch(() => {
+    mermaidPromise = null;
+  });
+  return mermaidPromise;
+}
+
 async function renderMermaid(): Promise<void> {
   if (!collectMermaid()) return;
   const theme = currentTheme();
@@ -119,7 +173,7 @@ async function renderMermaid(): Promise<void> {
 
   restoreMermaid();
   try {
-    const mermaid = (await import('mermaid')).default;
+    const mermaid = await loadMermaid();
     mermaid.initialize({
       startOnLoad: false,
       securityLevel: 'loose',
@@ -138,9 +192,8 @@ async function renderMermaid(): Promise<void> {
 function bindThemeListener(): void {
   if (themeBound || typeof window === 'undefined') return;
   themeBound = true;
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener?.('change', () => void renderMermaid());
+  // 跟随全局主题（含手动切换）：主题变化后重绘 Mermaid
+  onThemeChange(() => void renderMermaid());
 }
 
 /** 重置缓存（SPA 换页后 DOM 已重建） */
@@ -155,6 +208,7 @@ function reset(): void {
  */
 export async function enhancePost(routeKey: string): Promise<void> {
   if (typeof document === 'undefined') return;
+  initTheme();
   bindCopyButtons();
   bindThemeListener();
   if (routeKey !== lastRoute) {

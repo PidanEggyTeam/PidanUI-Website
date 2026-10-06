@@ -11,6 +11,20 @@
   }
 }
 
+/// 深色模式覆写：同时覆盖「手动 data-theme="dark"」与「auto + 系统深色」两种情况。
+/// 适用于无法用 CSS 变量表达的深色专属规则（如半透明底色）。
+@mixin dark-mode {
+  [data-theme='dark'] & {
+    @content;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) & {
+      @content;
+    }
+  }
+}
+
 /// 通用卡片基底
 @mixin card-surface {
   background: $card;

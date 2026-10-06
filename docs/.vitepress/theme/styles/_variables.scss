@@ -9,7 +9,9 @@
 // ---- 字体 ----
 $font-ui: 'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui,
   -apple-system, 'Segoe UI', Roboto, sans-serif;
-$font-mono: 'Cascadia Code', 'Consolas', 'Menlo', monospace;
+// 等宽字体栈：末尾补中文无衬线 fallback，避免代码块内中文回退到系统宋体（SimSun）
+$font-mono: 'Cascadia Code', 'Consolas', 'Menlo', 'Microsoft YaHei UI', 'PingFang SC',
+  'HarmonyOS Sans SC', 'Microsoft YaHei', monospace;
 
 // ---- 主题色（引用 CSS 变量，随深色模式切换）----
 $brand: var(--brand);

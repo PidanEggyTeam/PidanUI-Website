@@ -63,6 +63,13 @@ export default defineConfig({
     'news/page/:page.md': 'posts/page/:page.md',
   },
   head: [
+    // <head> 同步脚本：在首帧渲染前把用户选择的主题写入 <html data-theme>，
+    // 避免「先浅后深」的闪烁（FOUC）。storage key 与 useTheme.ts 保持一致。
+    [
+      'script',
+      {},
+      'try{var t=localStorage.getItem("pidanui-theme")||"auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}',
+    ],
     // <head> 同步脚本：在 DOM 解析时立即给 <html> 加 .js 标记。
     // - 浏览器禁用 JS 时：此脚本完全不执行，.js 永远不会被加上，
     //   所有 html:not(.js) { ... } 的降级 CSS 规则自动生效

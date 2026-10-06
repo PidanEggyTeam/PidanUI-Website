@@ -133,7 +133,7 @@ const FEATURES = [
   color: $ink-2;
   background: rgba(255, 197, 61, 0.14);
   border-left: 4px solid $brand;
-  border-radius: 0 $radius-m $radius-m 0;
+  border-radius: $radius-m;
 
   h3 {
     display: flex;

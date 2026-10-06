@@ -1,17 +1,30 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, shallowRef } from 'vue';
 import CardGrid from '../CardGrid.vue';
 import NewsSearchBox from '../NewsSearchBox.vue';
-import { data as allPosts } from '@/posts.data';
 import { searchKeyword } from '@/composables/useSearch';
+import type { Post } from '@/types';
 
-// 本地检索：与新闻页共用同一个搜索框（NewsSearchBox），输入即时过滤，无需后端
+// 本地检索：与新闻页共用同一个搜索框（NewsSearchBox），输入即时过滤，无需后端。
+// 检索语料（含全站正文）体积明显大于轻量列表数据，因此在挂载后动态加载，
+// 不进「每个页面都会下载」的公共 chunk。
+const corpus = shallowRef<Post[]>([]);
+
+onMounted(async () => {
+  try {
+    const mod = await import('@/postsSearch.data');
+    corpus.value = mod.data;
+  } catch {
+    // 语料加载失败时搜索无结果，不影响页面其它功能
+  }
+});
+
 const tokens = computed(() => searchKeyword.value.toLowerCase().split(/\s+/).filter(Boolean));
 
 const hits = computed(() => {
   if (!tokens.value.length) return [];
-  return allPosts.filter((post) => {
-    const haystack = [post.title, post.content, post.tags.join(' ')].map((text) =>
+  return corpus.value.filter((post) => {
+    const haystack = [post.title, post.content ?? '', post.tags.join(' ')].map((text) =>
       text.toLowerCase(),
     );
     return tokens.value.every((token) => haystack.some((text) => text.includes(token)));

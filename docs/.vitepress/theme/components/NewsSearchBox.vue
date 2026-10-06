@@ -7,7 +7,7 @@ import { searchKeyword, syncKeywordFromUrl, writeKeywordToUrl } from '@/composab
  * 全站共享的新闻搜索框（已移除搜索按钮）。
  * - 新闻页顶部：输入后（防抖）用 Router 跳到 /search/?q=…，客户端渲染、不刷新页面
  * - 搜索页：输入即时过滤，仅用 replaceState 同步地址栏（同页不跳转，避免失焦）
- * - 禁用 JavaScript 时通过 <noscript> 显示降级提示，搜索框隐藏
+ * - 禁用 JavaScript 时显示降级提示（由 CSS 依据 <html> 上的 .js 标记控制显隐）
  */
 const props = withDefaults(
   defineProps<{
@@ -24,7 +24,7 @@ const props = withDefaults(
 const router = useRouter();
 const inputEl = ref<HTMLInputElement | null>(null);
 const value = searchKeyword;
-// 挂载前（SSR / 禁用 JS）不渲染输入框，仅保留 <noscript> 降级提示
+// 挂载前（SSR / 禁用 JS）不渲染输入框，仅保留降级提示
 const mounted = ref(false);
 let timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -62,9 +62,14 @@ onBeforeUnmount(() => clearTimeout(timer));
 
 <template>
   <form class="news-search" data-js="required" role="search" @submit.prevent="onSubmit">
-    <noscript class="news-search-noscript">
+    <!-- 降级提示：用普通元素而非 <noscript>。
+         <noscript> 在 JS 启用时会被浏览器按「原始文本」解析，其内部标签不会成为
+         真实节点，与 SSR 输出的 DOM 结构不一致，从而触发
+         "Hydration completed but contains mismatches"。改为普通 <p> 后
+         SSR 与客户端结构一致，再由 CSS 依据 <html> 的 .js 标记控制显隐。 -->
+    <p class="news-search-noscript">
       本站搜索需要启用 JavaScript。你可以使用 <a :href="withBase('/atom.xml')">RSS 订阅</a> 获取最新新闻。
-    </noscript>
+    </p>
     <template v-if="mounted">
       <span class="news-search-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -95,9 +100,10 @@ onBeforeUnmount(() => clearTimeout(timer));
   align-items: center;
   margin: 0 0 18px;
 
-  // 禁用 JS 时 Vue 模板 <template v-if="mounted"> 不会渲染，此时整个
-  // <form> 里只剩 <noscript> 降级提示，用 .no-js 把它的 padding 收窄成段落。
+  // 降级提示：默认隐藏（有 JS 时 <head> 内联脚本会立即给 <html> 加上 .js），
+  // 仅在无 JS 时由下方 html:not(.js) 规则显示。
   .news-search-noscript {
+    display: none;
     padding: 0 2px;
     font-size: 14px;
     color: $ink-2;
@@ -146,7 +152,7 @@ onBeforeUnmount(() => clearTimeout(timer));
   }
 }
 
-// 禁用 JS 时的搜索框降级：隐藏表单控件，只显示 <noscript> 文本
+// 禁用 JS 时的搜索框降级：隐藏表单控件，只显示降级提示文本
 // 顶层 html 选择器 Vue scoped 不会加 data-v-xxx 前缀，仍能命中
 html:not(.js) {
   .news-search {
@@ -159,6 +165,12 @@ html:not(.js) {
   .news-search-icon,
   .news-search input {
     display: none !important;
+  }
+
+  // 此时 <template v-if="mounted"> 不会渲染（mounted 永远为 false），
+  // 整个 <form> 里只剩这条提示，把它显示出来
+  .news-search-noscript {
+    display: block;
   }
 }
 </style>

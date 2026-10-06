@@ -181,12 +181,19 @@
 }
 
 // ---- 移动端汉堡按钮 & 遮罩 ----
+// z-index 层级（自下而上）：
+//    80  .menu-toggle      移动端汉堡按钮
+//    90  .sidebar-overlay  抽屉遮罩
+//   100  .sidebar-left / .sidebar-right
+// 汉堡按钮必须低于左栏：抽屉展开时它正好落在品牌 Logo 的位置，
+// 若层级更高会把 Logo 盖住。收起时左栏被 translateX(-100%) 移出屏幕，
+// 不会遮挡按钮，因此按钮仍可正常点击展开。
 .menu-toggle {
   display: none;
   position: fixed;
   top: 16px;
   left: 16px;
-  z-index: 200;
+  z-index: 80;
   width: 40px;
   height: 40px;
   align-items: center;

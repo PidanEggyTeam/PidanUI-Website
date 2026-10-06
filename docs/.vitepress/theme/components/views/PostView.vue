@@ -1,13 +1,21 @@
-﻿<script setup lang="ts">
-import { computed } from 'vue';
+<script setup lang="ts">
+import { computed, onMounted, watch } from 'vue';
 import { useData, withBase } from 'vitepress';
 import GiscusComments from '../GiscusComments.vue';
 import { data as allPosts } from '@/posts.data';
 import { SITE } from '@/config';
+import { enhancePost } from '@/composables/usePostEnhance';
 import { formatDate, termPath, toArray } from '@/utils';
 
 // 文章详情：返回链接 / 标题 / 时间 / 分类标签 / 正文 / 上下篇 / 评论
 const { page, frontmatter } = useData();
+
+// 客户端增强：目录（[TOC]）、Mermaid 图表、代码块复制按钮
+onMounted(() => void enhancePost(page.value.relativePath));
+watch(
+  () => page.value.relativePath,
+  (path) => void enhancePost(path),
+);
 
 const categories = computed(() => toArray(frontmatter.value.categories));
 const tags = computed(() => toArray(frontmatter.value.tags));

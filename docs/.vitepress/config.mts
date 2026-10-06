@@ -1,6 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
+import deflist from 'markdown-it-deflist';
+import footnote from 'markdown-it-footnote';
+import mark from 'markdown-it-mark';
+import sub from 'markdown-it-sub';
+import sup from 'markdown-it-sup';
+import taskLists from 'markdown-it-task-lists';
 import { createContentLoader, defineConfig, type HeadConfig } from 'vitepress';
 import { SITE } from './theme/config';
 
@@ -85,6 +91,46 @@ export default defineConfig({
   ],
   base: BASE,
   cleanUrls: false,
+  // Markdown 扩展：脚注 / 任务列表 / 上下标 / 高亮 / 定义列表 / 数学公式 / [TOC]。
+  // 其余语法（表格、Shiki 代码高亮、标题锚点、emoji、容器等）VitePress 已内置。
+  markdown: {
+    // 构建期由 markdown-it-mathjax3 渲染公式为静态 SVG，无客户端运行时开销
+    math: true,
+    config(md) {
+      md.use(footnote)
+        .use(taskLists, { labelAfter: true })
+        .use(sub)
+        .use(sup)
+        .use(mark)
+        .use(deflist)
+        .use((m) => {
+          // [TOC] → 目录占位容器；真实目录由 usePostEnhance 在客户端按渲染后的
+          // 标题 id 生成，避免与标题锚点的 slugify 规则不一致而跳转失效
+          m.core.ruler.push('toc_placeholder', (state) => {
+            const tokens = state.tokens;
+            for (let i = 0; i < tokens.length; i++) {
+              const open = tokens[i];
+              const inline = tokens[i + 1];
+              const close = tokens[i + 2];
+              if (
+                open.type === 'paragraph_open' &&
+                inline?.type === 'inline' &&
+                inline.content.trim() === '[TOC]' &&
+                close?.type === 'paragraph_close'
+              ) {
+                open.type = 'html_block';
+                open.tag = '';
+                open.nesting = 0;
+                open.content = '<div class="post-toc" data-post-toc></div>';
+                open.children = [];
+                tokens.splice(i + 1, 2);
+              }
+            }
+            return true;
+          });
+        });
+    },
+  },
   // 动态路由页面标题在构建期细化，利于 SEO
   transformPageData(pageData) {
     const params = (pageData as { params?: Record<string, string> }).params;

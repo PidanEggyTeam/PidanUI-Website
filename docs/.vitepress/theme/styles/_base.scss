@@ -16,6 +16,11 @@
   --card: #ffffff;
   --line: #f0f1f3;
   --sidebar-bg: #ffffff;
+  // 代码块 / 行内代码（暖色调，与品牌黄保持一致）
+  --code-bg: #f8f7f3;
+  --code-hd: #f0ede5;
+  --inline-code-bg: rgba(255, 197, 61, 0.18);
+  --inline-code-ink: #a85a00;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,6 +36,11 @@
     --card: #1f1f23;
     --line: #2a2f36;
     --sidebar-bg: #1f1f23;
+    // 深色模式下代码块比卡片更深一档，形成"内嵌"层次
+    --code-bg: #141519;
+    --code-hd: #1b1c22;
+    --inline-code-bg: rgba(255, 197, 61, 0.14);
+    --inline-code-ink: #ffc53d;
   }
 }
 

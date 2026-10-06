@@ -9,11 +9,19 @@
     "preview": "vitepress preview docs"
   },
   "dependencies": {
+    "mermaid": "^12.1.0",
     "vue": "^3.5.41"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",
     "gray-matter": "^4.0.3",
+    "markdown-it-deflist": "^4.0.0",
+    "markdown-it-footnote": "^4.0.0",
+    "markdown-it-mark": "^4.0.0",
+    "markdown-it-mathjax3": "^4.3.2",
+    "markdown-it-sub": "^2.0.0",
+    "markdown-it-sup": "^2.0.0",
+    "markdown-it-task-lists": "^2.1.1",
     "sass": "^1.104.0",
     "typescript": "~6.0.2",
     "vitepress": "^1.6.4"

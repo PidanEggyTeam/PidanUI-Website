@@ -1,0 +1,54 @@
+// ============================================================
+// 全站动效
+//   1. 页面切换：新页面挂载时淡入上移
+//      （Layout 给每个视图绑了「路由身份」key，切页即重挂载，动画随之重放）
+//   2. 滚动淡入：元素进入视口时淡入上移
+//      （useScrollReveal 在客户端按需加 .reveal / .is-revealed）
+// 两者都遵循系统「减少动态效果」偏好。
+// ============================================================
+
+// ---- 页面切换 ----
+// 只做「进入」动画：旧页面即时移除、新页面淡入。
+// 不用 out-in 是为了避免旧页先淡出造成的空白间隔，也避免两个页面同时留在
+// 文档流里导致容器高度跳动。
+.site-main > * {
+  animation: page-enter 0.28s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// ---- 滚动淡入 ----
+// 未启用时元素保持默认可见，因此是纯渐进增强。
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+// ---- 减少动态效果 ----
+// 注意：animation: none 会一并去掉 fill，元素回到默认样式（可见），
+// 不会停在 @keyframes 的 opacity: 0 上。
+@media (prefers-reduced-motion: reduce) {
+  .site-main > * {
+    animation: none;
+  }
+
+  .reveal {
+    transition: none;
+  }
+}

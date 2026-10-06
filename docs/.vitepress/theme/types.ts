@@ -18,8 +18,12 @@ export interface Post {
   cover: string;
   /** 摘要 */
   description: string;
-  /** 纯文本正文（本地检索用，截断） */
-  content: string;
+  /**
+   * 纯文本正文（本地检索用，截断）。
+   * 仅检索语料（postsSearch.data.ts）会填充该字段；列表/侧栏用的轻量数据
+   * （posts.data.ts）不含它，以免把整站正文塞进每个页面都要下载的公共 chunk。
+   */
+  content?: string;
 }
 
 /** 分类 / 标签云条目 */

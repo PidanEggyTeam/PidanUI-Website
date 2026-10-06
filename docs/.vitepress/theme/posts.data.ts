@@ -1,42 +1,20 @@
 import { createContentLoader } from 'vitepress';
 import type { Post } from './types';
-import { formatDate, toArray } from './utils';
+import { byDateDesc, toBasePost } from './postMap';
 
 /**
- * 文章数据加载器。
- * 构建期解析 docs/posts/*.md，规范化后随 bundle 内联（运行时不发请求）。
- * 新闻首页 / 归档 / 分类 / 标签 / 搜索 / 侧栏最新动态均消费这份数据。
+ * 轻量文章数据加载器（**不含正文**）。
+ *
+ * 新闻首页 / 归档 / 分类 / 标签 / 侧栏最新动态 / 文章上下篇均消费这份数据。
+ * 由于不产出正文，这里不做 Markdown 渲染（不开启 render），构建更快，
+ * 也避免把整站正文塞进「每个页面都会下载」的公共 chunk。
+ * 需要正文的全文检索请见 postsSearch.data.ts。
  */
 declare const data: Post[];
 export { data };
 
-function stripHtml(html: string): string {
-  return html
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
 export default createContentLoader('posts/*.md', {
-  render: true,
   transform(raw): Post[] {
-    return raw
-      .map((page) => {
-        const frontmatter = page.frontmatter as Record<string, any>;
-        return {
-          title: frontmatter.title ?? '',
-          url: page.url,
-          date: formatDate(frontmatter.date),
-          timestamp: new Date(frontmatter.date).getTime() || 0,
-          // 未指定或非 true 一律视为不置顶
-          stickypost: frontmatter.stickypost === true,
-          categories: toArray(frontmatter.categories),
-          tags: toArray(frontmatter.tags),
-          cover: frontmatter.cover || '/images/default_cover.png',
-          description: frontmatter.description ?? '',
-          content: stripHtml(page.html ?? '').slice(0, 3000),
-        };
-      })
-      .sort((a, b) => b.timestamp - a.timestamp);
+    return raw.map(toBasePost).sort(byDateDesc);
   },
 });

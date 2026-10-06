@@ -81,7 +81,7 @@ export default defineConfig({
       {
         name: 'keywords',
         content:
-          'PidanUI,蛋仔派对美化,Windows美化,蛋仔风格主题,PidanUI下载,蛋仔UI,桌面美化',
+          'PidanUI, Pidan UI, Pidan-UI, PidanUi, pidanui, PIDANUI, 皮蛋UI, 皮蛋美化, EggyUI, Eggy UI, Eggy-UI, EggyUi, eggyui, EGGYUI, PidanUI下载, PidanUI官网, PidanUI主题包, PidanUI系统镜像, PidanUI辅助组件, EggyUI下载, EggyUI官网, EggyUI-Legacy, EggyUI-RE, EggyUI-SE, EggyUI-Mini, EggyUI Air, EggyUI 3.5, EggyUI 4.0, OpenEggyUI, 蛋仔UI, 蛋仔美化, 蛋仔派对美化, 蛋仔风格主题, 蛋仔风格壁纸, 蛋仔风格图标, 蛋仔风格鼠标指针, 蛋仔风格小组件, 蛋仔风格Windows, Windows美化, Windows 11美化, Windows 10美化, Windows桌面美化, 桌面美化工具, 安全美化包, 轻量化美化, 不修改系统文件美化, Rainmeter蛋仔组件, 主题包下载, 美化包安装教程, .NET 10辅助组件, 非盈利粉丝项目, 粉丝二创, 蛋仔派对二创',
       },
     ],
     ['link', { rel: 'icon', type: 'image/x-icon', href: `${BASE}images/favicon.ico` }],

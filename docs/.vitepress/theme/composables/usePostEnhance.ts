@@ -1,14 +1,17 @@
 import { nextTick } from 'vue';
 import { initTheme, onThemeChange, resolvedDark } from './useTheme';
+import { prefersReducedMotion, revealPassed } from './useScrollReveal';
 
 // ============================================================
 // 文章页客户端增强
 //   1. [TOC] 目录：读取正文中已渲染的标题 id，生成可跳转目录
-//   2. Mermaid 图表：把 mermaid 代码块交给 mermaid 渲染为 SVG
+//   2. 页内锚点滚动：目录 / 脚注 / 标题锚点跳转时滚动 .site-main
+//   3. Mermaid 图表：把 mermaid 代码块交给 mermaid 渲染为 SVG
 //      （mermaid 体积约 4MB 且含大量图表引擎 chunk，若参与打包会让构建时间
 //        增加 5~6 倍，故改为运行时按需从 CDN 加载，见下方 loadMermaid）
-//   3. 代码块复制按钮：VitePress 只输出 <button class="copy">，自定义主题需自行接管
-// 三者都依赖渲染后的真实 DOM，只能运行在浏览器端，且均为渐进增强：
+//   4. 代码块复制按钮：VitePress 只输出 <button class="copy">，自定义主题需自行接管
+// 滚动淡入见 useScrollReveal.ts（由 Layout 统一驱动，这里只消费其 revealPassed）。
+// 以上均依赖渲染后的真实 DOM，只能运行在浏览器端，且都是渐进增强：
 // 禁用 JS 时正文（含 mermaid 源码、目录占位）仍可正常阅读。
 // ============================================================
 
@@ -62,6 +65,92 @@ function fillToc(): void {
   for (const placeholder of placeholders) {
     placeholder.replaceChildren(list.cloneNode(true));
   }
+}
+
+// ---- 页内锚点滚动 ----
+// 本站把 .site-main 作为唯一纵向滚动容器（body 设了 overflow:hidden）。而
+// VitePress 内置的锚点跳转走的是 window.scrollTo（见其 client/app/router.js
+// 的 scrollTo），window 在本布局下不可滚动，于是目录 / 脚注 / 标题锚点点击后
+// 只会更新 hash、页面纹丝不动。这里接管：把目标滚到 .site-main 顶部。
+const ANCHOR_OFFSET = 20; // 与 .post-content 内标题的 scroll-margin-top 保持一致
+const SETTLE_WINDOW = 2000; // 跳转后多少毫秒内，仍对迟到布局变化做重新对齐
+
+let anchorBound = false;
+let settleObserver: ResizeObserver | null = null;
+let settleHash = '';
+let settleDeadline = 0;
+
+/** 把 hash 指向的元素滚到滚动容器顶部（含偏移）；返回是否成功定位到目标 */
+function alignToAnchor(hash: string, smooth: boolean): boolean {
+  if (typeof document === 'undefined' || !hash || hash === '#') return false;
+  const scroller = document.querySelector<HTMLElement>('.site-main');
+  if (!scroller) return false;
+  let id = hash.slice(1);
+  try {
+    id = decodeURIComponent(id);
+  } catch {
+    // 非法百分号编码时按原样查找
+  }
+  const target = document.getElementById(id);
+  if (!target) return false;
+  const top =
+    target.getBoundingClientRect().top -
+    scroller.getBoundingClientRect().top +
+    scroller.scrollTop -
+    ANCHOR_OFFSET;
+  const behavior = smooth && !prefersReducedMotion() ? 'smooth' : 'auto';
+  scroller.scrollTo({ top: Math.max(0, top), behavior });
+  // 瞬时定位会直接跳过中间内容，这些块没经过视口，需要立即补齐
+  if (behavior === 'auto') revealPassed();
+  return true;
+}
+
+/**
+ * 跳转后的一小段时间内，若正文高度仍有变化（Mermaid 图表、图片等迟到布局），
+ * 目标会被顶偏，这里重新对齐一次。
+ * 用 ResizeObserver 而不是定时器：只在正文尺寸真的变化时触发，
+ * 因此不会干扰用户自己的滚动。
+ */
+function watchAnchorSettle(hash: string): void {
+  settleObserver?.disconnect();
+  settleObserver = null;
+  if (typeof window === 'undefined' || typeof ResizeObserver === 'undefined') return;
+  const root = document.querySelector<HTMLElement>('.post-content');
+  if (!root) return;
+  settleHash = hash;
+  settleDeadline = Date.now() + SETTLE_WINDOW;
+  let lastHeight = root.offsetHeight;
+  const observer = new ResizeObserver(() => {
+    const height = root.offsetHeight;
+    if (height === lastHeight) return;
+    lastHeight = height;
+    if (Date.now() > settleDeadline) {
+      observer.disconnect();
+      return;
+    }
+    alignToAnchor(settleHash, false);
+  });
+  settleObserver = observer;
+  observer.observe(root);
+}
+
+function scrollToAnchor(hash: string, smooth = true): void {
+  if (!alignToAnchor(hash, smooth)) return;
+  watchAnchorSettle(hash);
+}
+
+function bindAnchorScroll(): void {
+  if (anchorBound || typeof window === 'undefined') return;
+  anchorBound = true;
+  // VitePress 在 window 的捕获阶段已 preventDefault 并 pushState，这里只需补滚动
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement | null;
+    const link = target?.closest<HTMLAnchorElement>('a[href^="#"]');
+    if (!link) return;
+    scrollToAnchor(link.getAttribute('href') ?? '');
+  });
+  // VitePress 更新 hash 后会派发合成的 hashchange；同时也覆盖浏览器前进/后退
+  window.addEventListener('hashchange', () => scrollToAnchor(window.location.hash));
 }
 
 // ---- Mermaid 图表 ----
@@ -210,6 +299,7 @@ export async function enhancePost(routeKey: string): Promise<void> {
   if (typeof document === 'undefined') return;
   initTheme();
   bindCopyButtons();
+  bindAnchorScroll();
   bindThemeListener();
   if (routeKey !== lastRoute) {
     reset();
@@ -217,5 +307,10 @@ export async function enhancePost(routeKey: string): Promise<void> {
   }
   await nextTick();
   fillToc();
+  // 直接带 hash 打开页面时先瞬时定位到锚点（VitePress 的 window.scrollTo 在本布局无效）。
+  // 滚动淡入由 Layout 统一驱动（useScrollReveal），瞬时跳过的块它会自动补齐。
+  scrollToAnchor(window.location.hash, false);
   await renderMermaid();
+  // Mermaid 渲染完成后图表会变高，把锚点目标整体顶下去，这里再校正一次位置
+  scrollToAnchor(window.location.hash, false);
 }

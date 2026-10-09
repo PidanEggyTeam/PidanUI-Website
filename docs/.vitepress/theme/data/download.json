@@ -1,16 +1,26 @@
 {
   "title": "下载 PidanUI",
-  "description": "选择适合你的版本。PidanUI 提供轻简版系统镜像、独立主题包与辅助组件，建议根据实际需求选择。",
+  "description": "选择适合你的版本，建议根据实际需求选择。",
   "versions": [
     {
       "id": "pidan-system",
       "type": "Pidan System",
-      "version": "Windows 7 SP1",
-      "fileSize": "2.39 GB",
-      "updateDate": "2026-10-04",
+      "version": "Windows 10 LTSC 2021 v2",
+      "fileSize": "3.50 GB",
+      "updateDate": "2026-10-09",
       "description": "皮蛋自己封装的系统。",
       "image": "https://img.remit.ee/i/68SjqigbuR8x",
-      "downloadUrl": "https://1836443871.mshare.123pan.cn/123pan/G6sfTd-AQ6uv?notoken=1&pwd=gada"
+      "downloadUrl": "https://1836443871.mshare.123pan.cn/123pan/G6sfTd-AQ6uv?pwd=gada"
+    },
+    {
+      "id": "hsr-studio-system",
+      "type": " HSR Studio System",
+      "version": "Windows 8.1 x32",
+      "fileSize": "3.78 GB",
+      "updateDate": "2026-10-06",
+      "description": "蜜糖星雨自己封装的系统。",
+      "image": "https://tencentcdna.production.link3.cc/user_create_images/link3_1723900571667/picsingle/1791300957454",
+      "downloadUrl": "https://1821279686.share.123pan.cn/123pan/cd5xjv-2VVEh"
     },
     {
       "id": "eggyui-legacy",

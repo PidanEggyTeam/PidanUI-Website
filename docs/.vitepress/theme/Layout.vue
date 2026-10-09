@@ -4,6 +4,7 @@ import { useData } from 'vitepress';
 import { setupScrollReveal } from './composables/useScrollReveal';
 import SiteSidebar from './components/SiteSidebar.vue';
 import SiteRightBar from './components/SiteRightBar.vue';
+import SearchDialog from './components/SearchDialog.vue';
 import HomeView from './components/views/HomeView.vue';
 import DownloadView from './components/views/DownloadView.vue';
 import NewsHomeView from './components/views/NewsHomeView.vue';
@@ -65,6 +66,7 @@ onMounted(() => {
     <Transition
       name="page"
       mode="out-in"
+      appear
       @before-enter="beforePageEnter"
       @after-enter="afterPageEnter"
     >
@@ -99,4 +101,5 @@ onMounted(() => {
   </main>
 
   <SiteRightBar />
+  <SearchDialog />
 </template>

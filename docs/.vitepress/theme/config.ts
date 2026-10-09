@@ -21,8 +21,8 @@ export const SOCIAL_LINKS = {
   QQ群: 'https://qm.qq.com/q/IIwIhrHycq',
 } as const;
 
-/** 列表页每页文章数 */
-export const PAGE_SIZE = 10;
+/** 文章列表每页显示数量 */
+export const PAGE_SIZE = 12;
 
 /**
  * Giscus 评论配置。

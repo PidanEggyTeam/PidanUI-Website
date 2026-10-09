@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import ListView from './ListView.vue';
-import NewsSearchBox from '../NewsSearchBox.vue';
+import SearchLauncher from '../SearchLauncher.vue';
 import { allPosts, pinnedFirst, usePagedPosts } from '@/composables/usePosts';
 
 const props = defineProps<{ page: number }>();
@@ -21,9 +21,9 @@ const { pagePosts, page, totalPages } = usePagedPosts(
     first-href="/posts/"
     page-prefix="/posts/page/"
   >
-    <!-- 搜索框置于新闻页顶部，输入即跳转到搜索结果页 -->
+    <!-- 从新闻页打开全站搜索对话框 -->
     <template #top>
-      <NewsSearchBox navigate-on-input />
+      <SearchLauncher />
     </template>
   </ListView>
 </template>

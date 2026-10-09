@@ -1,63 +1,36 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { useRouter, withBase } from 'vitepress';
+import { onMounted, ref } from 'vue';
+import { withBase } from 'vitepress';
 import { searchKeyword, syncKeywordFromUrl, writeKeywordToUrl } from '@/composables/useSearch';
 
 /**
- * 全站共享的新闻搜索框（已移除搜索按钮）。
- * - 新闻页顶部：输入后（防抖）用 Router 跳到 /search/?q=…，客户端渲染、不刷新页面
- * - 搜索页：输入即时过滤，仅用 replaceState 同步地址栏（同页不跳转，避免失焦）
+ * 全站共享的新闻搜索框。
+ * - 搜索对话框与 /search/ 直达页共用关键词并即时过滤
+ * - 输入只用 replaceState 同步当前地址栏，不触发路由重建
  * - 禁用 JavaScript 时显示降级提示（由 CSS 依据 <html> 上的 .js 标记控制显隐）
  */
-const props = withDefaults(
-  defineProps<{
-    /** 输入后是否跳转到搜索结果页（新闻页传 true，搜索页保持 false） */
-    navigateOnInput?: boolean;
-    /** 输入防抖毫秒数，避免逐字符触发跳转 */
-    debounce?: number;
-    /** 挂载后自动聚焦输入框（搜索页使用） */
-    autofocus?: boolean;
-  }>(),
-  { navigateOnInput: false, debounce: 350, autofocus: false },
-);
+const props = withDefaults(defineProps<{ autofocus?: boolean }>(), { autofocus: false });
 
-const router = useRouter();
 const inputEl = ref<HTMLInputElement | null>(null);
 const value = searchKeyword;
 // 挂载前（SSR / 禁用 JS）不渲染输入框，仅保留降级提示
 const mounted = ref(false);
-let timer: ReturnType<typeof setTimeout> | undefined;
-
-/** 用 Router 跳转到搜索结果页（携带关键词，空关键词则回到搜索页） */
-function goSearch() {
-  const q = value.value.trim();
-  router.go(withBase('/search/') + (q ? `?q=${encodeURIComponent(q)}` : ''));
-}
 
 function onInput(event: Event) {
   value.value = (event.target as HTMLInputElement).value;
-  if (props.navigateOnInput) {
-    clearTimeout(timer);
-    timer = setTimeout(goSearch, props.debounce);
-  } else {
-    writeKeywordToUrl();
-  }
+  writeKeywordToUrl();
 }
 
 function onSubmit() {
-  clearTimeout(timer);
-  if (props.navigateOnInput) goSearch();
-  else writeKeywordToUrl();
+  writeKeywordToUrl();
 }
 
 onMounted(() => {
   mounted.value = true;
-  // 直接访问 /search/?q=xxx 或从新闻页跳转过来时，回填关键词
+  // 直接访问 /search/?q=xxx 或打开带 ?q= 的搜索对话框时，回填关键词
   syncKeywordFromUrl();
   if (props.autofocus) inputEl.value?.focus({ preventScroll: true });
 });
-
-onBeforeUnmount(() => clearTimeout(timer));
 </script>
 
 <template>
@@ -77,7 +50,7 @@ onBeforeUnmount(() => clearTimeout(timer));
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
       </span>
-      <input
+        <input
         ref="inputEl"
         :value="value"
         type="search"

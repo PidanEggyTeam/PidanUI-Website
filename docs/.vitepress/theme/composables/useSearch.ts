@@ -3,11 +3,34 @@ import { ref } from 'vue';
 /**
  * 全站共享的新闻搜索关键词。
  *
- * 新闻页顶部与搜索页共用同一个搜索框组件（NewsSearchBox），二者通过这份
- * 模块级状态同步，从而避免「在搜索页输入时再次 router.go 到同一路径」
- * 造成的组件重建与输入框失焦。
+ * 搜索对话框与 /search/ 直达页通过这份模块级状态共享关键词。
  */
 export const searchKeyword = ref('');
+export const searchDialogOpen = ref(false);
+
+let searchDialogOpener: HTMLElement | null = null;
+
+export function openSearchDialog(opener?: HTMLElement): void {
+  if (!searchDialogOpen.value && typeof document !== 'undefined') {
+    searchDialogOpener = opener ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+  }
+  searchDialogOpen.value = true;
+}
+
+export function closeSearchDialog(): void {
+  searchDialogOpen.value = false;
+}
+
+export function clearSearchKeyword(): void {
+  searchKeyword.value = '';
+  writeKeywordToUrl();
+}
+
+export function restoreSearchDialogFocus(): void {
+  const opener = searchDialogOpener;
+  searchDialogOpener = null;
+  if (opener?.isConnected) opener.focus({ preventScroll: true });
+}
 
 /** 从地址栏 ?q= 同步关键词（仅浏览器端生效；无该参数时清空） */
 export function syncKeywordFromUrl(): void {
@@ -16,7 +39,7 @@ export function syncKeywordFromUrl(): void {
 }
 
 /**
- * 把关键词写回地址栏，保持 /search/?q= 的链接契约。
+ * 把关键词写回当前地址栏的 ?q= 参数，不触发路由跳转。
  * 使用 replaceState：不产生历史记录、不触发路由跳转，输入框不会失焦。
  */
 export function writeKeywordToUrl(): void {

@@ -23,14 +23,14 @@
       "downloadUrl": "https://1821279686.share.123pan.cn/123pan/cd5xjv-2VVEh"
     },
     {
-      "id": "eggyui-legacy",
-      "type": "EggyUI Legacy",
-      "version": "v3.5",
-      "fileSize": "6.49 GB",
-      "updateDate": "2026-05-25",
-      "description": "EggyUI项目的历史版本（即EggyUI 1.0~3.5）已更名为EggyUI-Legacy。",
+      "id": "eggyui",
+      "type": "EggyUI",
+      "version": "Finale Mini",
+      "fileSize": "129.57 MB",
+      "updateDate": "2026-10-09",
+      "description": "PidanUI的前身，EggyUI Finale Mini是其最后一个版本。",
       "image": "https://img.remit.ee/i/zI8bP9bB5wCu",
-      "downloadUrl": "https://www.123pan.com/s/BWy7Td-ObpD3"
+      "downloadUrl": "https://1843695941.share.123pan.cn/123pan/BWy7Td-Kw7l3"
     }
   ]
 }

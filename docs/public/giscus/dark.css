@@ -1,0 +1,91 @@
+:root {
+  color-scheme: dark;
+  --color-canvas-default: #1f1f23;
+  --color-canvas-overlay: #24252b;
+  --color-canvas-inset: #17171a;
+  --color-canvas-subtle: #25231e;
+  --color-border-default: #383a40;
+  --color-border-muted: #303238;
+  --color-fg-default: #e5e6eb;
+  --color-fg-muted: #c9cdd4;
+  --color-fg-subtle: #969eaa;
+  --color-accent-fg: #ffc53d;
+  --color-accent-emphasis: #ffb52e;
+  --color-accent-muted: rgba(255, 197, 61, 0.4);
+  --color-accent-subtle: #3a2e14;
+  --color-btn-text: #e5e6eb;
+  --color-btn-bg: #292a30;
+  --color-btn-border: #41434a;
+  --color-btn-hover-bg: #34353c;
+  --color-btn-hover-border: #a87522;
+  --color-btn-primary-text: #211a0b;
+  --color-btn-primary-bg: #ffc53d;
+  --color-btn-primary-border: #ffc53d;
+  --color-btn-primary-hover-bg: #ffd166;
+  --color-btn-primary-hover-border: #ffd166;
+  --color-neutral-muted: rgba(134, 144, 156, 0.2);
+  --color-primer-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --color-primer-shadow-focus: 0 0 0 3px rgba(255, 197, 61, 0.24);
+  --color-social-reaction-bg-hover: #342a18;
+  --color-social-reaction-bg-reacted-hover: #473618;
+}
+
+body,
+.gsc-main {
+  color: #e5e6eb;
+}
+
+.gsc-comment-box-textarea,
+.gsc-comment-box-textarea textarea,
+.gsc-comment-box-textarea textarea:focus {
+  color: #e5e6eb;
+  background: #17171a;
+  border-color: #41434a;
+  border-radius: 12px;
+}
+
+.gsc-comment-box-textarea textarea:focus {
+  border-color: #ffc53d;
+  box-shadow: 0 0 0 3px rgba(255, 197, 61, 0.18);
+}
+
+.gsc-comment-box,
+.gsc-comment {
+  border-color: #383a40;
+  border-radius: 14px;
+}
+
+.gsc-comment-header {
+  background: #25231e;
+  border-color: #383a40;
+  border-radius: 13px 13px 0 0;
+}
+
+.gsc-comment-content,
+.gsc-timeline {
+  color: #e5e6eb;
+}
+
+.gsc-comment-content a,
+.gsc-header a,
+.gsc-footer a {
+  color: #ffc53d;
+}
+
+.gsc-comment-content a:hover,
+.gsc-header a:hover,
+.gsc-footer a:hover {
+  color: #ffd166;
+}
+
+.gsc-reactions-button,
+.gsc-social button {
+  border-radius: 999px;
+}
+
+button:focus-visible,
+a:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #ffc53d;
+  outline-offset: 2px;
+}

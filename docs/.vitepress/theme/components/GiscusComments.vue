@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useData } from 'vitepress';
-import { GISCUS } from '@/config';
+import { GISCUS, SITE } from '@/config';
 import { initTheme, onThemeChange, resolvedDark } from '@/composables/useTheme';
 
 // Giscus 评论：客户端按路由动态注入脚本，兼容 SPA 导航。
@@ -18,9 +18,10 @@ let observer: MutationObserver | null = null;
 let stopThemeWatch: (() => void) | null = null;
 let fallbackTimer: number | null = null;
 
-/** 当前应使用的 giscus 主题（giscus 内置 light / dark） */
+/** 当前应使用的品牌 Giscus 样式表 */
 function giscusTheme(): string {
-  return resolvedDark.value ? 'dark' : 'light';
+  const theme = resolvedDark.value ? 'dark' : 'light';
+  return new URL(`/giscus/${theme}.css`, `${SITE.newsUrl}/`).href;
 }
 
 /** 已加载的 iframe 无法改属性，需通过 postMessage 通知其切换配色 */

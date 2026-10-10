@@ -1,6 +1,6 @@
 :root {
   color-scheme: dark;
-  --color-canvas-default: #1f1f23;
+  --color-canvas-default: #1c1c1f;
   --color-canvas-overlay: #24252b;
   --color-canvas-inset: #17171a;
   --color-canvas-subtle: #25231e;
@@ -33,6 +33,7 @@
 body,
 .gsc-main {
   color: #e5e6eb;
+  background-color: #1c1c1f;
 }
 
 .gsc-comment-box-textarea,

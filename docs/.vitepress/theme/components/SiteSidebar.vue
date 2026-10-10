@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { useRoute, useData, withBase } from 'vitepress';
 import { SITE } from '@/config';
+import {
+  activeMobileDrawer,
+  closeMobileDrawer,
+  toggleMobileDrawer,
+} from '@/composables/useMobileDrawer';
 import ThemeToggle from './ThemeToggle.vue';
 
 // 左侧固定导航栏：品牌标识 + 四个导航项；移动端（≤960px）收起为抽屉
 const route = useRoute();
 const { page } = useData();
 
-const navOpen = ref(false);
+const navOpen = computed(() => activeMobileDrawer.value === 'left');
+let mobileBreakpoint: MediaQueryList | undefined;
 
 const NAV_ITEMS = [
   { key: 'home', label: '首页', href: '/' },
@@ -37,24 +43,22 @@ const activeKey = computed<NavKey | ''>(() => {
   return '';
 });
 
-function setScrollLock(lock: boolean) {
-  document.body.style.overflow = lock ? 'hidden' : '';
-}
-
 function closeMenu() {
-  navOpen.value = false;
-  setScrollLock(false);
+  closeMobileDrawer();
 }
 
 function toggleMenu() {
-  navOpen.value = !navOpen.value;
-  setScrollLock(navOpen.value);
+  toggleMobileDrawer('left');
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && navOpen.value) {
+  if (event.key === 'Escape' && activeMobileDrawer.value) {
     closeMenu();
   }
+}
+
+function onBreakpointChange(event: MediaQueryListEvent) {
+  if (!event.matches) closeMenu();
 }
 
 // 路由切换时关闭抽屉
@@ -65,11 +69,14 @@ watch(
 
 onMounted(() => {
   document.addEventListener('keydown', onKeydown);
+  mobileBreakpoint = window.matchMedia('(max-width: 960px)');
+  mobileBreakpoint.addEventListener('change', onBreakpointChange);
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', onKeydown);
-  setScrollLock(false);
+  mobileBreakpoint?.removeEventListener('change', onBreakpointChange);
+  closeMenu();
 });
 </script>
 
@@ -78,7 +85,7 @@ onBeforeUnmount(() => {
   <button
     class="menu-toggle"
     type="button"
-    aria-label="打开菜单"
+    :aria-label="navOpen ? '关闭主导航' : '打开主导航'"
     :aria-expanded="navOpen"
     @click="toggleMenu"
   >
@@ -90,7 +97,12 @@ onBeforeUnmount(() => {
   </button>
 
   <!-- 遮罩 -->
-  <div class="sidebar-overlay" :class="{ open: navOpen }" @click="closeMenu" />
+  <div
+    class="sidebar-overlay"
+    :class="{ open: activeMobileDrawer !== null }"
+    aria-hidden="true"
+    @click="closeMenu"
+  />
 
   <!-- 左侧导航 -->
   <aside class="sidebar-left" :class="{ open: navOpen }" aria-label="主导航">

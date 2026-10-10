@@ -1,14 +1,34 @@
 ﻿<script setup lang="ts">
+import { computed } from 'vue';
 import { withBase } from 'vitepress';
 import { SOCIAL_LINKS } from '@/config';
 import { latestPosts } from '@/composables/usePosts';
+import { activeMobileDrawer, toggleMobileDrawer } from '@/composables/useMobileDrawer';
 
 // 右侧小部件栏：最新动态 + 关注我们 + 项目状态（搜索框已移至新闻页顶部）
 const posts = latestPosts(3);
+const drawerOpen = computed(() => activeMobileDrawer.value === 'right');
 </script>
 
 <template>
-  <aside class="sidebar-right" aria-label="侧边栏">
+  <button
+    class="menu-toggle menu-toggle-right"
+    type="button"
+    :aria-label="drawerOpen ? '关闭侧边栏' : '打开侧边栏'"
+    aria-controls="sidebar-right"
+    :aria-expanded="drawerOpen"
+    @click="toggleMobileDrawer('right')"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <line x1="15" y1="4" x2="15" y2="20" />
+      <line x1="18" y1="8" x2="18" y2="8" />
+      <line x1="18" y1="12" x2="18" y2="12" />
+      <line x1="18" y1="16" x2="18" y2="16" />
+    </svg>
+  </button>
+
+  <aside id="sidebar-right" class="sidebar-right" :class="{ open: drawerOpen }" aria-label="侧边栏">
     <!-- 最新动态 -->
     <section class="widget">
       <h2 class="widget-title">最新动态</h2>

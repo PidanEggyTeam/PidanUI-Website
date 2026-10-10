@@ -5,6 +5,7 @@ categories: [公告]
 tags: [公告, 发布, 项目]
 description: EggyUI Finale Mini 已正式发布，它是 EggyUI 的第二个独立安装包版本，也是最后一个版本。本文说明该版本的定位、特性与发布意义。
 stickypost: false
+cover: https://img.remit.ee/i/zI8bP9bB5wCu
 ---
 
 # EggyUI Finale Mini 正式发布
@@ -82,4 +83,4 @@ EggyUI Finale Mini 是 EggyUI 的第二个独立安装包版本，也是最后�
 
 EggyUI 的故事到此结束，感谢一路同行的每一位用户与开发者。PidanUI 将带着这份积累，继续往前走。
 
-<div align="center">PidanUI 项目组<br>2026 年 10 月 9 日</div>
+<div align="right">PidanUI 项目组<br>2026 年 10 月 9 日</div>

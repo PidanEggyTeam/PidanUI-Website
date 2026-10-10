@@ -180,7 +180,7 @@
   }
 }
 
-// ---- 移动端汉堡按钮 & 遮罩 ----
+// ---- 移动端菜单按钮 & 遮罩 ----
 // z-index 层级（自下而上）：
 //    80  .menu-toggle      移动端汉堡按钮
 //    90  .sidebar-overlay  抽屉遮罩
@@ -198,10 +198,16 @@
   height: 40px;
   align-items: center;
   justify-content: center;
-  color: $ink;
-  background: $card;
-  border: 1px solid $line;
-  border-radius: $radius-m;
+  color: $brand-deep;
+  background: $brand-soft;
+  border: 1px solid rgba(255, 159, 26, 0.35);
+  border-radius: $radius-full;
+  cursor: pointer;
+}
+
+.menu-toggle-right {
+  right: 16px;
+  left: auto;
 }
 
 .sidebar-overlay {
@@ -212,7 +218,7 @@
   background: rgba(0, 0, 0, 0.4);
 }
 
-// ---- 响应式：≤960px 收起左侧为抽屉、隐藏右侧 ----
+// ---- 响应式：≤960px 左右侧栏分别变为抽屉 ----
 @include respond-below($bp-md) {
   .sidebar-left {
     transform: translateX(-100%);
@@ -232,6 +238,17 @@
   }
 
   .sidebar-right {
-    display: none;
+    display: block;
+    width: min($sidebar-right-w, calc(100vw - 48px));
+    visibility: hidden;
+    transform: translateX(100%);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.18);
+    transition: transform 0.3s ease, visibility 0s linear 0.3s;
+
+    &.open {
+      visibility: visible;
+      transform: translateX(0);
+      transition: transform 0.3s ease, visibility 0s;
+    }
   }
 }

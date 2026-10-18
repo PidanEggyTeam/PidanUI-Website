@@ -126,6 +126,11 @@ docs/
 - TypeScript 7 已移除 `baseUrl`：`tsconfig.json` 的 `paths` 必须写成相对路径（`./docs/.vitepress/theme/*`），并开启 `allowImportingTsExtensions`。
 - `.vue` / `.scss` / markdown-it 插件的模块声明在 `docs/.vitepress/env.d.ts`；引入新的无类型依赖时先补声明，不要用 `@ts-ignore`。
 - Vite 8 已不再有 Sass `api` 选项（现代 API 为唯一实现），不要重新加回。
+- **Sass 版本下限是 1.70.0**（Vite 8 的 peer 为 `sass: ^1.70.0`，且依赖 1.70.0 才引入的 `initAsyncCompiler`）。低于该版本的任何版本（含 npm 上的 `rc` / `test` dist-tag）都会让全部 SCSS 入口报 `TypeError: [sass] sass.initAsyncCompiler is not a function`，构建直接失败 23 处，不要试图通过降级 Vite / VitePress 来迁就旧 Sass。
+- Sass 的 `rc` / `test` dist-tag **不是新版本预发布通道**：`rc` 指向 2021 年的 `1.45.0-rc.2`、`test` 指向 2022 年的 `1.26.0-test.3`，都远低于上述下限。升级 Sass 请按实际版本号指定（已验证 1.70.0 / 1.75.0 / 1.85.0 / 1.95.0 / 1.100.0 / 1.105.2 均可构建），不要用这两个 tag 做渐进升级。
+- VitePress 的 `next` dist-tag 就是 `2.0.0-alpha.20`（`latest` 仍是 1.6.4），因此本项目**已经运行在 vitepress `next` 上**，无需再单独升级 VitePress。
+- TypeScript 的 `next` 是每日 Nightly（`7.1.0-dev.<日期>` 形式）。已实测 `7.1.0-dev.20261016.1` 与 VitePress `next`（2.0.0-alpha.20）+ Sass 1.105.2 组合：`pnpm exec tsc --noEmit`、`pnpm build` 均零错误零警告，`pnpm preview` 页面渲染正常。
+- 但 `next` 是流动 tag，每次 `pnpm install` 都可能拉到新的 nightly 并改动 lockfile，**不要长期把它写进 `package.json`**：仅在验证兼容性时临时 `pnpm add -D typescript@next`，验证后回落到 `~7.0.2`（或更新的稳定版本）。另外 dist-tag 查询结果与 pnpm 实际安装到的 nightly 日期可能差一天（registry 镜像缓存所致），以 `pnpm ls typescript` 或 `node -e "console.log(require('typescript').version)"` 为准。
 - 别名 `@` → `docs/.vitepress/theme`，Vite 与 tsconfig 两处需同时维护。
 
 ## Git 与协作

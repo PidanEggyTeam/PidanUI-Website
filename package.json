@@ -22,7 +22,7 @@
     "markdown-it-sub": "^2.0.0",
     "markdown-it-sup": "^2.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "sass": "^1.104.0",
+    "sass": "1.105.2",
     "typescript": "~7.0.2",
     "vitepress": "^2.0.0-alpha.20"
   }

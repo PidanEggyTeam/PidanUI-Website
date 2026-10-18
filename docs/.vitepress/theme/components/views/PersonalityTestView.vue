@@ -30,7 +30,7 @@
             :key="option.key"
             class="option"
             type="button"
-            @click="selectOption(option.key)"
+            @click="selectOption(option)"
           >
             <span class="option-key">{{ option.key }}</span>
             <span class="option-text">{{ option.text }}</span>

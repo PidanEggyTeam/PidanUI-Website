@@ -1,7 +1,7 @@
 /**
  * 蛋仔专属性格测试 · 题库与角色档案。
  * 构建期随 bundle 打包（本地静态模块），运行时不发起任何网络请求。
- * 维护题目 / 文案 / 头像时仅需编辑本文件后重新构建发布。
+ * v2：加权计分模式——每个选项携带 6 个角色的权重分，答题后累加取最高分角色。
  */
 
 /** 选项键（A/B/C/D/E/F，对应题库中每道题的六个选项） */
@@ -10,12 +10,20 @@ export type OptionKey = 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
 /** 蛋仔角色 ID（与 public/images/characters 下的头像文件一一对应） */
 export type CharacterId = 'bulu' | 'yeggy' | 'rosie' | 'rocky' | 'minty' | 'dxh';
 
-/** 单个选项 */
+/** 角色优先级顺序：同分时按此顺序兜底（bulu > yeggy > rosie > rocky > minty > dxh） */
+export const CHARACTER_ORDER: CharacterId[] = ['bulu', 'yeggy', 'rosie', 'rocky', 'minty', 'dxh'];
+
+/** 每个角色累计的权重分数 */
+export type CharacterScoreMap = Record<CharacterId, number>;
+
+/** 单个选项：携带加权分数 */
 export interface TestOption {
   /** 选项键 */
   key: OptionKey;
   /** 选项文案（不含 "A." 前缀，前缀由界面渲染） */
   text: string;
+  /** 选择该选项后为各角色累加的权重分 */
+  score: CharacterScoreMap;
 }
 
 /** 单道题目 */
@@ -48,88 +56,198 @@ export interface CharacterProfile {
   highlight: string;
 }
 
-/** 按 A/B/C/D/E/F 顺序组装一道题的选项 */
-const buildOptions = (
-  a: string,
-  b: string,
-  c: string,
-  d: string,
-  e: string,
-  f: string,
+/** 按 A/B/C/D/E/F 顺序组装一道题的加权选项（文案与权重分成对传入） */
+const buildWeightOptions = (
+  aText: string,
+  aScore: CharacterScoreMap,
+  bText: string,
+  bScore: CharacterScoreMap,
+  cText: string,
+  cScore: CharacterScoreMap,
+  dText: string,
+  dScore: CharacterScoreMap,
+  eText: string,
+  eScore: CharacterScoreMap,
+  fText: string,
+  fScore: CharacterScoreMap,
 ): TestOption[] => [
-  { key: 'A', text: a },
-  { key: 'B', text: b },
-  { key: 'C', text: c },
-  { key: 'D', text: d },
-  { key: 'E', text: e },
-  { key: 'F', text: f },
+  { key: 'A', text: aText, score: aScore },
+  { key: 'B', text: bText, score: bScore },
+  { key: 'C', text: cText, score: cScore },
+  { key: 'D', text: dText, score: dScore },
+  { key: 'E', text: eText, score: eScore },
+  { key: 'F', text: fText, score: fScore },
 ];
 
-/** 全部题目（前 2 题考察日常性格，后 3 题考察游戏习惯） */
+/**
+ * 权重分快捷常量：`xxx5` 表示该选项最偏向 xxx 角色（5 分），其余角色 1-3 分，
+ * 使单一选择也能同时对多个角色产生倾向，支持混合性格。
+ */
+const S = {
+  bulu5: { bulu: 5, yeggy: 1, rosie: 1, rocky: 1, minty: 2, dxh: 1 },
+  yeggy5: { bulu: 1, yeggy: 5, rosie: 2, rocky: 1, minty: 2, dxh: 2 },
+  rosie5: { bulu: 1, yeggy: 2, rosie: 5, rocky: 1, minty: 3, dxh: 1 },
+  rocky5: { bulu: 2, yeggy: 2, rosie: 1, rocky: 5, minty: 1, dxh: 3 },
+  minty5: { bulu: 2, yeggy: 2, rosie: 3, rocky: 1, minty: 5, dxh: 1 },
+  dxh5: { bulu: 1, yeggy: 2, rosie: 1, rocky: 3, minty: 1, dxh: 5 },
+} satisfies Record<string, CharacterScoreMap>;
+
+/** 全部题目：12 题（日常性格 ×4、社交偏好 ×3、蛋仔游戏 ×5） */
 export const QUESTIONS: TestQuestion[] = [
   {
     id: 1,
     tag: '日常性格题',
     text: '工作/学习压力大的时候你会怎么调节？',
-    options: buildOptions(
-      '运动发泄一下，出出汗就好了',
-      '吃好吃的！美食治愈一切不开心',
-      '听音乐看剧，安静独处回血',
-      '找朋友吐槽，说出来就好多了',
-      '走进大自然散步，呼吸新鲜空气平复情绪',
-      '投入新的爱好，用高度专注忘掉烦恼',
+    options: buildWeightOptions(
+      '运动发泄一下，出出汗就好了', S.dxh5,
+      '吃好吃的！美食治愈一切不开心', S.yeggy5,
+      '听音乐看剧，安静独处回血', S.rosie5,
+      '找朋友吐槽，说出来就好多了', S.yeggy5,
+      '走进大自然散步，呼吸新鲜空气平复情绪', S.minty5,
+      '投入新的爱好，用高度专注忘掉烦恼', S.bulu5,
     ),
   },
   {
     id: 2,
     tag: '日常性格题',
     text: '生活中遇到困难时，你的第一反应是？',
-    options: buildOptions(
-      '积极想办法解决，干就完事了',
-      '顺其自然吧，船到桥头自然直',
-      '会焦虑一会儿，但最终会想办法',
-      '找朋友帮忙，人多力量大嘛',
-      '先放平心态，慢慢梳理，循序渐进处理',
-      '立刻主动出击，快速打破僵局，不怕冲突',
+    options: buildWeightOptions(
+      '积极想办法解决，干就完事了', S.dxh5,
+      '顺其自然吧，船到桥头自然直', S.minty5,
+      '会焦虑一会儿，但最终会想办法', S.rosie5,
+      '找朋友帮忙，人多力量大嘛', S.yeggy5,
+      '先放平心态，慢慢梳理，循序渐进处理', S.bulu5,
+      '立刻主动出击，快速打破僵局，不怕冲突', S.rocky5,
     ),
   },
   {
     id: 3,
-    tag: '蛋仔游戏题',
-    text: '组队游戏时你通常是队伍里的什么角色？',
-    options: buildOptions(
-      '带头冲锋型！跟紧我带你们赢',
-      '紧跟大佬脚步，抱大腿就完事了',
-      '默默配合队友，该挡刀挡刀该给道具给道具',
-      '喜欢单独行动，靠自己更稳当',
-      '不急不躁稳扎稳打，稳住节奏带动全队节奏',
-      '敢打敢冲，主动制造机会，敢于主动对抗对手',
+    tag: '日常性格题',
+    text: '周末空闲时间，你更倾向怎么度过？',
+    options: buildWeightOptions(
+      '规划清单，完成几件有意义的事', S.bulu5,
+      '约朋友出门逛街玩耍热闹一番', S.yeggy5,
+      '宅家追剧撸猫，安安静静休养', S.rosie5,
+      '挑战新的技能，尝试没做过的事', S.rocky5,
+      '漫无目的摆烂，怎么舒服怎么来', S.minty5,
+      '安排刺激活动，爬山、运动释放活力', S.dxh5,
     ),
   },
   {
     id: 4,
-    tag: '蛋仔游戏题',
-    text: '巅峰派对决赛圈只剩几个人了，你的打法是？',
-    options: buildOptions(
-      '躲角落偷鸡！活着到最后的才是赢家',
-      '主动出击！干掉一个少一个',
-      '随缘发挥吧，走到哪算哪',
-      '和队友配合，互相掩护一起进圈',
-      '保守周旋，观察局势等待最合适的时机出手',
-      '强势主动开战，不怕掉分，追求酣畅对战',
+    tag: '日常性格题',
+    text: '面对别人提出不同意见，你会？',
+    options: buildWeightOptions(
+      '理性分析对错，讲道理摆逻辑', S.bulu5,
+      '一笑而过，不想把气氛搞僵', S.yeggy5,
+      '体谅对方想法，尽量包容理解', S.rosie5,
+      '敢于争辩，坚持自己的立场', S.rocky5,
+      '保持中立，不急于站队表态', S.minty5,
+      '直接表达想法，不怕产生摩擦', S.dxh5,
     ),
   },
   {
     id: 5,
+    tag: '社交偏好题',
+    text: '参加多人聚会，你通常的状态？',
+    options: buildWeightOptions(
+      '观察全场，冷静看大家互动', S.bulu5,
+      '全场活跃分子，带动聊天氛围', S.yeggy5,
+      '跟熟悉的好友轻声聊天就好', S.rosie5,
+      '主动认识新朋友拓展圈子', S.rocky5,
+      '安静待角落，舒服最重要', S.minty5,
+      '爱玩游戏互动，喜欢热闹比拼', S.dxh5,
+    ),
+  },
+  {
+    id: 6,
+    tag: '社交偏好题',
+    text: '朋友情绪低落来找你倾诉，你优先会？',
+    options: buildWeightOptions(
+      '帮他分析问题，给出解决方案', S.bulu5,
+      '讲笑话逗乐，努力哄对方开心', S.yeggy5,
+      '耐心倾听共情，温柔给予安慰', S.rosie5,
+      '鼓励他振作起来勇敢面对困境', S.rocky5,
+      '陪着就好，不用急着开导劝说', S.minty5,
+      '陪他做点刺激的事转移坏情绪', S.dxh5,
+    ),
+  },
+  {
+    id: 7,
+    tag: '社交偏好题',
+    text: '团队集体做决定出现分歧，你希望？',
+    options: buildWeightOptions(
+      '梳理利弊，投票选出最优方案', S.bulu5,
+      '希望大家开开心心不要闹矛盾', S.yeggy5,
+      '尊重每个人感受，照顾弱者想法', S.rosie5,
+      '大胆争取，推动自己看好的方向', S.rocky5,
+      '都行，服从大多数人的安排', S.minty5,
+      '快速敲定，不要无休止拉扯纠结', S.dxh5,
+    ),
+  },
+  {
+    id: 8,
+    tag: '蛋仔游戏题',
+    text: '组队游戏时你通常是队伍里的什么角色？',
+    options: buildWeightOptions(
+      '带头冲锋型！跟紧我带你们赢', S.dxh5,
+      '紧跟大佬脚步，抱大腿就完事了', S.yeggy5,
+      '默默配合队友，该挡刀挡刀该给道具给道具', S.rosie5,
+      '喜欢单独行动，靠自己更稳当', S.bulu5,
+      '不急不躁稳扎稳打，稳住节奏带动全队节奏', S.minty5,
+      '敢打敢冲，主动制造机会，敢于主动对抗对手', S.rocky5,
+    ),
+  },
+  {
+    id: 9,
+    tag: '蛋仔游戏题',
+    text: '巅峰派对决赛圈只剩几个人了，你的打法是？',
+    options: buildWeightOptions(
+      '躲角落偷鸡！活着到最后的才是赢家', S.bulu5,
+      '主动出击！干掉一个少一个', S.dxh5,
+      '随缘发挥吧，走到哪算哪', S.minty5,
+      '和队友配合，互相掩护一起进圈', S.yeggy5,
+      '保守周旋，观察局势等待最合适的时机出手', S.rosie5,
+      '强势主动开战，不怕掉分，追求酣畅对战', S.rocky5,
+    ),
+  },
+  {
+    id: 10,
     tag: '蛋仔游戏题',
     text: '闯关失败掉下去的那一刻，你的第一反应是？',
-    options: buildOptions(
-      '立刻点"再来一把"！不服输就是我的信条',
-      '有点emo...需要缓一缓再战',
-      '佛系一笑，没事没事随缘吧~',
-      '越挫越勇！分析一下哪里失误了下把赢回来',
-      '心态平和，不急于重开，慢慢总结慢慢练习',
-      '燃起斗志！一定要把这一关狠狠打回去',
+    options: buildWeightOptions(
+      '立刻点"再来一把"！不服输就是我的信条', S.rocky5,
+      '有点emo...需要缓一缓再战', S.rosie5,
+      '佛系一笑，没事没事随缘吧~', S.minty5,
+      '越挫越勇！分析一下哪里失误了下把赢回来', S.bulu5,
+      '心态平和，不急于重开，慢慢总结慢慢练习', S.minty5,
+      '燃起斗志！一定要把这一关狠狠打回去', S.dxh5,
+    ),
+  },
+  {
+    id: 11,
+    tag: '蛋仔游戏题',
+    text: '玩蛋仔，你最喜欢哪一类地图？',
+    options: buildWeightOptions(
+      '烧脑解谜、逻辑机关类地图', S.bulu5,
+      '欢乐派对、多人搞怪娱乐图', S.yeggy5,
+      '风景好看，适合闲逛打卡观赏图', S.rosie5,
+      '高难度魔鬼跑酷，挑战极限图', S.rocky5,
+      '节奏舒缓，没有压力休闲闯关图', S.minty5,
+      '激烈对抗、抓人打架对战类地图', S.dxh5,
+    ),
+  },
+  {
+    id: 12,
+    tag: '蛋仔游戏题',
+    text: '队友操作失误坑到你的时候，你内心想法？',
+    options: buildWeightOptions(
+      '冷静，想想接下来怎么弥补劣势', S.bulu5,
+      '哈哈没事，游戏而已快乐最重要', S.yeggy5,
+      '有点可惜，但可以理解对方', S.rosie5,
+      '有点恼火，希望队友多注意操作', S.rocky5,
+      '无所谓，输赢本来就不是全部', S.minty5,
+      '不甘心！我要靠自己打回局势', S.dxh5,
     ),
   },
 ];
@@ -198,28 +316,32 @@ export const CHARACTER_PROFILES: Record<CharacterId, CharacterProfile> = {
   },
 };
 
-/** 选项多数决 → 角色映射（A蛋小蓝 / B蛋小黄 / C蛋小粉 / D蛋小黑 / E蛋小绿 / F蛋小红） */
-export const RESULT_BY_OPTION: Record<OptionKey, CharacterId> = {
-  A: 'bulu',
-  B: 'yeggy',
-  C: 'rosie',
-  D: 'rocky',
-  E: 'minty',
-  F: 'dxh',
+/** 累加所有已选选项的权重分，返回 6 个角色的总分 */
+export const calcAllScore = (answers: TestOption[]): CharacterScoreMap => {
+  const totalScore: CharacterScoreMap = {
+    bulu: 0,
+    yeggy: 0,
+    rosie: 0,
+    rocky: 0,
+    minty: 0,
+    dxh: 0,
+  };
+  answers.forEach((option) => {
+    CHARACTER_ORDER.forEach((id) => {
+      totalScore[id] += option.score[id];
+    });
+  });
+  return totalScore;
 };
 
-/** 统计各选项票数并得出多数决角色（平票时按 A > B > C > D > E > F 优先） */
-export const resolveCharacter = (answers: OptionKey[]): CharacterProfile => {
-  const counts: Record<OptionKey, number> = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
-  answers.forEach((key) => {
-    counts[key] += 1;
-  });
-  let winner: OptionKey = 'A';
-  const order: OptionKey[] = ['A', 'B', 'C', 'D', 'E', 'F'];
-  order.forEach((key) => {
-    if (counts[key] > counts[winner]) {
-      winner = key;
+/** 加权计分得出最终角色（总分最高者胜出，同分时按 CHARACTER_ORDER 顺序兜底） */
+export const resolveCharacter = (answers: TestOption[]): CharacterProfile => {
+  const totalScore = calcAllScore(answers);
+  let resultId: CharacterId = 'bulu';
+  CHARACTER_ORDER.forEach((id) => {
+    if (totalScore[id] > totalScore[resultId]) {
+      resultId = id;
     }
   });
-  return CHARACTER_PROFILES[RESULT_BY_OPTION[winner]];
+  return CHARACTER_PROFILES[resultId];
 };

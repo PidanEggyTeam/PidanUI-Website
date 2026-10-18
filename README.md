@@ -1,10 +1,10 @@
 # PidanUI-Website
 
 ![Last Commit](https://img.shields.io/github/last-commit/PidanEggyTeam/PidanUI-Website?label=Last%20Commit)
-![VitePress](https://img.shields.io/badge/VitePress-1.6.4-5C73E7?logo=VitePress&logoColor=white)
+![VitePress](https://img.shields.io/badge/VitePress-2.0.0--alpha.20-5C73E7?logo=VitePress&logoColor=white)
 ![Vue](https://img.shields.io/badge/Vue-3.5.44-4FC08D?logo=Vue.js&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=TypeScript&logoColor=white)
-![SCSS](https://img.shields.io/badge/SCSS-Styles-CC6699?logo=Sass&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=TypeScript&logoColor=white)
+![SCSS](https://img.shields.io/badge/SCSS-1.105.2-CC6699?logo=Sass&logoColor=white)
 ![License](https://img.shields.io/badge/License-AGPL--3.0-orange)
 
 PidanUI 项目的官方网站，使用 VitePress + TypeScript + SCSS 构建，静态生成（SSG）后部署到 GitHub Pages。
@@ -32,8 +32,8 @@ PidanUI 项目的官方网站，使用 VitePress + TypeScript + SCSS 构建，�
 1. [下载并安装 Node.js](https://nodejs.org/zh-cn)
 2. 安装 `pnpm`：在终端执行 `npm install -g pnpm` 命令来安装 `pnpm`（可以执行 `pnpm --version` 来验证安装是否完成，安装后建议重启终端）
 3. 在项目文件夹下打开终端，执行 `pnpm install` 命令安装依赖
-4. 执行 `pnpm dev`（或 `pnpm run dev`）命令来启动开发服务器（开发服务器网址一般是 `http://localhost:5173`），执行 `pnpm build`（或 `pnpm run build`）命令来生成静态产物
-5. 在 `docs/.vitepress/dist` 下找到静态网页的构建产物。
+4. 执行 `pnpm dev`（或 `pnpm run dev`）命令来启动开发服务器（开发服务器网址一般是 `http://localhost:5173`），执行 `pnpm build`（或 `pnpm run build`）命令来生成静态网页构建产物
+5. 在 `docs/.vitepress/dist` 下找到静态网页构建产物
 
 ## 字体与图标
 

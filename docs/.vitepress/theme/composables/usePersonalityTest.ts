@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
-import { QUESTIONS, resolveCharacter } from '@/data/personalityTest';
-import type { CharacterProfile, OptionKey } from '@/data/personalityTest';
+import { calcAllScore, QUESTIONS, resolveCharacter } from '@/data/personalityTest';
+import type { CharacterProfile, CharacterScoreMap, TestOption } from '@/data/personalityTest';
 
 /** 测试所处阶段：欢迎页 / 答题页 / 结果页 */
 export type TestStage = 'welcome' | 'question' | 'result';
@@ -12,7 +12,8 @@ export type TestStage = 'welcome' | 'question' | 'result';
 export const usePersonalityTest = () => {
   const stage = ref<TestStage>('welcome');
   const questionIndex = ref(0);
-  const answers = ref<OptionKey[]>([]);
+  /** 已选中的完整选项对象（承载加权分数，供结算时累加） */
+  const answers = ref<TestOption[]>([]);
   const result = ref<CharacterProfile | null>(null);
 
   const total = QUESTIONS.length;
@@ -43,9 +44,14 @@ export const usePersonalityTest = () => {
     stage.value = 'question';
   };
 
-  /** 选择某个选项：记录答案后进入下一题，最后一题结算结果 */
-  const selectOption = (key: OptionKey) => {
-    answers.value = [...answers.value, key];
+  /** 各角色累计权重分（可用于雷达图 / 次要性格展示） */
+  const scores = computed<CharacterScoreMap>(() => calcAllScore(answers.value));
+
+  /** 选择某个选项：记录完整选项后进入下一题，最后一题按权重结算结果 */
+  const selectOption = (option: TestOption) => {
+    if (stage.value !== 'question' || !currentQuestion.value) return;
+
+    answers.value = [...answers.value, option];
 
     const isLast = questionIndex.value >= total - 1;
     if (isLast) {
@@ -75,6 +81,7 @@ export const usePersonalityTest = () => {
     questionNo,
     progressPercent,
     highlightLines,
+    scores,
     start,
     selectOption,
     restart,

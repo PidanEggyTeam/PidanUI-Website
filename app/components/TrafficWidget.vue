@@ -124,7 +124,7 @@ function mountWidget(): void {
     site_id: SITE_ID,
     w: String(width),
     ...buildColorParams(),
-    font: 'MiSans, PingFang SC, Microsoft YaHei, system-ui, sans-serif',
+    font: 'HarmonyOS Sans SC, PingFang SC, Microsoft YaHei, system-ui, sans-serif',
     rows: String(ROWS),
     poll: '3000',
     lang: 'zh',

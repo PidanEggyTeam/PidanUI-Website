@@ -12,15 +12,13 @@
 :root {
   color-scheme: light;
 
-  /* 字体栈：全站唯一来源。head 里的 MiSans / Cascadia Code CDN
-     只提供字形，字体族名与回退顺序在这里定义，改动前先确认 CDN 版本。
-     misans-webfont 的常规字重族名为 MiSans（400/700），Normal 族为其补充别名。
-     等宽字体末尾补中文字体 fallback，避免代码块内中文回退到系统宋体（SimSun）。 */
+  /* 字体栈：全站唯一来源。head 里的 Cascadia Code CDN
+     只提供字形，字体族名与回退顺序在这里定义，改动前先确认 CDN 版本. */
   /* HarmonyOS Sans SC 排在最前（400/500/700 三个字重，CDN 按 unicode-range 分片，
-     见 nuxt.config.ts 的 app.head）；未命中字形时依次回退 MiSans → 苹方 → 雅黑 */
-  --font-ui: 'HarmonyOS Sans SC', 'MiSans', 'MiSans Normal', 'PingFang SC', 'Microsoft YaHei',
-    system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-code: 'Cascadia Code', 'Consolas', 'Menlo', 'MiSans', 'Microsoft YaHei UI',
+     见 nuxt.config.ts 的 app.head）；未命中字形时依次回退 苹方 → 雅黑 */
+  --font-ui: 'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui,
+    -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-code: 'Cascadia Code', 'Consolas', 'Menlo', 'HarmonyOS Sans SC', 'Microsoft YaHei UI',
     'PingFang SC', monospace;
 
   /* 与全站字体保持一致，供 VitePress 内置组件（代码块、搜索等）复用 */

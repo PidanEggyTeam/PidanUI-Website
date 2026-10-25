@@ -44,12 +44,12 @@ export default defineNuxtConfig({
         {
           name: 'keywords',
           content:
-            'PidanUI, Pidan UI, Pidan-UI, PidanUi, pidanui, PIDANUI, 皮蛋UI, 皮蛋美化, EggyUI, Eggy UI, Eggy-UI, EggyUi, eggyui, EGGYUI, PidanUI下载, PidanUI官网, PidanUI主题包, PidanUI系统镜像, PidanUI辅助组件, EggyUI下载, EggyUI官网, EggyUI-Legacy, EggyUI-RE, EggyUI-SE, EggyUI-Mini, EggyUI Air, EggyUI 3.5, EggyUI 4.0, OpenEggyUI, 蛋仔UI, 蛋仔美化, 蛋仔派对美化, 蛋仔风格主题, 蛋仔风格壁纸, 蛋仔风格图标, 蛋仔风格鼠标指针, 蛋仔风格小组件, 蛋仔风格Windows, Windows美化, Windows 11美化, Windows 10美化, Windows桌面美化, 桌面美化工具, 安全美化包, 轻量化美化, 不修改系统文件美化, Rainmeter蛋仔组件, 主题包下载, 美化包安装教程, .NET 10辅助组件, 非盈利粉丝项目, 粉丝二创, 蛋仔派对二创',
+            'PidanUI, Pidan UI, 皮蛋UI, EggyUI, Eggy UI, EggyUI-Legacy, EggyUI-RE, OpenEggyUI, OpenPidanUI, 蛋仔UI, 蛋仔美化, 蛋仔风格美化, 蛋仔风格主题, 蛋仔风格壁纸, 蛋仔风格Windows, 主题包下载, 蛋仔派对二创, Rainmeter蛋仔组件, Windows桌面美化',
         },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/images/favicon.ico' },
-        // 全站字体（CDN）：MiSans（正文）/ Cascadia Code（代码）
+        // 全站字体（CDN）：HarmonyOS Sans SC（正文）/ Cascadia Code（代码）
         // 图标已全部改为 Nuxt UI 的 Iconify（构建期内联 SVG），不再引 Font Awesome
         { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' },
         // 实时访客 FeedPulse：右栏组件常驻每一页，hydration 完成即回报
@@ -61,14 +61,9 @@ export default defineNuxtConfig({
         { rel: 'dns-prefetch', href: 'https://feed-pulse.com' },
         {
           rel: 'stylesheet',
-          href: 'https://cdn.jsdelivr.net/npm/misans-webfont@4.3.1/misans-style.min.css',
-        },
-        {
-          rel: 'stylesheet',
           href: 'https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@5.2.3/index.min.css',
         },
         // 界面字体（CDN）：HarmonyOS Sans SC（400 / 500 / 700 三个字重，unicode-range 分片），
-        // 位于 MiSans 之前（回退链见 base.css 的 --font-ui），
         // 与上方约定一致：仓库不保留字体文件
         {
           rel: 'stylesheet',

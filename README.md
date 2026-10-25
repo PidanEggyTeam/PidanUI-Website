@@ -42,13 +42,11 @@ PidanUI 项目的官方网站，使用 Nuxt 4 + @nuxt/content + TypeScript + Tai
 
 ## 字体与图标
 
-字体为 MiSans 和 Cascadia Code 分包字体，通过 CDN 加载（样式表由 `nuxt.config.ts` 的 `app.head` 注入），仓库不保留字体文件。界面正文叠加 HarmonyOS Sans SC（400 / 500 / 700 三个字重，同样按 unicode-range 分片走 CDN），回退链顺序为 HarmonyOS Sans SC → MiSans → …（定义见 `app/assets/styles/base.css` 的 `--font-ui`）。
+字体为 HarmonyOS Sans SC（400 / 500 / 700 三个字重，按 unicode-range 分片走 CDN） 和 Cascadia Code 分包字体，通过 CDN 加载（样式表由 `nuxt.config.ts` 的 `app.head` 注入），仓库不保留字体文件。字体回退链顺序为 HarmonyOS Sans SC → PingFang SC …（定义见 `app/assets/styles/base.css` 的 `--font-ui`）。
 
 图标使用 Nuxt UI 的 Iconify（Lucide + Simple Icons），图标集合以 `@iconify-json/*` 本地安装，**构建期直接内联为 SVG**，运行时不请求 Iconify API。已不再使用 Font Awesome。
 
 ## 交互与动效
-
-原先的 `public/custom/`（`custom.css` + `custom.js` 注入式增强层）已全部并入主站代码，不再有独立脚本与样式文件：
 
 - 字体栈、交互过渡基线（`a` / `button` / `img` / `:focus-visible`）、品牌色文本选区 —— `app/assets/styles/base.css`；
 - 页面切换与 `.site-main` 前 8 个直接子块的编排式入场 —— `app/assets/styles/animation.css`（纯 CSS，遵循 `prefers-reduced-motion`）；
@@ -56,7 +54,6 @@ PidanUI 项目的官方网站，使用 Nuxt 4 + @nuxt/content + TypeScript + Tai
 - 返回顶部浮钮 —— `app/components/BackToTop.vue`（z-index 85，抽屉遮罩展开时会被盖住）；
 - `/` 打开搜索 —— `app/plugins/shortcuts.client.ts`（输入框内与输入法组合中不劫持）。
 
-悬浮反馈统一为「颜色 / 边框 / 阴影」，不做位移抬升。
 ## 关于 PidanUI
 
 PidanUI 是一款专为 Windows & Linux 系统打造的桌面美化项目，设计灵感来源于网易游戏《蛋仔派对》。项目延续了 EggyUI 在视觉风格上的探索，同时吸取了过往项目在治理、技术与分发方式上的经验教训，重新调整了开发路线与组织方式。

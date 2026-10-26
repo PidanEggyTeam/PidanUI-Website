@@ -72,6 +72,6 @@ PidanUI 继承了 EggyUI 的技术积累与美学方向，同时以更清晰的�
 
 EggyUI 的故事没有结束，它只是换了一个名字，继续往前走。
 
-<div align="right">PidanUI 项目组<br>2026 年 10 月 6 日</div>
+<div style="text-align: right;">PidanUI 项目组<br>2026 年 10 月 6 日</div>
 
 [^1]: 此处修正了相关表述，把“不修改系统文件”删掉（因为“不修改系统文件”只是部分PidanUI版本的特性）。

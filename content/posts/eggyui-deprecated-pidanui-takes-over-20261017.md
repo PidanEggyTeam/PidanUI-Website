@@ -4,7 +4,7 @@ date: 2026-10-17 10:00:00
 categories: [公告]
 tags: [EggyUI, PidanUI, 公告, 项目, 维护]
 description: 说明 EggyUI 已被 PidanUI 正式取代，EggyUI 旧版本将不再获得维护，并解答用户关心的后续下载与支持问题。
-stickypost: true
+stickypost: false
 cover: https://img.remit.ee/i/I3PwI8fU1dJ9
 ---
 
@@ -36,4 +36,4 @@ PidanUI 作为 EggyUI 的精神续作与技术延伸，目前正由新的项目�
 
 感谢大家在过去两年多的时间里对 EggyUI 的陪伴与支持。EggyUI 的故事虽然已经结束，但蛋仔风格 Windows 美化的旅程，将在 PidanUI 中继续前行。
 
-<div align="right">PidanUI 项目组<br>2026 年 10 月 17 日</div>
+<div style="text-align: right;">PidanUI 项目组<br>2026 年 10 月 17 日</div>

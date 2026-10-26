@@ -47,6 +47,6 @@ EggyUI 自 2024 年 4 月萌芽，至 2026 年 10 月 9 日 Finale Mini 发布�
 
 EggyUI 的故事已经结束，PidanUI 将带着这份积累，继续往前走。感谢一路同行的每一位用户与开发者。
 
-<div align="right">PidanUI 项目组<br>2026 年 10 月 13 日</div>
+<div style="text-align: right;">PidanUI 项目组<br>2026 年 10 月 13 日</div>
 
 [^1]: 此处修正了相关表述，把“不修改系统文件”删掉（因为“不修改系统文件”只是部分PidanUI版本的特性）。

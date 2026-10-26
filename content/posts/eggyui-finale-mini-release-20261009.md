@@ -91,4 +91,4 @@ EggyUI Finale Mini 是 EggyUI 的第二个独立安装包版本，也是最后�
 
 EggyUI 的故事到此结束，感谢一路同行的每一位用户与开发者。PidanUI 将带着这份积累，继续往前走。
 
-<div align="right">PidanUI 项目组<br>2026 年 10 月 9 日</div>
+<div style="text-align: right;">PidanUI 项目组<br>2026 年 10 月 9 日</div>

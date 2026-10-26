@@ -305,65 +305,70 @@
   .post-content div[class*='language-'] {
     position: relative;
     margin: 1.2em 0;
-    overflow: hidden;
+    /* 不能 overflow: hidden —— 它会让本元素成为滚动容器，内部 sticky 的
+       信息栏就被困在自己的坐标系里，永远贴不住视口。圆角改由
+       头部栏与 pre 各自带上/下圆角来保持。 */
     background: var(--code-bg);
     border: 1px solid var(--line);
     border-radius: var(--radius-m);
   }
 
-  /* 代码块悬浮：只加一层柔和阴影，不做位移 */
-  .post-content div[class*='language-'] {
-    transition: box-shadow 0.26s var(--ease-inout);
-  }
-
-  .post-content div[class*='language-']:hover {
-    box-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.25);
-  }
-
-  /* 语言标签（左上角） */
-  .post-content div[class*='language-'] > .lang {
-    position: absolute;
+  /* ---- 顶部信息栏（语言标签 + 复制按钮）----
+     长代码块滚动时钉在滚动容器顶部；横向滚动的是内部 pre，信息栏不受影响 */
+  .post-content div[class*='language-'] > .code-head {
+    position: sticky;
     top: 0;
-    left: 0;
-    z-index: 1;
-    padding: 3px 12px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 12px;
+    background: var(--code-hd);
+    border-bottom: 1px solid var(--line);
+    border-radius: var(--radius-m) var(--radius-m) 0 0;
+  }
+
+  /* 语言标签：栏内文本，不是角标 */
+  .post-content div[class*='language-'] > .code-head > .lang {
     font-family: var(--font-code);
     font-size: 11px;
-    letter-spacing: 0.4px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
     text-transform: uppercase;
-    color: var(--ink-3);
-    background: var(--code-hd);
-    border-bottom-right-radius: var(--radius-s);
+    color: var(--brand-deep);
     user-select: none;
     pointer-events: none;
   }
 
-  /* 无语言代码块会输出空的 .lang，隐藏之 */
-  .post-content div[class*='language-'] > .lang:empty {
+  /* 无语言代码块：栏内没有标签，复制按钮靠右 */
+  .post-content div[class*='language-'] > .code-head > .lang:empty {
     display: none;
   }
 
-  /* 复制按钮（右上角，hover / 聚焦时淡入） */
-  .post-content div[class*='language-'] > .copy {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    z-index: 2;
+  .post-content div[class*='language-'] > .code-head > .lang:empty + .copy {
+    margin-left: auto;
+  }
+
+  /* 复制按钮：信息栏内联，常显（不再靠 hover 才出现） */
+  .post-content div[class*='language-'] > .code-head > .copy {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     padding: 0;
     color: var(--ink-3);
     background: transparent;
-    border: none;
+    border: 1px solid transparent;
     border-radius: var(--radius-s);
-    opacity: 0;
-    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
   }
 
-  .post-content div[class*='language-'] > .copy::before {
+  .post-content div[class*='language-'] > .code-head > .copy::before {
     content: '';
     display: block;
     width: 15px;
@@ -373,33 +378,28 @@
     mask: var(--icon-copy) center / contain no-repeat;
   }
 
-  .post-content div[class*='language-'] > .copy:hover,
-  .post-content div[class*='language-'] > .copy:focus-visible {
+  .post-content div[class*='language-'] > .code-head > .copy:hover,
+  .post-content div[class*='language-'] > .code-head > .copy:focus-visible {
     color: var(--brand-deep);
-    background: var(--code-hd);
+    background: var(--code-bg);
+    border-color: var(--line);
   }
 
-  .post-content div[class*='language-'] > .copy.copied {
+  .post-content div[class*='language-'] > .code-head > .copy.copied {
     color: var(--brand-deep);
-    opacity: 1;
   }
 
-  .post-content div[class*='language-'] > .copy.copied::before {
+  .post-content div[class*='language-'] > .code-head > .copy.copied::before {
     -webkit-mask-image: var(--icon-check);
     mask-image: var(--icon-check);
   }
 
-  .post-content div[class*='language-']:hover > .copy,
-  .post-content div[class*='language-'] > .copy:focus-visible {
-    opacity: 1;
-  }
-
   .post-content div[class*='language-'] pre {
     margin: 0;
-    /* 顶部留出语言标签 / 复制按钮所在的「标题条」高度，避免遮挡首行代码 */
-    padding: 32px 16px 14px;
+    padding: 14px 16px;
     overflow-x: auto;
     background: transparent;
+    border-radius: 0 0 var(--radius-m) var(--radius-m);
   }
 
   .post-content div[class*='language-'] code {
@@ -618,10 +618,6 @@
     /* 触屏没有 hover，锚点与复制按钮常显/隐藏的取舍：锚点直接不显示 */
     .post-content :is(h1, h2, h3, h4) .header-anchor {
       display: none;
-    }
-
-    .post-content div[class*='language-'] > .copy {
-      opacity: 1;
     }
   }
 

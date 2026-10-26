@@ -52,6 +52,15 @@ function mountTocPlaceholder(): void {
     box.dataset.postToc = '';
     paragraph.replaceWith(box);
   }
+
+  // 文章没写 [TOC] 时自动补一个：正文里至少两级标题才值得生成目录。
+  // 放在内容最前面，并且不进入滚动锚点（data-post-toc 只是个容器）。
+  if (content.querySelector('[data-post-toc]')) return;
+  if (content.querySelectorAll('h2[id], h3[id]').length < 2) return;
+  const auto = document.createElement('div');
+  auto.className = 'post-toc';
+  auto.dataset.postToc = '';
+  content.prepend(auto);
 }
 
 function fillToc(): void {
@@ -97,6 +106,8 @@ const ANCHOR_OFFSET = 20; // 与 .post-content 内标题的 scroll-margin-top �
 const SETTLE_WINDOW = 2000; // 跳转后多少毫秒内，仍对迟到布局变化做重新对齐
 
 let anchorBound = false;
+/** 自建 hash 跳转后的抑制窗口：避免 replaceState/默认跳转引发二次滚动 */
+let suppressHashChangeUntil = 0;
 let settleObserver: ResizeObserver | null = null;
 let settleHash = '';
 let settleDeadline = 0;
@@ -164,14 +175,31 @@ function bindAnchorScroll(): void {
   if (anchorBound || typeof window === 'undefined') return;
   anchorBound = true;
   // 目录 / 标题锚点 / 脚注：拦截点击，自己滚
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', (event: MouseEvent) => {
+    if (event.defaultPrevented || event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const target = event.target as HTMLElement | null;
     const link = target?.closest<HTMLAnchorElement>('a[href^="#"]');
     if (!link) return;
-    scrollToAnchor(link.getAttribute('href') ?? '');
+    const hash = link.getAttribute('href') ?? '';
+    if (!hash || hash === '#') return;
+
+    // 先挡掉浏览器默认的 hash 跳转：它会把滚动容器直接对到元素顶部（无偏移），
+    // 紧接着我们按固定偏移再滚一次，两次叠加就是「内容容器整体偏移」。
+    event.preventDefault();
+    suppressHashChangeUntil = performance.now() + 150;
+    try {
+      history.replaceState(null, '', hash);
+    } catch {
+      // history 不可用时仍继续手动滚动
+    }
+    scrollToAnchor(hash);
   });
-  // 浏览器前进 / 后退改变 hash 时
-  window.addEventListener('hashchange', () => scrollToAnchor(window.location.hash));
+  // 浏览器前进 / 后退改变 hash 时（跳过我们自己 replaceState 引起的那次）
+  window.addEventListener('hashchange', () => {
+    if (performance.now() < suppressHashChangeUntil) return;
+    scrollToAnchor(window.location.hash);
+  });
   // 跨页带 hash 的导航：vue-router 不会派发 hashchange，由 router.options.ts 转发
   document.addEventListener('pidan:anchor', (event) => {
     const hash = (event as CustomEvent<string>).detail ?? '';

@@ -1,10 +1,17 @@
 <script setup lang="ts">
-// 复刻 VitePress 的代码块 DOM，保住 _post.scss 的排版与复制按钮：
-//   <div class="language-x">
-//     <button class="copy" />
-//     <span class="lang">x</span>
-//     <pre class="shiki …">
-// MDC 默认只输出 <pre>，这里补上外层容器、语言角标与复制按钮。
+// ============================================================
+// 自定义 ProsePre：代码块顶部信息栏
+//   <div class="code-block language-x">
+//     <div class="code-head">   ← sticky，语言标签在栏内（不再是左上角角标）
+//       <span class="lang">x</span>
+//       <button class="copy" />
+//     </div>
+//     <pre class="shiki">…</pre>
+//   </div>
+//
+// 保留 .copy 类名与 div[class*="language-"] 外层，usePostEnhance 里的复制逻辑
+// （按 button.copy + div[class*="language-"] pre code 取文本）无需改动。
+// ============================================================
 const props = defineProps<{
   code?: string;
   language?: string | null;
@@ -14,16 +21,32 @@ const props = defineProps<{
   class?: string | null;
 }>();
 
+/** text / plaintext 视为「无语言」：信息栏只留复制按钮 */
 const lang = computed(() => {
   const value = props.language ?? '';
   return value === 'text' || value === 'plaintext' ? '' : value;
 });
+
+/** 语言展示名：常用缩写归一为大写全称 */
+const langLabel = computed(() => {
+  if (!lang.value) return '';
+  const alias: Record<string, string> = {
+    js: 'javascript',
+    ts: 'typescript',
+    md: 'markdown',
+    sh: 'shell',
+    yml: 'yaml',
+  };
+  return (alias[lang.value] ?? lang.value).toUpperCase();
+});
 </script>
 
 <template>
-  <div :class="`language-${lang || 'text'}`">
-    <button class="copy" type="button" title="Copy code" aria-label="复制代码"></button>
-    <span class="lang">{{ lang }}</span>
+  <div :class="['code-block', `language-${lang || 'text'}`]">
+    <div class="code-head">
+      <span class="lang">{{ langLabel }}</span>
+      <button class="copy" type="button" title="复制代码" aria-label="复制代码"></button>
+    </div>
     <pre :class="props.class"><slot /></pre>
   </div>
 </template>

@@ -39,6 +39,8 @@ function bindCopyButtons(): void {
 /**
  * `[TOC]` 在 Markdown 里只是一段普通文本（MDC 不允许内联裸 HTML），
  * 这里在客户端把它换成占位容器，再统一填充目录。
+ * 刻意「不自动生成」：只有作者显式写了 [TOC] 的文章才出目录，
+ * 避免短文章被塞一块没有信息量的目录。
  */
 function mountTocPlaceholder(): void {
   if (typeof document === 'undefined') return;
@@ -53,14 +55,6 @@ function mountTocPlaceholder(): void {
     paragraph.replaceWith(box);
   }
 
-  // 文章没写 [TOC] 时自动补一个：正文里至少两级标题才值得生成目录。
-  // 放在内容最前面，并且不进入滚动锚点（data-post-toc 只是个容器）。
-  if (content.querySelector('[data-post-toc]')) return;
-  if (content.querySelectorAll('h2[id], h3[id]').length < 2) return;
-  const auto = document.createElement('div');
-  auto.className = 'post-toc';
-  auto.dataset.postToc = '';
-  content.prepend(auto);
 }
 
 function fillToc(): void {

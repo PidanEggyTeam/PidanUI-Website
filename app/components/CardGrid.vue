@@ -7,25 +7,20 @@ withDefaults(
   defineProps<{
     posts: Post[];
     emptyText?: string;
+    /** 命中关键词（仅搜索结果传入），用于标题高亮 */
+    highlight?: string[];
   }>(),
-  { emptyText: '暂无内容' },
+  { emptyText: '暂无内容', highlight: () => [] },
 );
 </script>
 
 <template>
-  <!-- auto-fill 让窄屏自然降为单列，宽屏（搜索对话框）自动增加列数 -->
-  <div class="card-grid grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3.5">
+  <!-- 网格密度由 app.config.ts 的 ui.pageGrid 统一接管（auto-fill + --grid-min），
+       这样归档月分组、搜索结果、分类/标签详情都共用同一套列数规则 -->
+  <UPageGrid class="card-grid">
     <EmptyState v-if="!posts.length" :text="emptyText" />
     <template v-else>
-      <PostCard v-for="post in posts" :key="post.url" :post="post" />
+      <PostCard v-for="post in posts" :key="post.url" :post="post" :highlight="highlight" />
     </template>
-  </div>
+  </UPageGrid>
 </template>
-
-<style scoped>
-@media (max-width: 768px) {
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>

@@ -11,6 +11,9 @@ const props = defineProps<{ page: number }>();
 
 const allPosts = useAllPosts();
 
+/** 折叠内容动画：新引入的动效必须补 reduced-motion 分支 */
+const COLLAPSE_UI = { content: 'motion-reduce:animate-none' } as const;
+
 interface MonthGroup {
   key: string;
   label: string;
@@ -95,22 +98,19 @@ function toggleMonth(key: string): void {
 
     <EmptyState v-if="!months.length" text="暂无归档内容" />
 
-    <!-- 时间线：左侧竖线 + 月份节点，月份分组仍是可折叠卡片 -->
+    <!-- 时间线：左侧竖线 + 月份节点（圆点是 .month-group::before，不占插槽） -->
     <div v-else class="timeline">
-      <section
+      <UCollapsible
         v-for="month in months"
         :key="month.key"
+        :open="isOpen(month.key)"
         class="month-group"
-        :class="{ open: isOpen(month.key) }"
+        :ui="COLLAPSE_UI"
+        @update:open="toggleMonth(month.key)"
       >
-        <span class="timeline-dot" aria-hidden="true" />
-
-        <button
-          class="month-head flex w-full items-center gap-2.5 py-3.5 text-left"
-          type="button"
-          :aria-expanded="isOpen(month.key)"
-          @click="toggleMonth(month.key)"
-        >
+        <!-- 默认插槽会成为 CollapsibleTrigger（as-child），aria-expanded / data-state
+             由 reka 注入，不要再手写，否则会双触发 -->
+        <button class="month-head flex w-full items-center gap-2.5 py-3.5 text-left" type="button">
           <span class="text-[15px] font-semibold text-default">{{ month.label }}</span>
           <UBadge variant="soft" color="primary" size="sm" :label="`${month.posts.length} 篇`" />
           <UIcon
@@ -120,12 +120,10 @@ function toggleMonth(key: string): void {
           />
         </button>
 
-        <div class="month-body">
-          <div class="min-h-0 overflow-hidden">
-            <CardGrid class="month-grid" :posts="month.posts" />
-          </div>
-        </div>
-      </section>
+        <template #content>
+          <CardGrid class="month-grid" :posts="month.posts" />
+        </template>
+      </UCollapsible>
     </div>
 
     <Pagination
@@ -160,8 +158,11 @@ function toggleMonth(key: string): void {
   border-color: color-mix(in srgb, var(--brand-deep) 30%, var(--line));
 }
 
-/* 节点圆点：圆心落在时间线上（-29px = 24px 缩进 + 5px 半径） */
-.timeline-dot {
+/* 节点圆点：圆心落在时间线上（-29px = 24px 缩进 + 5px 半径）。
+   用伪元素而不是真实节点 —— CollapsibleTrigger 要求默认插槽只有一个根元素，
+   圆点没有第三个插槽可放；折叠后它也应该继续显示。 */
+.month-group::before {
+  content: '';
   position: absolute;
   top: 21px;
   left: -29px;
@@ -188,22 +189,13 @@ function toggleMonth(key: string): void {
   border-radius: var(--radius-s);
 }
 
-/* 展开 / 收起：grid-template-rows 0fr ↔ 1fr，高度随内容自适应 */
-.month-body {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.month-group:not(.open) .month-body {
-  grid-template-rows: 0fr;
-}
-
+/* 折叠动画交给 UCollapsible 主题（collapsible-down/up + --ease-out）；
+   关闭态 reka 会给内容加 hidden，手写 grid-template-rows 过渡根本播不到。 */
 .month-arrow {
-  transition: transform 0.3s ease;
+  transition: transform 0.2s var(--ease-out);
 }
 
-.month-group:not(.open) .month-arrow {
+.month-head[data-state='closed'] .month-arrow {
   transform: rotate(-90deg);
 }
 
@@ -226,7 +218,7 @@ function toggleMonth(key: string): void {
     padding: 0 10px;
   }
 
-  .timeline-dot {
+  .month-group::before {
     left: -23px;
   }
 

@@ -1,3 +1,7 @@
+<div align="center">
+
+![PidanUI 官网截图](https://img.remit.ee/i/q0xhELPvJ585)
+
 # PidanUI-Website
 
 ![Last Commit](https://img.shields.io/github/last-commit/PidanEggyTeam/PidanUI-Website?label=Last%20Commit)
@@ -8,6 +12,8 @@
 ![License](https://img.shields.io/badge/License-AGPL--3.0-orange)
 
 PidanUI 项目的官方网站，使用 Nuxt 4 + @nuxt/content + TypeScript + Tailwind CSS 构建，通过 `nuxt generate` 静态生成（SSG）后部署到 GitHub Pages。
+
+</div>
 
 ## 网站结构
 
@@ -35,14 +41,17 @@ PidanUI 项目的官方网站，使用 Nuxt 4 + @nuxt/content + TypeScript + Tai
 ## 构建步骤
 
 1. [下载并安装 Node.js](https://nodejs.org/zh-cn)（建议 22 LTS）
-2. 安装 `pnpm`：`npm install -g pnpm`（`pnpm --version` 可验证；安装慢可先执行 `npm config set registry https://registry.npmmirror.com`）
+2. 安装 `pnpm`：`npm install -g pnpm`（`pnpm --version` 可验证）
 3. 在项目文件夹下执行 `pnpm install`
 4. `pnpm dev` 启动开发服务器（默认 `http://localhost:3000`）
 5. `pnpm build` 生成静态产物，输出在 **`.output/public`**
 
+> [!TIP]
+> 如果 `npm install` 安装较慢，可先执行 `npm config set registry https://registry.npmmirror.com` 切换至镜像源。
+
 ## 字体与图标
 
-字体为 HarmonyOS Sans SC（400 / 500 / 700 三个字重，按 unicode-range 分片走 CDN） 和 Cascadia Code 分包字体，通过 CDN 加载（样式表由 `nuxt.config.ts` 的 `app.head` 注入），仓库不保留字体文件。字体回退链顺序为 HarmonyOS Sans SC → PingFang SC …（定义见 `app/assets/styles/base.css` 的 `--font-ui`）。
+字体为 HarmonyOS Sans SC（400 / 500 / 700 三个字重，按 unicode-range 分片走 CDN） 和 Cascadia Code 分包字体（已不再使用 MiSans），通过 CDN 加载（样式表由 `nuxt.config.ts` 的 `app.head` 注入），仓库不保留字体文件。字体回退链顺序为 HarmonyOS Sans SC → PingFang SC …（定义见 `app/assets/styles/base.css` 的 `--font-ui`）。
 
 图标使用 Nuxt UI 的 Iconify（Lucide + Simple Icons），图标集合以 `@iconify-json/*` 本地安装，**构建期直接内联为 SVG**，运行时不请求 Iconify API。已不再使用 Font Awesome。
 

@@ -75,6 +75,12 @@
   /* ---- 缓动曲线：与页面过渡（animation.css）同一条曲线 ---- */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-inout: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Nuxt UI 的 collapsible / accordion / modal 动画都写成
+     `animation: … 200ms var(--ease-out)`，而本项目只定义了 --ease-out-soft。
+     变量为空会让整条 animation 简写无效 —— 折叠高度、弹窗缩放在此之前是静默不动的。
+     这里只做别名，不引入新曲线。 */
+  --ease-out: var(--ease-out-soft);
+  --ease-in-out: var(--ease-inout);
 
   --overlay-tint: 12 16 24;
   --overlay-alpha: 0.5;

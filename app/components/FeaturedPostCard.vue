@@ -23,7 +23,7 @@ const coverSrc = computed(() => {
 // 描边与阴影统一走全站的 border-default / shadow-card。
 const CARD_UI = {
   root:
-    'group w-full rounded-(--radius-l) border border-default bg-default ' +
+    'group w-full overflow-hidden rounded-(--radius-l) border border-default bg-default ' +
     'transition-[border-color,box-shadow] duration-200 ' +
     'hover:border-brand-600/30 hover:shadow-card',
   container: 'p-0! gap-0! lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-stretch',
@@ -94,6 +94,11 @@ const CARD_UI = {
   overflow: hidden;
   background: var(--bg);
   aspect-ratio: 16 / 9;
+  /* 封面贴到卡片边缘，圆角由 root 的 overflow-hidden 统一裁；
+     这里再补同值圆角（比边框少 1px），避免部分浏览器在合成层上漏裁——
+     漏裁的表现就是左侧两角变方。只圆「外侧」两角：
+     窄屏封面在上 → 上左/上右；≥1024 左图右文 → 上左/下左。 */
+  border-radius: calc(var(--radius-l) - 1px) calc(var(--radius-l) - 1px) 0 0;
 }
 
 .feature-cover img {
@@ -112,6 +117,7 @@ const CARD_UI = {
   .feature-cover {
     aspect-ratio: auto;
     height: 100%;
+    border-radius: calc(var(--radius-l) - 1px) 0 0 calc(var(--radius-l) - 1px);
   }
 }
 </style>

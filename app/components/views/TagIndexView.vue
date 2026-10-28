@@ -10,10 +10,14 @@ const terms = computed(() => collectTerms('tags', allPosts.value));
 
 <template>
   <div class="mx-auto max-w-[1000px]">
-    <header class="mb-6 border-b border-default pb-5">
-      <PageTitle title="标签" />
-      <p class="mt-1.5 text-[13px] text-dimmed">共 {{ terms.length }} 个标签 · 按收录文章数排序</p>
-    </header>
+    <UPageHeader :as="{ title: 'div' }">
+      <template #title>
+        <PageTitle title="标签" />
+      </template>
+      <template #description>
+        <p>共 {{ terms.length }} 个标签 · 按收录文章数排序</p>
+      </template>
+    </UPageHeader>
 
     <!-- 标签云：计数用品牌色小徽章，hover 转浅黄底 -->
     <div class="flex flex-wrap gap-2.5">

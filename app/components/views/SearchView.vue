@@ -9,9 +9,11 @@ import PageTitle from '../PageTitle.vue';
     <!-- 搜索框置于标题之上（搜索页独有布局） -->
     <NewsSearchBox autofocus />
 
-    <header class="mb-6 border-b border-default pb-5">
-      <PageTitle title="搜索" />
-    </header>
+    <UPageHeader :as="{ title: 'div' }">
+      <template #title>
+        <PageTitle title="搜索" />
+      </template>
+    </UPageHeader>
 
     <SearchResults />
   </div>

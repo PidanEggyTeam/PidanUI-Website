@@ -10,12 +10,14 @@ const terms = computed(() => collectTerms('categories', allPosts.value));
 
 <template>
   <div class="mx-auto max-w-[1000px]">
-    <header class="mb-6 border-b border-default pb-5">
-      <PageTitle title="分类" />
-      <p class="mt-1.5 text-[13px] text-dimmed">
-        共 {{ terms.length }} 个分类 · 按收录文章数排序
-      </p>
-    </header>
+    <UPageHeader :as="{ title: 'div' }">
+      <template #title>
+        <PageTitle title="分类" />
+      </template>
+      <template #description>
+        <p>共 {{ terms.length }} 个分类 · 按收录文章数排序</p>
+      </template>
+    </UPageHeader>
 
     <div class="term-grid grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-3.5">
       <NuxtLink

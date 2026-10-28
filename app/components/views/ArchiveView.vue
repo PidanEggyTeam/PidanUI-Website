@@ -77,16 +77,14 @@ function toggleMonth(key: string): void {
 
 <template>
   <div class="mx-auto max-w-page">
-    <header
-      class="list-head mb-6 flex flex-wrap items-end justify-between gap-x-4 gap-y-3 border-b border-default pb-5"
-    >
-      <div>
+    <UPageHeader :as="{ title: 'div' }" class="list-head">
+      <template #title>
         <PageTitle title="归档" />
-        <p class="mt-1.5 text-[13px] text-dimmed">
-          共 {{ allPosts.length }} 篇文章 · {{ totalPages }} 个年份
-        </p>
-      </div>
-    </header>
+      </template>
+      <template #description>
+        <p>共 {{ allPosts.length }} 篇文章 · {{ totalPages }} 个年份</p>
+      </template>
+    </UPageHeader>
 
     <h2 v-if="currentYear" class="mb-5 flex items-baseline gap-2">
       <span class="text-[26px] leading-none font-extrabold tracking-[-0.02em] text-default">
@@ -214,7 +212,8 @@ function toggleMonth(key: string): void {
 }
 
 @media (max-width: 768px) {
-  .list-head {
+  /* UPageHeader 的 wrapper 默认是 flex-row，窄屏改为上下堆叠 */
+  .list-head :deep([data-slot='wrapper']) {
     flex-direction: column;
     align-items: flex-start;
   }

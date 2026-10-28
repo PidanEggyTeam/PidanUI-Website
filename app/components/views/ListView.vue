@@ -25,15 +25,19 @@ defineProps<{
     <!-- 页面级顶部插槽（如新闻页的搜索框） -->
     <slot name="top" />
 
-    <header
-      class="list-head mb-6 flex flex-wrap items-end justify-between gap-x-4 gap-y-3 border-b border-default pb-5"
-    >
-      <div class="min-w-0">
+    <!-- UPageHeader 默认标题是 h1、外框 py-8；这里用 as 把 title 降级为 div，
+         真正的 h1 由 PageTitle 供给（字号来源唯一），外框样式在 app.config 覆盖 -->
+    <UPageHeader :as="{ title: 'div' }" class="list-head">
+      <template #title>
         <PageTitle :title="title" />
-        <p v-if="summary" class="mt-1.5 text-[13px] text-dimmed">{{ summary }}</p>
-      </div>
-      <ChipsNav v-if="!hideChips" />
-    </header>
+      </template>
+      <template v-if="summary" #description>
+        <p>{{ summary }}</p>
+      </template>
+      <template v-if="!hideChips" #links>
+        <ChipsNav />
+      </template>
+    </UPageHeader>
 
     <CardGrid :posts="posts" />
 
@@ -48,7 +52,8 @@ defineProps<{
 
 <style scoped>
 @media (max-width: 768px) {
-  .list-head {
+  /* 窄屏标题与快捷入口上下堆叠：scoped 未分层，能压过 wrapper 上的 flex-row */
+  .list-head :deep([data-slot='wrapper']) {
     flex-direction: column;
     align-items: flex-start;
   }

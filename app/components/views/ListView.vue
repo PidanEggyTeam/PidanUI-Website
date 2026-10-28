@@ -17,6 +17,8 @@ defineProps<{
   summary?: string;
   /** 隐藏分类/标签/归档快捷入口（分类、标签详情页使用） */
   hideChips?: boolean;
+  /** 首条特稿（只有新闻列表第 1 页传，其余页面不传） */
+  feature?: Post;
 }>();
 </script>
 
@@ -38,6 +40,8 @@ defineProps<{
         <ChipsNav />
       </template>
     </UPageHeader>
+
+    <FeaturedPostCard v-if="feature" class="mb-3.5" :post="feature" />
 
     <CardGrid :posts="posts" />
 

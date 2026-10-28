@@ -2,7 +2,17 @@
 import { computed } from 'vue';
 import type { Post } from '#shared/types/post';
 
-const props = defineProps<{ post: Post }>();
+const props = withDefaults(
+  defineProps<{
+    post: Post;
+    /** 命中关键词（仅搜索结果传入），用于标题高亮 */
+    highlight?: string[];
+  }>(),
+  { highlight: () => [] },
+);
+
+/** 标题按命中词切成片段；未传关键词时是单段原文，零开销 */
+const titleParts = computed(() => splitHighlight(props.post.title, props.highlight));
 
 // 封面：外链原样输出，站内相对路径补 base
 const coverSrc = computed(() => {
@@ -39,7 +49,10 @@ const coverSrc = computed(() => {
 
     <div class="flex min-w-0 flex-1 flex-col justify-center gap-2 py-1 pr-1">
       <h3 class="line-clamp-2 text-[15px] leading-[1.5] font-semibold text-default">
-        {{ post.title }}
+        <template v-for="(part, index) in titleParts" :key="index">
+          <mark v-if="part.hit" class="post-mark">{{ part.text }}</mark>
+          <template v-else>{{ part.text }}</template>
+        </template>
       </h3>
       <div class="flex flex-wrap items-center gap-2 text-[12.5px] text-dimmed">
         <time class="inline-flex items-center gap-1">
@@ -64,6 +77,15 @@ const coverSrc = computed(() => {
 </template>
 
 <style scoped>
+/* 项目没引 Preflight：不显式写就是 UA 的亮黄底 + 黑字，深色下非常刺眼 */
+.post-mark {
+  color: inherit;
+  background: color-mix(in srgb, var(--brand) 35%, transparent);
+  border-radius: 3px;
+  padding: 0 1px;
+  box-decoration-break: clone;
+}
+
 /* 窄屏收紧缩略图（断点与 tokens.css 的 2xs=480 对齐，
    仍手写媒体查询，避免与 960px 主断点的约定冲突） */
 @media (max-width: 480px) {

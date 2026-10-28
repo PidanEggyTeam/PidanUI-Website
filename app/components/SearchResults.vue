@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, shallowRef } from 'vue';
+import { computed, onMounted, ref, shallowRef } from 'vue';
 import CardGrid from './CardGrid.vue';
+import PostCardSkeleton from './PostCardSkeleton.vue';
+import EmptyState from './EmptyState.vue';
 import { searchKeyword } from '~/composables/useSearch';
 import type { Post } from '#shared/types/post';
 
@@ -18,14 +20,21 @@ function loadCorpus(): Promise<Post[]> {
   return corpusRequest;
 }
 
+type CorpusStatus = 'idle' | 'loading' | 'ready' | 'error';
+
 const corpus = shallowRef<Post[]>([]);
+const status = ref<CorpusStatus>('idle');
 
 onMounted(async () => {
+  if (status.value === 'ready') return;
+  // 只在客户端置 loading：SSR / 无 JS 的静态 HTML 里不会出现骨架
+  status.value = 'loading';
   try {
-    // 只在真正打开搜索时才拉取（保持既有的「懒加载」行为，仅去重请求）
     corpus.value = await loadCorpus();
+    status.value = 'ready';
   } catch {
     corpus.value = [];
+    status.value = 'error';
   }
 });
 
@@ -41,11 +50,28 @@ const hits = computed(() => {
   });
 });
 
+/** 五态：空关键词 / 语料加载中 / 加载失败 / 无命中 / 有结果 */
+const state = computed(() => {
+  if (!tokens.value.length) return 'idle' as const;
+  if (status.value === 'loading') return 'loading' as const;
+  if (status.value === 'error') return 'error' as const;
+  return hits.value.length ? ('results' as const) : ('empty' as const);
+});
+
 const stats = computed(() => {
   const keyword = searchKeyword.value.trim();
-  if (!keyword) return '输入关键词开始搜索新闻。';
-  if (!hits.value.length) return `未找到与“${keyword}”相关的新闻。`;
-  return `找到 ${hits.value.length} 条与“${keyword}”相关的结果`;
+  switch (state.value) {
+    case 'idle':
+      return '输入关键词开始搜索新闻。';
+    case 'loading':
+      return '正在加载检索语料…';
+    case 'error':
+      return '检索语料加载失败，请刷新重试。';
+    case 'empty':
+      return `未找到与“${keyword}”相关的新闻。`;
+    default:
+      return `找到 ${hits.value.length} 条与“${keyword}”相关的结果`;
+  }
 });
 </script>
 
@@ -54,5 +80,15 @@ const stats = computed(() => {
     <UIcon name="i-lucide-search" class="size-4 shrink-0" aria-hidden="true" />
     {{ stats }}
   </p>
-  <CardGrid v-if="tokens.length" :posts="hits" empty-text="未找到相关新闻" />
+
+  <!-- 骨架：与 PostCard 同尺寸，弹窗高度不跳变 -->
+  <UPageGrid v-if="state === 'loading'" role="status">
+    <span class="sr-only">正在加载检索语料</span>
+    <PostCardSkeleton v-for="n in 3" :key="n" />
+  </UPageGrid>
+
+  <CardGrid v-else-if="state === 'results'" :posts="hits" :highlight="tokens" />
+
+  <EmptyState v-else-if="state === 'empty'" text="未找到相关新闻" />
+  <EmptyState v-else-if="state === 'error'" text="暂时无法搜索，请刷新重试" />
 </template>

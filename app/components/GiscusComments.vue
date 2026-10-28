@@ -145,9 +145,9 @@ onBeforeUnmount(() => {
   <div class="giscus-host">
     <!-- 加载占位：骨架条降低「页面底部空白」的观感（USkeleton 自带扫光动画） -->
     <div v-if="loading" class="flex flex-col gap-3 py-1.5" aria-hidden="true">
-      <USkeleton class="h-3.5 w-[30%]" />
-      <USkeleton class="h-3.5 w-full" />
-      <USkeleton class="h-3.5 w-[70%]" />
+      <USkeleton class="h-3.5 w-[30%]" :ui="{ base: 'bg-line' }" />
+      <USkeleton class="h-3.5 w-full" :ui="{ base: 'bg-line' }" />
+      <USkeleton class="h-3.5 w-[70%]" :ui="{ base: 'bg-line' }" />
     </div>
     <div ref="container" class="post-comments" />
   </div>

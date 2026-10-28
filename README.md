@@ -19,7 +19,7 @@ PidanUI 项目的官方网站，使用 Nuxt 4 + @nuxt/content + TypeScript + Tai
 
 - **首页**：项目介绍、特性展示、下载入口。
 - **下载**：`/download`，一个版本列表，提供 PidanUI 多个版本的下载链接。
-- **新闻**：`/posts/`，由 @nuxt/content 驱动的内容区，支持分类 / 标签 / 归档分页、站内搜索与 Giscus 评论。
+- **新闻**：`/posts/`，由 @nuxt/content 驱动的内容区。列表首条为特稿大卡、其余为卡片网格，支持分类 / 标签 / 归档（按年分页、按月折叠）、站内搜索（结果关键词高亮）与 Giscus 评论。
 - **关于**：`/about`，展示 PidanUI 项目的简介及项目背后的故事。
 - **蛋仔专属性格测试**：`/personality-test`，蛋仔专属性格测试小游戏，关于页的小彩蛋。
 
@@ -28,7 +28,7 @@ PidanUI 项目的官方网站，使用 Nuxt 4 + @nuxt/content + TypeScript + Tai
 - [Nuxt 4](https://nuxt.com/)（Nitro 预渲染 + SSG）
 - [@nuxt/content v3](https://content.nuxt.com/)（Markdown 内容库，MDC + Shiki 双主题）
 - [TypeScript](https://www.typescriptlang.org/)
-- [Nuxt UI v4](https://ui.nuxt.com/)（组件层：按钮 / 卡片 / 徽章 / 弹窗 / 手风琴，主题色映射到站点品牌色板）
+- [Nuxt UI v4](https://ui.nuxt.com/)（组件层：`UButton` / `UPageHeader` / `UPageGrid` / `UPageCard` / `UModal` / `UCollapsible` / `USkeleton` 等，主题色映射到站点品牌色板）
 - [Tailwind CSS v4](https://tailwindcss.com/)（`@theme` 设计令牌 + 工具类；保留项目自建 reset，**不引 Preflight**）
 - [KaTeX](https://katex.org/)（数学公式）
 
@@ -61,7 +61,7 @@ PidanUI 项目的官方网站，使用 Nuxt 4 + @nuxt/content + TypeScript + Tai
 - 页面切换与 `.site-main` 前 8 个直接子块的编排式入场 —— `app/assets/styles/animation.css`（纯 CSS，遵循 `prefers-reduced-motion`）；
 - 长文阅读进度条 —— `app/components/ReadingProgress.vue`（z-index 1000，压在 `.page-progress` 路由加载条下一层）；
 - 返回顶部浮钮 —— `app/components/BackToTop.vue`（z-index 85，抽屉遮罩展开时会被盖住）；
-- `/` 打开搜索 —— `app/plugins/shortcuts.client.ts`（输入框内与输入法组合中不劫持）。
+- `Ctrl / ⌘ + K` 打开搜索 —— `app/plugins/shortcuts.client.ts`（输入法组合中不劫持；不再占用 `/`）。
 
 ## 关于 PidanUI
 

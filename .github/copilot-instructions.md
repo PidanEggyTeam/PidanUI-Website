@@ -11,7 +11,7 @@
 - 悬浮反馈以颜色、阴影、发光为主，保持克制：卡片封面可轻微 `scale`（如 `1.04`），不要新增大位移、旋转等夸张效果。
 
 ### 一致性
-- 新闻、分类、标签列表页**必须复用同一套卡片机制**（`PostCard` + `CardGrid` + `Pagination` + `usePagedPosts`），只有归档页例外（按年分页 + 按月折叠分组）。
+- 新闻、分类、标签列表页**必须复用同一套卡片机制**（`PostCard` + `CardGrid` + `Pagination` + `usePagedPosts`）。两处例外：归档页（按年分页 + 按月折叠分组）、新闻列表第 1 页（额外渲染一张 `FeaturedPostCard` 特稿，其余仍走同一套卡片）。
 - 左右移动端抽屉必须行为一致（同一份全局状态与手势实现，见 `useMobileDrawer.ts`），不要单独为某一侧写特例逻辑。
 
 ## 项目概况
@@ -112,7 +112,7 @@ content.config.ts / nuxt.config.ts    # 内容集合定义 / 站点配置
 - `vite.build.cssTarget` 已对齐 Tailwind v4 的支持矩阵（chrome111 / safari16.4 / firefox128）：v4 产物本身要求这个下限（`@property`、`color-mix()`、级联层），下调前必须先确认旧内核可用。
 - 主题由 `<html data-theme="auto|light|dark">` + CSS 变量驱动（见 `base.css` / `useTheme.ts`）。`localStorage` key 为 `pidanui-theme`，改 key 必须同步 `nuxt.config.ts` head 里的首帧内联脚本。
 - `body { overflow: hidden }`，**全站唯一纵向滚动容器是 `.site-main`**。路由滚动由 `app/router.options.ts` 接管（返回 `false` + 手动滚 `.site-main`）；页内锚点由 `usePostEnhance` 接管。
-- 折叠/展开动画统一手感：缓动用 `cubic-bezier(0.25, 0.46, 0.45, 0.94)`，头部是 `<button aria-expanded>`、内容区靠 `.active` 切换。高度未知 / 会变的（归档按月分组、下载页手风琴）统一用 `grid-template-rows: 1fr ↔ 0fr`，**不要再用 `max-height` 硬编码上限**。
+- 折叠/展开：归档月份用 `UCollapsible`（`aria-expanded` / `data-state` 由 reka 注入，动画来自 `collapsible-down/up` + `--ease-out`，因此 `base.css` 必须保留 `--ease-out` 别名）；下载页仍是手写 `grid-template-rows: 1fr ↔ 0fr`。两者都**不要**改成 `max-height` 硬编码。
 - 注释风格与现有文件一致：中文、`// ====` 分节横幅，只解释“为什么”，不复述代码。
 
 ## Markdown 渲染（@nuxt/content）
@@ -148,7 +148,7 @@ content.config.ts / nuxt.config.ts    # 内容集合定义 / 站点配置
 
 - 图标一律 `aria-hidden="true"` 并提供文字或 `aria-label`；可切换按钮补 `aria-expanded` / `aria-controls` / `aria-current`。
 - 主内容使用 `<main id="content" role="main">`；`<html class="js">` 仅在 JS 可用时由 head 内联脚本添加，`html:not(.js)` 的降级样式必须保持可用。
-- 搜索对话框用原生 `<dialog>` + `showModal()`，退出动画靠 `@starting-style` / `allow-discrete`；JS 只负责善后（清空关键词、还焦点）。
+- 搜索对话框用 `UModal`（焦点陷阱 / ESC / 遮罩 / 滚动锁由组件负责），JS 只负责善后（清空关键词、把焦点还给触发元素）；快捷键是 `Ctrl / ⌘ + K`，不再使用 `/`。
 - 不要在模板里用 `<noscript>` 做降级（会造成 hydration mismatch），统一走 `html:not(.js)` + CSS。
 
 ## 配置与类型（易踩坑）

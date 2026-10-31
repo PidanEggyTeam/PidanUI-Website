@@ -82,7 +82,7 @@ const socialLinks = SOCIAL_LINKS.map((link) => {
     </template>
 
     <template #left>
-      <p class="text-sm text-dimmed">© {{ year }} {{ SITE.brand }} · 非盈利粉丝项目 · AGPL v3</p>
+      <p class="text-sm text-dimmed">© {{ year }} {{ SITE.brand }} · 本项目为《蛋仔派对》同人创作，非《蛋仔派对》官方出品。</p>
     </template>
   </UFooter>
 </template>

@@ -30,12 +30,24 @@ const offLoadingEnd = nuxtApp.hook('page:loading:end', () => markPageLoaded());
 // 新页面已挂载：让进度条等字体 / 图片就绪后收尾
 const offPageFinish = nuxtApp.hook('page:finish', () => {
   completeRendering();
+  // 新页 DOM 已就绪：重新给区块打标，让视口外的块滚动时才淡入。
+  // 用异步补刷而不是立即执行 —— 从页面中部跳转时，新页的滚动回顶发生在
+  // 这一帧之后；立刻量尺寸会把所有块误判成「已在视口上方」而跳过动画。
+  scheduleScrollRevealRefresh();
   // 带 hash 的跨页导航：此时新页 DOM 已就绪，交给 usePostEnhance 精确对齐
   const hash = route.hash;
   if (hash) {
     document.dispatchEvent(new CustomEvent('pidan:anchor', { detail: hash }));
   }
 });
+
+// 页面过渡结束后再补一次：out-in 期间量到的位置带着过渡位移，不可靠
+const offTransitionFinish = nuxtApp.hook('page:transition:finish', () => {
+  scheduleScrollRevealRefresh();
+});
+
+// 全站区块的滚动入场（首屏交错 + 视口外按需淡入）
+useScrollReveal();
 
 onMounted(() => {
   completeRendering();
@@ -45,6 +57,7 @@ onBeforeUnmount(() => {
   offLoadingStart();
   offLoadingEnd();
   offPageFinish();
+  offTransitionFinish();
 });
 </script>
 

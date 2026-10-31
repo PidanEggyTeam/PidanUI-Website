@@ -15,6 +15,24 @@ const team = TEAM_MEMBERS.map((member) => ({
   ...member,
   avatar: withBase(member.avatar),
 }));
+
+/** 首页各区块共用的纵向节奏：默认主题是 py-16/24/32 + body/footer mt-16，
+    几个区块叠起来会把页面拉得很长；这里压到一半左右 */
+const SECTION_UI = {
+  container: 'py-10 sm:py-12 lg:py-14 gap-6 sm:gap-8',
+  body: 'mt-8',
+  footer: 'mt-8',
+} as const;
+
+// ============================================================
+// 开发人员：成员够多时用 Nuxt UI 的 UMarquee 做从右到左的循环滚动
+// ------------------------------------------------------------
+// 少于 6 人时保持静止的横向列表（可手动滑）：那几张卡片本来就放得下，
+// 跑马灯只会让人读不完名字。滚动方向、悬停暂停、减少动效时停止，
+// 全部交给 UMarquee（它用的是 motion-safe 的 CSS 关键帧）。
+// ============================================================
+const MARQUEE_MIN = 6;
+const marqueeActive = computed(() => team.length >= MARQUEE_MIN);
 </script>
 
 <template>
@@ -81,7 +99,7 @@ const team = TEAM_MEMBERS.map((member) => ({
     <UPageSection
       title="项目特性"
       description="从系统镜像到辅助组件，每一层都为「像原版 Windows 一样稳定」让路。"
-      :ui="{ container: 'pt-0 gap-8' }"
+      :ui="{ ...SECTION_UI, container: 'pt-0 pb-10 sm:pb-12 lg:pb-14 gap-6 sm:gap-8' }"
     >
       <UPageGrid style="--grid-min: 250px">
         <UPageCard
@@ -100,7 +118,7 @@ const team = TEAM_MEMBERS.map((member) => ({
     <UPageSection
       title="最新动态"
       description="版本发布、项目公告与前瞻报道。"
-      :ui="{ container: 'gap-8' }"
+      :ui="SECTION_UI"
     >
       <!-- 与新闻 / 下载列表共用同一套卡片网格（CardGrid → UPageGrid 的 auto-fill
            密度规则），列数与卡片内边距才对得上 -->
@@ -120,31 +138,40 @@ const team = TEAM_MEMBERS.map((member) => ({
       </template>
     </UPageSection>
 
-    <!-- 开发人员：圆形头像 -->
+    <!-- 开发人员：成员卡片横向排列，头像放在卡片顶部 -->
     <UPageSection
       title="开发人员"
       description="一个小团队，维护着一整套系统镜像与辅助组件。"
-      :ui="{ container: 'gap-8' }"
+      :ui="SECTION_UI"
     >
-      <UPageGrid style="--grid-min: 180px">
-        <UUser
-          v-for="member in team"
-          :key="member.name"
-          orientation="vertical"
-          size="3xl"
-          :avatar="{ src: member.avatar, alt: member.name }"
-          :name="member.name"
-          :description="member.role"
-          :ui="{ root: 'items-center text-center gap-3' }"
-        />
-      </UPageGrid>
+      <!-- 人数够多 → UMarquee 循环滚动（pause-on-hover 悬停暂停） -->
+      <UMarquee
+        v-if="marqueeActive"
+        :repeat="2"
+        pause-on-hover
+        :overlay="false"
+        class="team-marquee"
+      >
+        <TeamMemberCard v-for="member in team" :key="member.name" :member="member" />
+      </UMarquee>
+
+      <!-- 人数不足 → 静止的横向列表；可聚焦，键盘用户才能滚动它 -->
+      <div
+        v-else
+        class="team-scroller"
+        role="region"
+        tabindex="0"
+        aria-label="开发人员列表，可横向滚动"
+      >
+        <TeamMemberCard v-for="member in team" :key="member.name" :member="member" />
+      </div>
     </UPageSection>
 
     <!-- 加入我们 -->
     <UPageSection
       title="加入我们"
       description="无论是反馈问题、投稿内容，还是直接参与开发，都欢迎。"
-      :ui="{ container: 'gap-8' }"
+      :ui="SECTION_UI"
     >
       <div class="grid gap-6 md:grid-cols-2">
         <UPageCard
@@ -189,5 +216,39 @@ const team = TEAM_MEMBERS.map((member) => ({
 
 .hero-title em {
   font-style: normal;
+}
+
+/* 开发人员横向列表（成员不足 UMarquee 阈值时的静止形态）：
+   - overflow-x: auto 保留键盘 / 触控板 / 触摸的滚动能力
+   - scroll-snap 让每次滑动停在卡片边界 */
+.team-scroller {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 2px;
+  padding: 2px 2px 12px;
+}
+
+/* 键盘聚焦时给一条可见的焦点环（容器本身没有可见边框） */
+.team-scroller:focus-visible {
+  outline: 2px solid var(--color-brand-deep-a35);
+  outline-offset: 4px;
+  border-radius: var(--radius-m);
+}
+
+/* UMarquee 默认 gap 是 spacing(16) = 64px、一圈 20s；
+   这里与卡片间距对齐为 16px，并放慢到 48s（12 张卡≈2.8k px，太快看不清名字） */
+.team-marquee {
+  --gap: 16px;
+  --duration: 48s;
+}
+
+/* 键盘聚焦时给一条可见的焦点环（容器本身不可见边框） */
+.team-scroller:focus-visible {
+  outline: 2px solid var(--color-brand-deep-a35);
+  outline-offset: 4px;
+  border-radius: var(--radius-m);
 }
 </style>

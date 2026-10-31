@@ -2,10 +2,10 @@
    全站动效
      1. 页面切换：旧页向下淡出后，新页向上淡入
         （Layout 使用 Vue Transition 的 out-in 模式顺序执行）
-     2. 内容入场：页面容器内的区块编排式上浮（纯 CSS，无 JS）
-   全部遵循系统「减少动态效果」偏好。
-   滚动淡入（原 useScrollReveal 的 .reveal）已移除：那套逻辑需要监听
-   滚动容器，而滚动现在归浏览器，收益不足以抵掉一份额外的滚动监听。
+     2. 内容入场：区块进入视口时淡入上浮
+        （useScrollReveal 打 data-reveal 标记，同屏块交错 55ms）
+   全部遵循系统「减少动态效果」偏好：减少动效时一个标记都不打，
+   元素保持默认可见。
    ============================================================ */
 
 /* ---- 页面切换 ---- */
@@ -36,59 +36,39 @@
   transform: translate3d(0, 16px, 0) scale(0.99);
 }
 
-/* ---- 内容入场 ----
+/* ---- 内容入场（滚动 reveal） ----
    层级：.page-shell（UContainer）> 视图根节点 > 区块。
-   逐个错开 65ms 上浮，避免整页「一次性弹出」；JS 不参与，
-   禁用 JS 时动画照常播放，不影响可读性。 */
-@keyframes rise-in {
+   由 useScrollReveal 打标：视口外的块先 data-reveal="hidden"，
+   进入视口后改成 "shown" 触发动画；同屏块靠 --reveal-delay 错开。
+
+   只在 html.js 下生效：禁用 JS 时一个标记都不会出现，内容照常可读。
+   用 animation + backwards 而不是 transition：动画结束后不保留
+   transform，区块不会永久成为 fixed 后代的包含块。
+
+   参数取「明显但不突兀」：位移 28px（比底色差一档的 16px 更能看出在动）、
+   时长 700ms、缓出曲线前段快后段慢，收尾几乎停住，观感柔和。
+   轻微的 scale(0.98) 让块像从纸面上浮起来，而不是单纯平移。 */
+@keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(28px) scale(0.98);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
+html.js [data-reveal='hidden'] {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .page-shell > * > :nth-child(-n + 8) {
-    /* backwards 而不是 both：动画结束后不保留 transform，
-       否则区块会永久成为 fixed 后代的包含块 */
-    animation: rise-in 600ms var(--ease-out-soft) backwards;
-  }
-
-  .page-shell > * > :nth-child(1) {
-    animation-delay: 30ms;
-  }
-
-  .page-shell > * > :nth-child(2) {
-    animation-delay: 95ms;
-  }
-
-  .page-shell > * > :nth-child(3) {
-    animation-delay: 160ms;
-  }
-
-  .page-shell > * > :nth-child(4) {
-    animation-delay: 225ms;
-  }
-
-  .page-shell > * > :nth-child(5) {
-    animation-delay: 290ms;
-  }
-
-  .page-shell > * > :nth-child(6) {
-    animation-delay: 355ms;
-  }
-
-  .page-shell > * > :nth-child(7) {
-    animation-delay: 420ms;
-  }
-
-  .page-shell > * > :nth-child(8) {
-    animation-delay: 485ms;
+  html.js [data-reveal='shown'] {
+    animation: reveal-up 700ms var(--ease-out-soft) backwards;
+    animation-delay: var(--reveal-delay, 0ms);
   }
 }
 
@@ -97,5 +77,13 @@
   .page-enter-active,
   .page-leave-active {
     transition-duration: 0s;
+  }
+
+  /* 运行中把系统偏好切成「减少动效」时，上面的标记已经打下去了：
+     这里用同样特异性（html.js）在文件末尾覆盖回可见，
+     否则 html.js 那条 opacity:0 会赢。 */
+  html.js [data-reveal='hidden'] {
+    opacity: 1;
+    transform: none;
   }
 }

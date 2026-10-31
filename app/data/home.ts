@@ -24,6 +24,11 @@ export const HOME_FEATURES: HomeFeature[] = [
     description: '剔除 App-V 等企业级冗余组件，保留 Hyper-V 与 Edge 以便日用，安装完即可上手。',
   },
   {
+    icon: 'i-lucide-star',
+    title: '继承 EggyUI 的美化风格',
+    description: '一切都是你熟悉的样子——PidanUI 不仅继承了 EggyUI 的蛋仔风的美化风格，还力求在美学上有所创新。',
+  },
+  {
     icon: 'i-lucide-shield-check',
     title: '持续维护',
     description: '版本清单与公告由官网统一维护，更新内容、校验信息与下载渠道都在一处。',
@@ -53,7 +58,7 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     title: '加入开发组',
     description: '前端、WPF 组件、系统封装都在招人，提 issue 或直接开 PR 都欢迎。',
     links: [
-      { label: 'GitHub 组织', to: 'https://github.com/PidanEggyTeam', icon: 'i-simple-icons-github', trailingIcon: 'i-lucide-arrow-up-right' },
+      { label: 'GitHub', to: 'https://github.com/PidanEggyTeam', icon: 'i-simple-icons-github', trailingIcon: 'i-lucide-arrow-up-right' },
       { label: '官网仓库', to: 'https://github.com/PidanEggyTeam/PidanUI-Website', icon: 'i-lucide-folder-git-2', trailingIcon: 'i-lucide-arrow-up-right' },
     ],
   },

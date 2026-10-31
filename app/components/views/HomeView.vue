@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed } from 'vue';
 import { COMMUNITY_GROUPS, HOME_FEATURES, PROMO_IMAGE } from '~/data/home';
 import { TEAM_MEMBERS } from '~/data/team';
@@ -46,7 +46,7 @@ const marqueeActive = computed(() => team.length >= MARQUEE_MIN);
       :ui="{ container: 'py-8 sm:py-12 lg:py-16 gap-10 lg:gap-14' }"
     >
       <template #headline>
-        <UBadge variant="soft" color="primary" size="md" label="非盈利 · 粉丝二创" />
+        <UBadge variant="soft" color="primary" size="md" label="蛋仔风桌面美化包" />
       </template>
 
       <template #title>
@@ -88,7 +88,7 @@ const marqueeActive = computed(() => team.length >= MARQUEE_MIN);
     <!-- 重要说明 -->
     <UAlert
       class="mb-12"
-      color="warning"
+      color="primary"
       variant="soft"
       icon="i-lucide-triangle-alert"
       title="温馨提示"
@@ -98,7 +98,7 @@ const marqueeActive = computed(() => team.length >= MARQUEE_MIN);
     <!-- 项目特性 -->
     <UPageSection
       title="项目特性"
-      description="从系统镜像到辅助组件，每一层都为「像原版 Windows 一样稳定」让路。"
+      description="PidanUI 是 EggyUI 的继承者，而它又在 EggyUI 的基础上有所创新。"
       :ui="{ ...SECTION_UI, container: 'pt-0 pb-10 sm:pb-12 lg:pb-14 gap-6 sm:gap-8' }"
     >
       <UPageGrid style="--grid-min: 250px">
@@ -141,7 +141,7 @@ const marqueeActive = computed(() => team.length >= MARQUEE_MIN);
     <!-- 开发人员：成员卡片横向排列，头像放在卡片顶部 -->
     <UPageSection
       title="开发人员"
-      description="一个小团队，维护着一整套系统镜像与辅助组件。"
+      description="PidanUI 的团队成员大多来自原 EggyUI 团队，所以——PidanUI 还会是你熟悉的样子。"
       :ui="SECTION_UI"
     >
       <!-- 人数够多 → UMarquee 循环滚动（pause-on-hover 悬停暂停） -->

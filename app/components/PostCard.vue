@@ -54,7 +54,7 @@ const CARD_UI = {
         size="sm"
         label="置顶"
       />
-      <img :src="coverSrc" :alt="post.title" loading="lazy" decoding="async" />
+      <SafeImage :src="coverSrc" :alt="post.title" loading="lazy" decoding="async" />
     </template>
 
     <!-- 三行：标题 → 分类 · 日期 → 摘要。

@@ -132,7 +132,7 @@
     --bg: #17171a;
     --card: #1f1f23;
     --line: #2a2f36;
-      --code-bg: #141519;
+    --code-bg: #141519;
     --code-hd: #1b1c22;
     --inline-code-bg: rgba(255, 197, 61, 0.14);
     --inline-code-ink: #ffc53d;
@@ -189,10 +189,18 @@
   }
 
   html {
-    scroll-behavior: smooth;
     /* 顶栏 sticky 常驻：锚点跳转 / 标题 scroll-margin 都按这个偏移让位，
        否则目标会藏到顶栏下面 */
     scroll-padding-top: calc(var(--shell-header-h) + 16px);
+  }
+
+  /* 平滑滚动只在系统未要求「减少动态效果」时启用：JS 侧的锚点跳转
+     （usePostEnhance）与返回顶部都已尊重该偏好，CSS 这条必须跟上，
+     否则系统偏好开着也照样做长距离平滑滚动 */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {

@@ -55,7 +55,7 @@ const team = TEAM_MEMBERS.map((member) => ({
       </template>
 
       <div class="overflow-hidden rounded-2xl shadow-float ring-1 ring-default">
-        <img
+        <SafeImage
           class="aspect-video w-full object-cover"
           :src="PROMO_IMAGE"
           alt="PidanUI 宣传图"

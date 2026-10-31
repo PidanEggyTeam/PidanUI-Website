@@ -53,7 +53,7 @@ const versions = downloadMeta.versions?.length ? downloadMeta.versions : null;
         class="flex flex-col overflow-hidden rounded-xl border border-ink-300/60 transition-[border-color,box-shadow] duration-200 hover:border-brand-600/40 hover:shadow-card dark:border-default"
       >
         <div class="aspect-[16/9] w-full overflow-hidden bg-muted">
-          <img
+          <SafeImage
             class="h-full w-full object-cover"
             :src="v.image || PROMO_IMAGE"
             :alt="`${v.type || '版本'} 宣传图`"

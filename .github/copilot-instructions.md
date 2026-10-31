@@ -14,7 +14,9 @@
 
 ### 一致性
 
-- 新闻、分类、标签列表页**必须复用同一套卡片机制**（`PostCard` + `CardGrid` + `Pagination` + `usePagedPosts`）。两处例外：归档页（按年分页 + 按月折叠分组）、新闻列表第 1 页（额外渲染一张 `FeaturedPostCard` 特稿，其余仍走同一套卡片）。
+- 新闻、分类、标签列表页、站内搜索结果与首页「最新动态」**必须复用同一套卡片机制**（`PostCard` + `CardGrid` + `Pagination` + `usePagedPosts`）。唯一例外是归档页（按年分页 + 按月折叠分组）。**不再有特稿大卡**：`FeaturedPostCard` 已删除，新闻列表第 1 页也只是普通卡片网格。
+- 卡片列数由 `app.config.ts` 的 `ui.pageGrid` 统一接管（`auto-fill` + `--grid-min: clamp(280px, 28vw, 360px)`）：1024 起稳定三列，768 两列，窄屏单列。**不要在调用点另写 `--grid-min`**，否则各页列宽会重新走偏。
+- 单篇文章页（`.post-view`）**不套卡片外壳**：只有 `max-width: 56rem` 与居中，底色/描边/圆角/阴影都属于列表卡片，不要再加回文章页。
 - 卡片外观只有一种语言：封面通栏 + 三行信息（标题 / 分类 · 日期 / 摘要），描边分层（`border-ink-300/60`，深色 `dark:border-default`）+ hover 阴影。**不要再给卡片加 `bg-default` 底色**——页面底 `#fafbfc` 与卡片白只差约 1% 亮度，靠底色分层等于没有边界。
 - 导航项与分区判定只有一处数据源：`app/data/nav.ts` + `app/composables/useNav.ts`（顶栏、移动面板、底栏共用）。
 

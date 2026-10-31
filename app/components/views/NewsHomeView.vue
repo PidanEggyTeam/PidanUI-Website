@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import ListView from './ListView.vue';
 import SearchLauncher from '../SearchLauncher.vue';
 import { pinnedFirst, useAllPosts, usePagedPosts } from '~/composables/usePosts';

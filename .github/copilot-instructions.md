@@ -139,6 +139,7 @@ content.config.ts / nuxt.config.ts    # 内容集合定义 / 站点配置
 - `[TOC]` 不是构建期占位：`fillToc()` 在客户端把文本为 `[TOC]` 的段落替换成 `.post-toc` 容器再填充。
 - 数学公式走 `remark-math` + `rehype-katex`（构建期出 HTML + MathML），样式见 `prose.css` 的 `.katex*` 段。
 - 文章正文不允许内联裸 HTML（MDC 会丢弃）；需要结构化块时用 Vue 组件或 MDC 语法。
+- 正文里的站外链接由构建期 rehype 插件 `build/rehype-external-links.ts` 补 `target="_blank" rel="noopener noreferrer"`（只认 `http(s)`，站内相对路径与锚点保持原样）。新增 Markdown 处理插件时插进 `nuxt.config.ts` 的 `content.build.markdown.rehypePlugins`，本地插件用 `{ instance }` 传入。
 
 ## 字体与图标
 

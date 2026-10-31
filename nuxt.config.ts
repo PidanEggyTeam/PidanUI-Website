@@ -1,5 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
 import { buildRoutes } from './build/post-index';
+import { rehypeExternalLinksBlank } from './build/rehype-external-links';
 
 // ============================================================
 // PidanUI 官网 · Nuxt 站点配置
@@ -227,7 +228,11 @@ export default defineNuxtConfig({
           ],
         },
         remarkPlugins: { 'remark-math': {} },
-        rehypePlugins: { 'rehype-katex': { output: 'htmlAndMathml' } },
+        rehypePlugins: {
+          'rehype-katex': { output: 'htmlAndMathml' },
+          // 站外链接一律新开标签页，站内相对路径/锚点保持原样
+          'rehype-external-links-blank': { instance: rehypeExternalLinksBlank },
+        },
       },
     },
     renderer: {

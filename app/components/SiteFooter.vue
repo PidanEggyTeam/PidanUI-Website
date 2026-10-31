@@ -84,9 +84,5 @@ const socialLinks = SOCIAL_LINKS.map((link) => {
     <template #left>
       <p class="text-sm text-dimmed">© {{ year }} {{ SITE.brand }} · 非盈利粉丝项目 · AGPL v3</p>
     </template>
-
-    <template #right>
-      <p class="text-sm text-dimmed">Nuxt 4 · Nuxt UI 4 · Tailwind CSS 4</p>
-    </template>
   </UFooter>
 </template>

@@ -50,14 +50,17 @@ const marqueeActive = computed(() => team.length >= MARQUEE_MIN);
       </template>
 
       <template #title>
-        <span class="hero-title text-[clamp(34px,5.4vw,54px)] leading-[1.15] font-extrabold tracking-[1px]">
+        <span
+          class="hero-title text-[clamp(34px,5.4vw,54px)] leading-[1.15] font-extrabold tracking-[1px]"
+        >
           Pidan<em>UI</em>
         </span>
       </template>
 
       <template #description>
         <p class="max-w-[560px] text-[15.5px] leading-[1.8] text-toned">
-          一个由蛋仔爱好者发起的 Windows &amp; Linux 桌面美化项目，专注于实现《蛋仔派对》风格的桌面视觉体验。
+          一个由蛋仔爱好者发起的 Windows &amp; Linux
+          桌面美化项目，专注于实现《蛋仔派对》风格的桌面视觉体验。
         </p>
       </template>
 
@@ -115,11 +118,7 @@ const marqueeActive = computed(() => team.length >= MARQUEE_MIN);
     </UPageSection>
 
     <!-- 最新动态：从右栏搬到主页 -->
-    <UPageSection
-      title="最新动态"
-      description="版本发布、项目公告与前瞻报道。"
-      :ui="SECTION_UI"
-    >
+    <UPageSection title="最新动态" description="版本发布、项目公告与前瞻报道。" :ui="SECTION_UI">
       <!-- 与新闻 / 下载列表共用同一套卡片网格（CardGrid → UPageGrid 的 auto-fill
            密度规则），列数与卡片内边距才对得上 -->
       <CardGrid :posts="latest" empty-text="暂无动态" />

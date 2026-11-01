@@ -7,5 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <h1 class="text-[clamp(24px,3.6vw,32px)] font-bold tracking-[-0.01em] text-default">{{ title }}</h1>
+  <h1 class="text-[clamp(24px,3.6vw,32px)] font-bold tracking-[-0.01em] text-default">
+    {{ title }}
+  </h1>
 </template>

@@ -22,7 +22,10 @@ if (!name.value || !exists.value) {
   throw createError({ statusCode: 404, message: '标签不存在', fatal: true });
 }
 
-usePageSeo(computed(() => `标签：${name.value}`), '按标签浏览 PidanUI 新闻与公告。');
+usePageSeo(
+  computed(() => `标签：${name.value}`),
+  '按标签浏览 PidanUI 新闻与公告。',
+);
 </script>
 
 <template>

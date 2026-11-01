@@ -20,10 +20,12 @@
      只提供字形，字体族名与回退顺序在这里定义，改动前先确认 CDN 版本. */
   /* HarmonyOS Sans SC 排在最前（400/500/700 三个字重，CDN 按 unicode-range 分片，
      见 nuxt.config.ts 的 app.head）；未命中字形时依次回退 苹方 → 雅黑 */
-  --font-ui: 'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui,
-    -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-code: 'Cascadia Code', 'Consolas', 'Menlo', 'HarmonyOS Sans SC', 'Microsoft YaHei UI',
-    'PingFang SC', monospace;
+  --font-ui:
+    'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, 'Segoe UI',
+    Roboto, sans-serif;
+  --font-code:
+    'Cascadia Code', 'Consolas', 'Menlo', 'HarmonyOS Sans SC', 'Microsoft YaHei UI', 'PingFang SC',
+    monospace;
 
   /* 与全站字体保持一致，供 VitePress 内置组件（代码块、搜索等）复用 */
   --vp-font-family-base: var(--font-ui);
@@ -236,8 +238,9 @@
   a,
   button,
   [role='button'] {
-    transition-property: color, background-color, border-color, text-decoration-color, fill,
-      stroke, opacity, box-shadow;
+    transition-property:
+      color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
+      box-shadow;
     transition-duration: 220ms;
     transition-timing-function: var(--ease-out-soft);
   }

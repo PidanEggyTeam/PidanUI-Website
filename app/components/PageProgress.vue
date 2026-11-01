@@ -34,7 +34,9 @@ defineProps<{
   border-radius: 0 2px 2px 0;
   background: linear-gradient(90deg, var(--brand), var(--brand-deep), #ff7a00);
   box-shadow: 0 0 12px rgba(255, 159, 26, 0.35);
-  transition: width 0.25s ease, opacity 0.4s ease;
+  transition:
+    width 0.25s ease,
+    opacity 0.4s ease;
 }
 
 .page-progress.active {

@@ -12,7 +12,10 @@ export default defineEventHandler(async (event) => {
   return docs
     .map((doc) => ({
       ...toBasePost(doc as never),
-      content: mdcToText(doc.body as never).replace(/\s+/g, ' ').trim().slice(0, CONTENT_LIMIT),
+      content: mdcToText(doc.body as never)
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, CONTENT_LIMIT),
     }))
     .sort(byDateDesc);
 });

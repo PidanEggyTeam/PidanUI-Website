@@ -12,7 +12,6 @@ const { pagePosts, page, totalPages } = usePagedPosts(
   () => props.page,
   () => pinnedFirst(allPosts.value),
 );
-
 </script>
 
 <template>

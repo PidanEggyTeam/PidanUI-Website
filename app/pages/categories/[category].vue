@@ -17,15 +17,16 @@ function decodeParam(value: unknown): string {
 const route = useRoute();
 const name = computed(() => decodeParam(route.params.category));
 
-const exists = computed(() =>
-  allPosts.value.some((post) => post.categories.includes(name.value)),
-);
+const exists = computed(() => allPosts.value.some((post) => post.categories.includes(name.value)));
 
 if (!name.value || !exists.value) {
   throw createError({ statusCode: 404, message: '分类不存在', fatal: true });
 }
 
-usePageSeo(computed(() => `分类：${name.value}`), '按分类浏览 PidanUI 新闻与公告。');
+usePageSeo(
+  computed(() => `分类：${name.value}`),
+  '按分类浏览 PidanUI 新闻与公告。',
+);
 </script>
 
 <template>

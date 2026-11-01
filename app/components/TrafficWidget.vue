@@ -137,7 +137,10 @@ function mountWidget(): void {
   status.value = 'loading';
 
   // 宽度随底栏列宽：load 时量一次，之后靠脚本自带的 max-width:100% 自适应
-  const width = Math.max(240, Math.round(el.clientWidth || el.getBoundingClientRect().width || 320));
+  const width = Math.max(
+    240,
+    Math.round(el.clientWidth || el.getBoundingClientRect().width || 320),
+  );
 
   const params = new URLSearchParams({
     site_id: SITE_ID,
@@ -242,7 +245,9 @@ onBeforeUnmount(() => {
 
 <template>
   <section aria-label="访问来源国家与地区">
-    <h2 class="mb-3 flex items-center gap-1.5 text-[13px] font-bold tracking-[0.5px] text-dimmed uppercase">
+    <h2
+      class="mb-3 flex items-center gap-1.5 text-[13px] font-bold tracking-[0.5px] text-dimmed uppercase"
+    >
       <UIcon name="i-lucide-globe" class="size-3.5" aria-hidden="true" />
       访客国家 / 地区
     </h2>

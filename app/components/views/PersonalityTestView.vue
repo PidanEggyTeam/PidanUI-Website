@@ -43,8 +43,7 @@ function choose(option: TestOption): void {
   pickedKey.value = option.key;
 
   const reduced =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (reduced) {
     pickedKey.value = null;
@@ -126,7 +125,11 @@ onBeforeUnmount(() => {
       </UCard>
 
       <!-- 答题页 -->
-      <UCard v-else-if="stage === 'question' && currentQuestion" key="question" :ui="{ body: 'p-7' }">
+      <UCard
+        v-else-if="stage === 'question' && currentQuestion"
+        key="question"
+        :ui="{ body: 'p-7' }"
+      >
         <div class="flex items-center gap-3">
           <div
             class="progress flex-1"
@@ -161,7 +164,9 @@ onBeforeUnmount(() => {
                 type="button"
                 @click="choose(option)"
               >
-                <span class="option-key flex size-6.5 shrink-0 items-center justify-center rounded-full text-[14px] font-bold text-white">
+                <span
+                  class="option-key flex size-6.5 shrink-0 items-center justify-center rounded-full text-[14px] font-bold text-white"
+                >
                   {{ option.key }}
                 </span>
                 <span class="flex-1 leading-[1.5]">{{ option.text }}</span>
@@ -174,7 +179,10 @@ onBeforeUnmount(() => {
       <!-- 结果页 -->
       <UCard v-else-if="stage === 'result' && result" key="result" :ui="{ body: 'p-7' }">
         <div class="text-center">
-          <div class="result-avatar mx-auto mb-5 size-[120px]" :style="{ borderColor: result.color }">
+          <div
+            class="result-avatar mx-auto mb-5 size-[120px]"
+            :style="{ borderColor: result.color }"
+          >
             <img
               :src="withBase(result.avatar)"
               :alt="result.name"
@@ -193,12 +201,18 @@ onBeforeUnmount(() => {
           <p class="mb-3 text-[15px] leading-[1.7] text-toned">{{ result.desc }}</p>
 
           <h3 class="mb-3 text-[15px] font-semibold text-brand-600">【你的性格亮点】</h3>
-          <p v-for="(line, index) in highlightLines" :key="index" class="mb-2 text-[15px] leading-[1.7] text-toned last:mb-0">
+          <p
+            v-for="(line, index) in highlightLines"
+            :key="index"
+            class="mb-2 text-[15px] leading-[1.7] text-toned last:mb-0"
+          >
             {{ line }}
           </p>
 
           <p v-if="runnerUp" class="mt-3 border-t border-default pt-3 text-[13.5px] text-dimmed">
-            隐藏倾向：<span :style="{ color: runnerUp.color }">{{ runnerUp.name }} · {{ runnerUp.tag }}</span>
+            隐藏倾向：<span :style="{ color: runnerUp.color }"
+              >{{ runnerUp.name }} · {{ runnerUp.tag }}</span
+            >
           </p>
         </div>
 
@@ -303,7 +317,9 @@ onBeforeUnmount(() => {
 .stage-leave-active,
 .question-enter-active,
 .question-leave-active {
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
 }
 
 .stage-enter-from,

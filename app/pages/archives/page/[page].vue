@@ -25,7 +25,9 @@ if (page.value < 2 || !yearOfPage.value) {
 }
 
 usePageSeo(
-  computed(() => (yearOfPage.value ? `归档 · ${yearOfPage.value} 年` : withPageSuffix('归档', page.value))),
+  computed(() =>
+    yearOfPage.value ? `归档 · ${yearOfPage.value} 年` : withPageSuffix('归档', page.value),
+  ),
   '按时间浏览 PidanUI 全部新闻与公告。',
 );
 </script>

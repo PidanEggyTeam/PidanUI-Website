@@ -33,7 +33,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <form class="relative mb-[18px] flex items-center" data-js="required" role="search" @submit.prevent="onSubmit">
+  <form
+    class="relative mb-[18px] flex items-center"
+    data-js="required"
+    role="search"
+    @submit.prevent="onSubmit"
+  >
     <!-- 降级提示：用普通元素而非 <noscript>。
          <noscript> 在 JS 启用时会被浏览器按「原始文本」解析，其内部标签不会成为
          真实节点，与 SSR 输出的 DOM 结构不一致，从而触发

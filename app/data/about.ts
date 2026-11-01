@@ -61,7 +61,10 @@ export const FEATURES = [
 ];
 
 export const COMPOSITION = [
-  { name: '主题包', desc: '蛋仔风格的 Windows & Linux 主题，支持 Windows 7 ~ Windows 11 和 Linux。' },
+  {
+    name: '主题包',
+    desc: '蛋仔风格的 Windows & Linux 主题，支持 Windows 7 ~ Windows 11 和 Linux。',
+  },
   { name: 'Rainmeter 小组件', desc: '配套的桌面小组件，支持 Windows 10 1607 ~ Windows 11。' },
   { name: '辅助组件', desc: '基于 .NET 10 和 Python 开发的辅助程序，用于主题部署与组件管理。' },
 ];

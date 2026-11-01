@@ -9,8 +9,7 @@ const props = defineProps<{ name: string; page: number }>();
 const allPosts = useAllPosts();
 
 // 标签列表：置顶文章优先，其余按时间倒序
-const source = () =>
-  pinnedFirst(allPosts.value.filter((post) => post.tags.includes(props.name)));
+const source = () => pinnedFirst(allPosts.value.filter((post) => post.tags.includes(props.name)));
 const { pagePosts, page, totalPages } = usePagedPosts(() => props.page, source);
 
 const title = computed(() => `标签：#${props.name}`);

@@ -47,9 +47,7 @@ const server = http.createServer((req, res) => {
   if (!file) {
     const notFound = path.join(root, '404.html');
     res.writeHead(404, { 'content-type': MIME['.html'] });
-    return fs.existsSync(notFound)
-      ? fs.createReadStream(notFound).pipe(res)
-      : res.end('404');
+    return fs.existsSync(notFound) ? fs.createReadStream(notFound).pipe(res) : res.end('404');
   }
 
   res.writeHead(200, { 'content-type': MIME[path.extname(file)] ?? 'application/octet-stream' });

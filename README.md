@@ -72,13 +72,13 @@ PidanUI 项目的官方网站，使用 Nuxt 4 + @nuxt/content + Nuxt UI 4 + Type
 
 `app/assets/styles/` 下 5 个文件，`main.css` 是唯一入口，导入顺序有硬性要求：
 
-| 文件 | 职责 |
-| --- | --- |
-| `main.css` | 层声明与 `@import` 顺序：theme → **preflight** → utilities → `@nuxt/ui` → 项目文件 |
-| `tokens.css` | `@theme static` 设计令牌（色板 / 圆角 / 阴影 / 字体别名 / 容器宽度） |
-| `base.css` | 主题变量真源（浅色 + 深色）、滚动条、过渡基线、`html:not(.js)` 降级 |
-| `prose.css` | 文章正文排版（标题 / 列表 / 表格 / 代码块 / TOC / KaTeX） |
-| `animation.css` | 页面切换过渡与首屏区块编排式入场 |
+| 文件            | 职责                                                                               |
+| --------------- | ---------------------------------------------------------------------------------- |
+| `main.css`      | 层声明与 `@import` 顺序：theme → **preflight** → utilities → `@nuxt/ui` → 项目文件 |
+| `tokens.css`    | `@theme static` 设计令牌（色板 / 圆角 / 阴影 / 字体别名 / 容器宽度）               |
+| `base.css`      | 主题变量真源（浅色 + 深色）、滚动条、过渡基线、`html:not(.js)` 降级                |
+| `prose.css`     | 文章正文排版（标题 / 列表 / 表格 / 代码块 / TOC / KaTeX）                          |
+| `animation.css` | 页面切换过渡与首屏区块编排式入场                                                   |
 
 - **Preflight 已启用**：元素级默认值（margin / padding / box-sizing / 表单控件 / 列表符号 / 标题字号）由它提供，`base.css` 不再重复声明；只有需要「压过 Preflight」的项目决定（标题字重、svg 垂直对齐）才写在那里。
 - **断点只用 Tailwind / Nuxt UI 默认值**：`sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536`，移动端临界值 = `lg`（1024）。项目不再自定义像素断点。

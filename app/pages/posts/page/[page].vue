@@ -8,9 +8,7 @@ import { withPageSuffix } from '~/composables/usePageSeo';
 
 const route = useRoute();
 const page = computed(() => Math.floor(Number(route.params.page)) || 1);
-const totalPages = computed(() =>
-  Math.max(1, Math.ceil(allPosts.value.length / PAGE_SIZE)),
-);
+const totalPages = computed(() => Math.max(1, Math.ceil(allPosts.value.length / PAGE_SIZE)));
 
 if (page.value < 2 || page.value > totalPages.value) {
   throw createError({ statusCode: 404, message: '页码不存在', fatal: true });

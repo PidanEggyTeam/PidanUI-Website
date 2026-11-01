@@ -62,4 +62,3 @@ const TERM_UI = {
     </UPageGrid>
   </div>
 </template>
-

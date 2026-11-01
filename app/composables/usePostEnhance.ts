@@ -52,7 +52,6 @@ function mountTocPlaceholder(): void {
     box.dataset.postToc = '';
     paragraph.replaceWith(box);
   }
-
 }
 
 function fillToc(): void {
@@ -100,8 +99,7 @@ function fillToc(): void {
 /** 尊重系统「减少动态效果」：为 true 时不使用平滑滚动 */
 function prefersReducedMotion(): boolean {
   return (
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   );
 }
 const SETTLE_WINDOW = 2000; // 跳转后多少毫秒内，仍对迟到布局变化做重新对齐
@@ -217,4 +215,3 @@ export async function enhancePost(_routeKey: string): Promise<void> {
   // 直接带 hash 打开页面时先瞬时定位到锚点
   scrollToAnchor(window.location.hash, false);
 }
-

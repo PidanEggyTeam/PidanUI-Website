@@ -39,7 +39,13 @@ const badges = ['非盈利', '粉丝向 · 非商用', '持续维护'];
       :ui="{ root: 'py-0 pb-8 mb-10' }"
     >
       <template #links>
-        <UBadge v-for="badge in badges" :key="badge" variant="soft" color="primary" :label="badge" />
+        <UBadge
+          v-for="badge in badges"
+          :key="badge"
+          variant="soft"
+          color="primary"
+          :label="badge"
+        />
       </template>
     </UPageHeader>
 
@@ -100,11 +106,14 @@ const badges = ['非盈利', '粉丝向 · 非商用', '持续维护'];
         variant="subtle"
         title="蛋仔专属性格测试"
         description="几道关于日常性格与游戏习惯的小问题，测出最适配你的专属蛋仔角色。"
-        :links="[{ label: '开始测试', to: '/personality-test', trailingIcon: 'i-lucide-arrow-right' }]"
+        :links="[
+          { label: '开始测试', to: '/personality-test', trailingIcon: 'i-lucide-arrow-right' },
+        ]"
       />
 
       <p class="text-xs leading-[1.8] text-dimmed">
-        本站「关于」文案基于 PidanUI 项目说明整理。本网站使用 FeedPulse 小组件统计访客数据，该组件不会泄露用户隐私，请放心访问本网站。
+        本站「关于」文案基于 PidanUI 项目说明整理。本网站使用 FeedPulse
+        小组件统计访客数据，该组件不会泄露用户隐私，请放心访问本网站。
       </p>
     </div>
   </UPage>

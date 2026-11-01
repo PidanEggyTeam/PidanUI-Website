@@ -16,7 +16,8 @@ export const HOME_FEATURES: HomeFeature[] = [
   {
     icon: 'i-lucide-layers',
     title: '现代技术栈',
-    description: '系统镜像基于 Win11 / Win10 最新分支定制，桌面组件用 .NET 10 + WPF 重写，界面与逻辑一起换代。',
+    description:
+      '系统镜像基于 Win11 / Win10 最新分支定制，桌面组件用 .NET 10 + WPF 重写，界面与逻辑一起换代。',
   },
   {
     icon: 'i-lucide-feather',
@@ -26,7 +27,8 @@ export const HOME_FEATURES: HomeFeature[] = [
   {
     icon: 'i-lucide-star',
     title: '继承 EggyUI 的美化风格',
-    description: '一切都是你熟悉的样子——PidanUI 不仅继承了 EggyUI 的蛋仔风的美化风格，还力求在美学上有所创新。',
+    description:
+      '一切都是你熟悉的样子——PidanUI 不仅继承了 EggyUI 的蛋仔风的美化风格，还力求在美学上有所创新。',
   },
   {
     icon: 'i-lucide-shield-check',
@@ -49,8 +51,18 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     title: '加入社区',
     description: '使用答疑、版本反馈、内测通知都在群里，遇到问题先来这里。',
     links: [
-      { label: 'QQ 交流群', to: 'https://qm.qq.com/q/WiTRsJYre0', icon: 'i-simple-icons-tencentqq', trailingIcon: 'i-lucide-arrow-up-right' },
-      { label: '哔哩哔哩', to: 'https://space.bilibili.com/3546563248916693', icon: 'i-simple-icons-bilibili', trailingIcon: 'i-lucide-arrow-up-right' },
+      {
+        label: 'QQ 交流群',
+        to: 'https://qm.qq.com/q/WiTRsJYre0',
+        icon: 'i-simple-icons-tencentqq',
+        trailingIcon: 'i-lucide-arrow-up-right',
+      },
+      {
+        label: '哔哩哔哩',
+        to: 'https://space.bilibili.com/3546563248916693',
+        icon: 'i-simple-icons-bilibili',
+        trailingIcon: 'i-lucide-arrow-up-right',
+      },
     ],
   },
   {
@@ -58,8 +70,18 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     title: '加入开发组',
     description: '前端、WPF 组件、系统封装都在招人，提 issue 或直接开 PR 都欢迎。',
     links: [
-      { label: 'GitHub', to: 'https://github.com/PidanEggyTeam', icon: 'i-simple-icons-github', trailingIcon: 'i-lucide-arrow-up-right' },
-      { label: '官网仓库', to: 'https://github.com/PidanEggyTeam/PidanUI-Website', icon: 'i-lucide-folder-git-2', trailingIcon: 'i-lucide-arrow-up-right' },
+      {
+        label: 'GitHub',
+        to: 'https://github.com/PidanEggyTeam',
+        icon: 'i-simple-icons-github',
+        trailingIcon: 'i-lucide-arrow-up-right',
+      },
+      {
+        label: '官网仓库',
+        to: 'https://github.com/PidanEggyTeam/PidanUI-Website',
+        icon: 'i-lucide-folder-git-2',
+        trailingIcon: 'i-lucide-arrow-up-right',
+      },
     ],
   },
 ];

@@ -12,7 +12,8 @@ let searchDialogOpener: HTMLElement | null = null;
 
 export function openSearchDialog(opener?: HTMLElement): void {
   if (!searchDialogOpen.value && typeof document !== 'undefined') {
-    searchDialogOpener = opener ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+    searchDialogOpener =
+      opener ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
   }
   searchDialogOpen.value = true;
 }

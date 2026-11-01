@@ -55,7 +55,9 @@ const socialLinks = SOCIAL_LINKS.map((link) => {
 
           <!-- 关注我们 -->
           <div class="min-w-0">
-            <h2 class="mb-3 text-[13px] font-bold tracking-[0.5px] text-dimmed uppercase">关注我们</h2>
+            <h2 class="mb-3 text-[13px] font-bold tracking-[0.5px] text-dimmed uppercase">
+              关注我们
+            </h2>
             <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
               <a
                 v-for="link in socialLinks"
@@ -82,7 +84,9 @@ const socialLinks = SOCIAL_LINKS.map((link) => {
     </template>
 
     <template #left>
-      <p class="text-sm text-dimmed">© {{ year }} {{ SITE.brand }} · 本项目为《蛋仔派对》同人创作，非《蛋仔派对》官方出品。</p>
+      <p class="text-sm text-dimmed">
+        © {{ year }} {{ SITE.brand }} · 本项目为《蛋仔派对》同人创作，非《蛋仔派对》官方出品。
+      </p>
     </template>
   </UFooter>
 </template>

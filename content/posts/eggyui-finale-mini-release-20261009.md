@@ -2,7 +2,7 @@
 title: EggyUI Finale Mini 正式发布
 date: 2026-10-09 22:20:00
 categories: [新版本发布]
-tags: [EggyUI, 发布, 项目]
+tags: [EggyUI, 发布, 项目, Win11]
 description: EggyUI Finale Mini 已正式发布，它是 EggyUI 的第二个独立安装包版本，也是最后一个版本。本文说明该版本的定位、特性与发布意义。
 stickypost: false
 cover: https://img.remit.ee/i/zI8bP9bB5wCu

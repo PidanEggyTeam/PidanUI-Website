@@ -2,19 +2,19 @@
 title: Pidan System Win11 26H2 正式发布
 date: 2026-10-17 8:00:00
 categories: [新版本发布]
-tags: [Pidan System, 发布]
-description: Pidan System Win11 26H2 是 Pidan System 的第六个版本，延续了此前 Pidan System 的设计，同时也加入了一些新的特性。本文将介绍它是什么，以及它的特性有哪些，还有一些注意事项。
+tags: [Pidan System, 发布, Win11]
+description: Pidan System Win11 26H2 是 Pidan System 的第七个版本，延续了此前 Pidan System 的设计，同时也加入了一些新的特性。本文将介绍它是什么，以及它的特性有哪些，还有一些注意事项。
 stickypost: false
 cover: https://img.remit.ee/i/1vxnuuLttEYy
 ---
 
-经过一段时间的开发与测试，**Pidan System Win11 26H2 已正式发布**。它是 Pidan System 的第六个版本，也是 Pidan System 在 EggyUI 被 PidanUI 取代后发布的第一个版本。下文将介绍它是什么，以及它的特性有哪些，还有一些注意事项。
+经过一段时间的开发与测试，**Pidan System Win11 26H2 已正式发布**。它是 Pidan System 的第七个版本，也是 Pidan System 在 EggyUI 被 PidanUI 取代后发布的第一个版本。下文将介绍它是什么，以及它的特性有哪些，还有一些注意事项。
 
 ![Pidan System Win11 26H2 系统截图](https://img.remit.ee/i/1vxnuuLttEYy)
 
 ## 一、它是什么
 
-Pidan System Win11 26H2 是 Pidan System 的第六个版本，而 Pidan System 是由 Pidan-Eggy 魔改的 Windows 系统。Pidan System Win11 26H2 基于 Win11 26H2 26300.9457 版本魔改，延续了此前 Pidan System 的设计，同时也加入了一些新的特性。
+Pidan System Win11 26H2 是 Pidan System 的第七个版本，而 Pidan System 是由 Pidan-Eggy 魔改的 Windows 系统。Pidan System Win11 26H2 基于 Win11 26H2 26300.9457 版本魔改，延续了此前 Pidan System 的设计，同时也加入了一些新的特性。
 
 ## 二、它有哪些特性
 

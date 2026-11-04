@@ -2,13 +2,13 @@
 title: Pidan System Win11 26H2 v2 正式发布
 date: 2026-10-20 22:00:00
 categories: [新版本发布]
-tags: [Pidan System, 发布]
+tags: [Pidan System, 发布, Win11]
 description: Pidan System Win11 26H2 v2 正式发布。本版本在延续此前设计的基础上，对系统进行了更激进的精简，进一步降低了资源占用，并带来了一些需要注意的特殊事项。
 stickypost: false
 cover: https://img.remit.ee/i/udu5lHjdZ0QU
 ---
 
-经过一段时间的开发与调试，**Pidan System Win11 26H2 v2 已正式发布**。它是 Pidan System 在 Win11 26H2 基础之上的第二个迭代版本，是 Pidan System 的第七个版本。下文将介绍它是什么，以及它带来了哪些变化和需要注意的事项。
+经过一段时间的开发与调试，**Pidan System Win11 26H2 v2 已正式发布**。它是 Pidan System 在 Win11 26H2 基础之上的第二个迭代版本，是 Pidan System 的第八个版本。下文将介绍它是什么，以及它带来了哪些变化和需要注意的事项。
 
 ![Pidan System Win11 26H2 v2 系统截图](https://img.remit.ee/i/udu5lHjdZ0QU)
 

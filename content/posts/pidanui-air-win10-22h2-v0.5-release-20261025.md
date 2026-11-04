@@ -2,7 +2,7 @@
 title: PidanUI-Air Win10 22H2 v0.5 正式发布
 date: 2026-10-25 10:00:00
 categories: [新版本发布]
-tags: [PidanUI-Air, 发布]
+tags: [PidanUI-Air, 发布, Win10]
 description: PidanUI-Air Win10 22H2 v0.5 正式发布。它是 EggyUI 3.5 Air 的续作，也是向 PidanUI 逐步过渡的重要版本，带来了更轻量的系统体验与同源的安全美化。
 stickypost: false
 cover: https://img.remit.ee/i/hsjlCZAGQuf2

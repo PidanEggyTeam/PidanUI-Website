@@ -36,7 +36,8 @@ const FONT_LINKS = isDev
 export default defineNuxtConfig({
   compatibilityDate: '2026-10-01',
   ssr: true,
-  devtools: { enabled: false },
+  // 与 OpenPidanUI 官网对齐：开发态启用 Nuxt DevTools（生产构建不会打包）
+  devtools: { enabled: true },
 
   modules: ['@nuxt/content', '@nuxt/ui'],
 

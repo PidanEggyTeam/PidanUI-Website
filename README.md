@@ -108,7 +108,7 @@ PidanUI 并非 EggyUI 的官方分支，而是一个在 EggyUI 项目经历分�
 
 ## 部署方式
 
-本网站以 **Cloudflare Workers Static Assets**（assets-only，没有 Worker 脚本）的形式对外提供服务。`wrangler.jsonc` 固定了资产目录（`.output/public`）、404 页与 HTML 处理规则，维护者执行 `pnpm deploy` 即完成「`nuxi generate` → 字体灌注 → `wrangler deploy`」。站点没有后端，所有内容以静态资源形式存在，更新时需重新构建并部署。不再使用 GitHub Pages（仓库里没有 Pages 部署流水线；`.github/workflows/lint.yml` 只做 ESLint / Prettier / 构建校验）。
+本网站以 **Cloudflare Workers Static Assets**（assets-only，没有 Worker 脚本）的形式对外提供服务。`wrangler.jsonc` 固定了资产目录（`.output/public`）、404 页与 HTML 处理规则，维护者执行 `pnpm deploy` 即完成「`nuxi generate` → 字体灌注 → `wrangler deploy`」。`public/_headers` 负责响应头：`/giscus/*` 补 `Access-Control-Allow-Origin: *`（giscus iframe 跨源拉取皮肤，Workers 静态资源默认不带 CORS 头），`_nuxt` 与 `fonts` 走长缓存。站点没有后端，所有内容以静态资源形式存在，更新时需重新构建并部署。不再使用 GitHub Pages（仓库里没有 Pages 部署流水线；`.github/workflows/lint.yml` 只做 ESLint / Prettier / 构建校验）。
 
 ## 许可证
 

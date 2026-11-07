@@ -21,10 +21,22 @@ let visibilityObserver: IntersectionObserver | null = null;
 let stopThemeWatch: (() => void) | null = null;
 let fallbackTimer: number | null = null;
 
-/** 当前应使用的品牌 Giscus 样式表 */
+/**
+ * 当前应使用的品牌 Giscus 样式表（绝对地址，giscus 只接受公网可访问 URL）。
+ *
+ * 两个必须注意的点：
+ * 1. 必须随实际访问源走，不能写死域名。giscus 在它自己的 iframe 里以 CORS 方式
+ *    拉取这份 CSS，域名迁移 / 从 Workers 预览域打开时，写死的主域名可能已经
+ *    不提供本站资源；用当前 https 源可天然免疫。http（本地预览）与 SSR 场景退回 SITE.mainUrl。
+ * 2. 本站在 Cloudflare Workers 上，静态资源默认不带 Access-Control-Allow-Origin，
+ *    需要 public/_headers 给 /giscus/* 补上，否则跨源样式表会被浏览器拦掉，
+ *    同样表现为「主题失效」。
+ */
 function giscusTheme(): string {
   const theme = resolvedDark.value ? 'dark' : 'light';
-  return new URL(`/giscus/${theme}.css`, `${SITE.newsUrl}/`).href;
+  const origin = typeof window === 'undefined' ? '' : window.location.origin;
+  const base = origin.startsWith('https://') ? origin : SITE.mainUrl;
+  return new URL(`/giscus/${theme}.css`, `${base}/`).href;
 }
 
 /** 已加载的 iframe 无法改属性，需通过 postMessage 通知其切换配色 */
@@ -74,7 +86,8 @@ function mountGiscus(): void {
   }
   el.appendChild(script);
 
-  // giscus 会异步注入 iframe，等其 load 完成后再收起骨架屏
+  // giscus 会异步注入 iframe，等其 load 完成后再收起骨架屏，并补一次主题同步：
+  // iframe 首次渲染时可能还没读到 data-theme（暗色系统下尤其明显），必须再推一次。
   observer?.disconnect();
   observer = new MutationObserver(() => {
     const frame = el.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
@@ -83,6 +96,7 @@ function mountGiscus(): void {
     frame.addEventListener('load', () => {
       loading.value = false;
       clearFallback();
+      syncGiscusTheme();
     });
     observer?.disconnect();
     observer = null;

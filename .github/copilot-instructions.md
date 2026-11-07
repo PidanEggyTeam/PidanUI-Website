@@ -20,7 +20,7 @@
   - **绕开样式分层**：`public/` 里的 CSS 拿不到 Tailwind 的 `@layer`，只能靠 `!important` 和特异性堆叠去压既有规则，改一处坏一片；`base.css` 的 `@layer base` 约束对它完全无效。
   - **不受类型与 lint 覆盖**：`public/` 是原样拷贝，`eslint.config.mjs` 与 `pnpm build` 都不会检查，等于在受管代码之外开了一个无人守的口子。
   - **重复实现**：站内已有 `useScrollReveal` / `PageProgress` 等能力，注入层再写一份必然与它们冲突（当时两套滚动显现就完全重叠）。
-- `public/` 只放**原样发给浏览器、不需要加工的资源**：图片、`giscus/` 下的评论皮肤、`BingSiteAuth.xml` 之类。例外是 `giscus/*.css`——那是 giscus iframe 跨源拉取的第三方皮肤，必须公网可访问的独立 URL，不属于本站样式。字体不在 `public/` 里（见「字体与图标」，由构建脚本灌注）。
+- `public/` 只放**原样发给浏览器、不需要加工的资源**：图片、`giscus/` 下的评论皮肤、`BingSiteAuth.xml`、`_headers` 之类。例外是 `giscus/*.css`——那是 giscus iframe 跨源拉取的第三方皮肤，必须公网可访问的独立 URL，不属于本站样式。**这两份皮肤必须由 `public/_headers` 补 `Access-Control-Allow-Origin: *`**：Cloudflare Workers 的静态资源默认不带 CORS 头，缺了它 giscus 会拦掉样式表、退回默认皮肤（GitHub Pages 会默认带，所以换部署方式后才发现）。
 
 ### 一致性
 
@@ -232,3 +232,4 @@ content.config.ts / nuxt.config.ts    # 内容集合定义 / 站点配置
 10. `pnpm format:check` 与 `pnpm lint` 都通过（CI 里它们排在 `build` 之前，本地先跑一遍省得等）。
 11. `public/` 里只有资源（图片、giscus 皮肤、`BingSiteAuth.xml`），没有新增的注入式 JS / CSS，也没有字体文件。
 12. `.output/public/fonts/` 里三档字重与 `harmonyos.css` 都在，产物内没有 `cdn.jsdelivr.net` 的字体请求；`pnpm preview`（wrangler dev）下 `/about`、`/posts/`、`/posts/<slug>` 都能正常返回。
+13. `pnpm preview` 下 `HEAD /giscus/light.css` 带 `Access-Control-Allow-Origin: *`（没有的话评论主题会失效）。

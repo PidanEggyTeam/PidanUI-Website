@@ -1,0 +1,24 @@
+# Cloudflare Workers 静态资源响应头。
+# 注意：这里只对「原样返回的静态文件」生效，Nitro 预渲染出的 HTML 不受影响。
+
+# giscus 主题皮肤：iframe 从 giscus.app（跨源）以 CORS 方式拉取这份 CSS，
+# 没有 Access-Control-Allow-Origin 就会被浏览器拦掉，giscus 退回默认皮肤——
+# 表现就是「换部署方式后评论主题失效」。GitHub Pages 默认带 ACAO，Workers 不带。
+/giscus/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
+
+# 指纹资源与自包含字体长缓存
+/_nuxt/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 图片一周
+/images/*
+  Cache-Control: public, max-age=604800
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

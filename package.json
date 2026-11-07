@@ -26,6 +26,7 @@
     "@fontsource/cascadia-code": "^5.3.0",
     "@iconify-json/lucide": "^1.2.147",
     "@iconify-json/simple-icons": "^1.2.100",
+    "@nuxt/cli": "^4.0.3",
     "@nuxt/content": "^3.16.2",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@tailwindcss/vite": "4.3.3",

@@ -1,3 +1,5 @@
+import { createRequire } from 'node:module';
+import { dirname } from 'node:path';
 import tailwindcss from '@tailwindcss/vite';
 import { buildRoutes } from './build/post-index';
 import { rehypeExternalLinksBlank } from './build/rehype-external-links';
@@ -9,6 +11,28 @@ import { rehypeExternalLinksBlank } from './build/rehype-external-links';
 //   - 内容由 @nuxt/content v3 驱动（content/posts/*.md）
 //   - 样式为原生 CSS + Tailwind v4（@theme 令牌），沿用 [data-theme] 三态机制
 // ============================================================
+
+// ---- 字体（自包含）----
+// 生产：`nuxi generate` 之后由 scripts/sync-fonts.mjs 生成 /fonts/harmonyos.css；
+// 开发：还没有那次构建，直接把 npm 包里的三档样式（含同目录 woff2 分片）挂到
+//       Nitro 的 /fonts 下，否则 dev 下样式表 404、正文会掉到系统字体。
+const require = createRequire(import.meta.url);
+const isDev = process.env.NODE_ENV === 'development';
+let harmonyFontsDir = '';
+try {
+  harmonyFontsDir = dirname(require.resolve('harmonyos-sans-sc-webfont-splitted'));
+} catch {
+  // 包没装时不挂载：构建会由 sync-fonts.mjs 直接报错，比这里静默失败更明确
+}
+
+const FONT_LINKS = isDev
+  ? [
+      { rel: 'stylesheet', href: '/fonts/Regular.css' },
+      { rel: 'stylesheet', href: '/fonts/Medium.css' },
+      { rel: 'stylesheet', href: '/fonts/Bold.css' },
+    ]
+  : [{ rel: 'stylesheet', href: '/fonts/harmonyos.css' }];
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-10-01',
   ssr: true,
@@ -59,11 +83,11 @@ export default defineNuxtConfig({
         // 带 crossorigin 会另开一条 CORS 连接池，反而复用不上。
         { rel: 'preconnect', href: 'https://feed-pulse.com' },
         { rel: 'dns-prefetch', href: 'https://feed-pulse.com' },
-        // 界面字体（自包含）：HarmonyOS Sans SC 的 400 / 500 / 700 三档分片由
-        // scripts/sync-fonts.mjs 在 `nuxi generate` 之后写进 .output/public/fonts/，
-        // 这里只引用产出的样式表；仓库不保留字体文件，也不再走任何 CDN。
+        // 界面字体（自包含）：HarmonyOS Sans SC 的 400 / 500 / 700 三档分片。
+        // 生产由 scripts/sync-fonts.mjs 生成 /fonts/harmonyos.css；开发由下面的
+        // nitro.publicAssets 直接挂 npm 包目录。仓库不保留字体文件，也不走 CDN。
         // Cascadia Code 走 @fontsource，由 Vite 打包（见 main.css）。
-        { rel: 'stylesheet', href: '/fonts/harmonyos.css' },
+        ...FONT_LINKS,
         // Atom feed 自动发现：浏览器 / RSS 阅读器可通过这个 link 自动订阅
         {
           rel: 'alternate',
@@ -176,6 +200,12 @@ export default defineNuxtConfig({
     // 显式锁死 static：Cloudflare 上的环境变量会把预设切到 cloudflare-*，
     // 那套产物带 Worker 入口，wrangler deploy 会找不到 assets 目录。
     preset: 'static',
+    // 开发期直接挂 npm 包里的 HarmonyOS Sans SC 分片（生产产物由
+    // scripts/sync-fonts.mjs 灌注，不需要这条挂载）。
+    publicAssets:
+      isDev && harmonyFontsDir
+        ? [{ dir: harmonyFontsDir, baseURL: '/fonts', maxAge: 0 }]
+        : undefined,
     prerender: {
       crawlLinks: false, // 路由由 buildRoutes() 全量枚举，不依赖爬虫
       failOnError: true, // 缺页必须让 CI 失败

@@ -68,8 +68,9 @@ export default tseslint.config(
       'vue/multi-word-component-names': 'off',
       // defineProps 的类型声明已经表达默认值，这条规则只对 Options API 有意义
       'vue/require-default-prop': 'off',
-      // 内容库返回的文档结构由 content.config.ts 的 zod schema 决定，
-      // 三处 Record<string, any>（PostView / usePostSeo / [slug]）是 API 载荷，
+      // 内容库返回的文档结构由 content.config.ts 的 zod schema 决定。
+      // PostView.vue 已按 schema 定义 PostDocument 接口；剩下两处
+      // Record<string, any>（usePostSeo / [slug]）是 API 载荷，
       // 强行换 unknown 只会在调用点堆一层断言。降级为 warning：日志里看得见，
       // 但不会卡住 CI。
       '@typescript-eslint/no-explicit-any': 'warn',

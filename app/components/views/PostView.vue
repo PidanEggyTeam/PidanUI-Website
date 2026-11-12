@@ -9,8 +9,40 @@ import type { Post } from '#shared/types/post';
 
 // 文章详情：返回链接 / 标题 / 时间 / 分类标签 / 正文 / 上下篇 / 评论
 // 正文由 @nuxt/content 的 <ContentRenderer> 渲染（等价于旧的 <Content />）
+
+/**
+ * 文章文档：/api/posts/<slug>/index.json 的响应项，即 content 集合 posts 的一项。
+ *
+ * 字段由 content.config.ts 的 zod schema 决定：title / date 必填，categories / tags
+ * 默认空数组，description / cover 可选；其余字段（body AST、stem、id、meta…）
+ * 原样透传给 <ContentRenderer>，所以保留一条 unknown 的索引签名。
+ *
+ * 之前这里写的是 Record<string, any>：any 既让 eslint 的 no-explicit-any 报警，
+ * 也让 doc.title / doc.date 这类取值彻底失去类型约束。
+ */
+interface PostDocument {
+  /** 站点内路径，如 /posts/xxx */
+  path?: string;
+  /** 标题 */
+  title?: string;
+  /** 发布日期（YAML 字符串，由 parsePostDate 按 UTC 解释） */
+  date?: string;
+  /** 摘要 */
+  description?: string;
+  /** 封面图（可为外链） */
+  cover?: string;
+  /** 分类名列表 */
+  categories?: string[];
+  /** 标签名列表 */
+  tags?: string[];
+  /** 是否置顶 */
+  stickypost?: boolean;
+  /** 其余 content 字段原样透传给 ContentRenderer */
+  [key: string]: unknown;
+}
+
 const props = defineProps<{
-  doc: Record<string, any>;
+  doc: PostDocument;
   posts: Post[];
 }>();
 

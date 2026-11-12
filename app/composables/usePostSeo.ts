@@ -12,7 +12,7 @@ import { withSiteSuffix } from '#shared/utils/title';
  * 旧实现用 relativePath.startsWith('posts/') 判定文章页，导致 /posts/ 列表页
  * 也被标成 og:type=article；这里只在实际的文章页调用，列表页走 usePageSeo。
  */
-export function usePostSeo(doc: MaybeRefOrGetter<Record<string, any> | null | undefined>) {
+export function usePostSeo(doc: MaybeRefOrGetter<Record<string, any> | null | undefined>): void {
   const d = computed(() => toValue(doc));
   const url = computed(() => absoluteUrl(d.value?.path ?? '/'));
   const title = computed(() => String(d.value?.title ?? SITE.brand));

@@ -9,8 +9,9 @@ const posts = useAllPosts();
 
 // 路由参数与 content 的 path 一一对应（/posts/<slug>）
 const requestFetch = useRequestFetch();
-const { data: doc }: { data: Ref<Record<string, any> | null> } = await useAsyncData(`post:${route.path}`, () =>
-  requestFetch<Record<string, any>>(withBase(`/api/posts/${route.params.slug}/index.json`)),
+const { data: doc }: { data: Ref<Record<string, any> | null> } = await useAsyncData(
+  `post:${route.path}`,
+  () => requestFetch<Record<string, any>>(withBase(`/api/posts/${route.params.slug}/index.json`)),
 );
 
 if (!doc.value) {

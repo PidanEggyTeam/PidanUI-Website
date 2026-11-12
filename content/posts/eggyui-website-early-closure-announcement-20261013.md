@@ -4,7 +4,7 @@ date: 2026-10-13 18:30:00
 categories: [公告]
 tags: [EggyUI, 公告, 项目]
 description: EggyUI 官网原定于 2026 年 10 月 14 日关闭，现已提前至 10 月 13 日晚正式关闭。EggyUI 官网原有域名已完成重定向，用户通过原链接访问时将自动跳转至 PidanUI 官网。
-stickypost: true
+stickypost: false
 cover: https://img.remit.ee/i/e4jsBtoo5ljl
 ---
 

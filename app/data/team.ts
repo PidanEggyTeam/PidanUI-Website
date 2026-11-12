@@ -22,7 +22,6 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: '维护、制作镜像 / 规划',
     avatar: 'https://img.remit.ee/i/FLj1CJc6EDIi',
   },
-  // { name: '大毛', role: '维护、制作镜像及PE', avatar: 'https://img.remit.ee/i/oy4aJoEu9QCS' },
   {
     name: '一个玩VM和MC的ZSS',
     role: '维护、制作镜像',

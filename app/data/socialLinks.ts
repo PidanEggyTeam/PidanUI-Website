@@ -1,6 +1,5 @@
 /**
- * 「关注我们」链接列表。新增 / 调整渠道只需编辑本文件后重新构建发布。
- * 站内相对路径（如 /atom.xml）在渲染时经 withBase 处理；以 .xml 结尾视为订阅源。
+ * 底栏的社交链接及友情链接列表。新增 / 调整渠道只需编辑本文件后重新构建发布。
  */
 export interface SocialLink {
   /** 站点名 */
@@ -15,15 +14,11 @@ export interface SocialLink {
   icon: string;
 }
 
+/** 社交链接 */
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    name: 'RSS 订阅',
-    url: '/atom.xml',
-    icon: 'i-lucide-rss',
-  },
-  {
     name: 'GitHub',
-    url: 'https://github.com/PidanEggyTeam',
+    url: 'https://github.com/PidanUI-Team',
     icon: 'i-simple-icons-github',
   },
   {
@@ -41,14 +36,18 @@ export const SOCIAL_LINKS: SocialLink[] = [
     url: 'https://qm.qq.com/q/WiTRsJYre0',
     icon: 'i-simple-icons-tencentqq',
   },
+];
+
+/** 友情链接 */
+export const FRIEND_LINKS: SocialLink[] = [
   {
     name: 'PidanUI 上线了官网',
     url: 'https://eggyui.mysxl.cn',
     icon: 'i-lucide-globe',
   },
   {
-    name: '本官网源代码仓库',
-    url: 'https://github.com/PidanEggyTeam/PidanUI-Website',
-    icon: 'i-lucide-folder-git-2',
+    name: 'OpenPidanUI 官网',
+    url: 'https://open.pidanui.eggycore.top',
+    icon: 'i-lucide-globe',
   },
 ];

@@ -110,9 +110,9 @@ const showMarquee = computed(() => marqueeActive.value && !isNarrow.value);
     <!-- 重要说明 -->
     <UAlert
       class="mb-12"
-      color="primary"
+      color="info"
       variant="soft"
-      icon="i-lucide-triangle-alert"
+      icon="i-lucide-info"
       title="温馨提示"
       description="PidanUI 是一个普通的 Windows & Linux 桌面美化包，不适用于手机系统或其他操作系统。本项目为《蛋仔派对》粉丝二次创作作品，严格禁止任何商业用途。"
     />
@@ -145,12 +145,23 @@ const showMarquee = computed(() => marqueeActive.value && !isNarrow.value);
       <template #footer>
         <!-- 与 Hero 的「立即下载」保持同一套按钮样式（实心品牌色 + lg + 右箭头），
              并居中收尾这一区块 -->
-        <div class="flex justify-center">
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-2.5">
           <UButton
             to="/posts/"
             size="lg"
             trailing-icon="i-lucide-arrow-right"
             label="查看全部新闻"
+          />
+          <UButton
+            href="/atom.xml"
+            target="_blank"
+            size="lg"
+            icon="i-lucide-rss"
+            label="订阅 RSS"
+            variant="ghost"
+            color="neutral"
+            rel="alternate noopener"
+            type="application/atom+xml"
           />
         </div>
       </template>

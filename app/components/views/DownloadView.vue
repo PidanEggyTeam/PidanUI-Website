@@ -23,10 +23,6 @@ const versions = downloadMeta.versions?.length ? downloadMeta.versions : null;
       <template #links>
         <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-dimmed">
           <span class="flex items-center gap-1.5">
-            <UIcon name="i-lucide-monitor" class="size-4" aria-hidden="true" />
-            Windows 10 / 11
-          </span>
-          <span class="flex items-center gap-1.5">
             <UIcon name="i-lucide-download" class="size-4" aria-hidden="true" />
             网盘直链 · 免费
           </span>

@@ -72,7 +72,7 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
     links: [
       {
         label: 'GitHub',
-        to: 'https://github.com/PidanEggyTeam',
+        to: 'https://github.com/PidanUI-Team',
         icon: 'i-simple-icons-github',
         trailingIcon: 'i-lucide-arrow-up-right',
       },

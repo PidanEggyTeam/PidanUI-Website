@@ -77,6 +77,12 @@ export const COMMUNITY_GROUPS: CommunityGroup[] = [
         trailingIcon: 'i-lucide-arrow-up-right',
       },
       {
+        label: 'GitCode',
+        to: 'https://gitcode.com/PidanUI-Team',
+        icon: 'i-lucide-folder-git-2',
+        trailingIcon: 'i-lucide-git-branch',
+      },
+      {
         label: '官网仓库',
         to: 'https://github.com/PidanEggyTeam/PidanUI-Website',
         icon: 'i-lucide-folder-git-2',

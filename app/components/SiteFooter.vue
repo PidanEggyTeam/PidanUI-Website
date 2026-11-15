@@ -89,7 +89,6 @@ const year: string = '2026';
         size="lg"
         variant="ghost"
         color="neutral"
-        :label="link.name"
       />
     </template>
   </UFooter>

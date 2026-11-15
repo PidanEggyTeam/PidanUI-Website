@@ -32,8 +32,8 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: '维护、制作、测试镜像',
     avatar: 'https://img.remit.ee/i/dTigJwxB3nNL',
   },
-  // { name: '昶', role: '有多年编程经验', avatar: 'https://img.remit.ee/i/r4nWy3kZl6qn' },
+  { name: '昶', role: '有多年编程经验', avatar: 'https://img.remit.ee/i/r4nWy3kZl6qn' },
   { name: '冒泡の狼小蓝', role: '测试镜像', avatar: 'https://img.remit.ee/i/ha3lcBWBpym0' },
   { name: 'DFZX-XSX', role: '测试镜像', avatar: 'https://img.remit.ee/i/EOlVuVdJ060K' },
-  { name: '蓝天正义之鸿', role: 'Logo设计', avatar: 'https://img.remit.ee/i/xedXoCZv9UHK' },
+  // { name: '蓝天正义之鸿', role: 'Logo设计', avatar: 'https://img.remit.ee/i/xedXoCZv9UHK' },
 ];

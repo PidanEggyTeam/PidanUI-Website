@@ -37,7 +37,11 @@ function toHexParam(value: string, fallback: string): string {
   if (!match) return fallback;
   const hex = match[1] ?? '';
   return hex.length === 3
-    ? hex.split('').map((char) => char + char).join('').toUpperCase()
+    ? hex
+        .split('')
+        .map((char) => char + char)
+        .join('')
+        .toUpperCase()
     : hex.toUpperCase();
 }
 

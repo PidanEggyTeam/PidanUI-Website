@@ -133,7 +133,6 @@ export function buildRoutes(): string[] {
   return routes;
 }
 
-
 /** 可被搜索引擎收录的站点页面，不包含搜索、错误页、接口与订阅源。 */
 export function buildSitemapRoutes(): string[] {
   return buildRoutes().filter(

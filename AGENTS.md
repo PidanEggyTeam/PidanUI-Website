@@ -1,4 +1,4 @@
-# Copilot Instructions
+# AGENTS.md
 
 > 本文件仅适用于 **PidanUI-Website**（PidanUI 官网）仓库，请勿套用到其他相关项目（如 StarLight-7693-New、EggyUI 系列）。
 
@@ -45,7 +45,7 @@
 
 ```bash
 pnpm dev                       # 本地开发（默认 http://localhost:3000）
-pnpm build                     # 生产构建 = nuxi generate + 字体灌注，产物在 .output/public
+pnpm build                     # 生产构建 = nuxi generate + + 生成 sitemap.xml + 字体灌注，产物在 .output/public
 pnpm preview                   # wrangler dev：按 Cloudflare 的规则跑同一份产物
 pnpm preview:static            # 纯静态服务器（不带 Cloudflare 行为，备用）
 pnpm deploy                    # pnpm build + wrangler deploy

@@ -57,7 +57,7 @@ PidanUI 项目的官方网站，使用 Nuxt 4 + @nuxt/content + Nuxt UI 4 + Type
 2. 安装 `pnpm`：`npm install -g pnpm`（`pnpm --version` 可验证）
 3. 在项目文件夹下执行 `pnpm install`
 4. `pnpm dev` 启动开发服务器（默认 `http://localhost:3000`）
-5. `pnpm build` 生成静态产物，输出在 **`.output/public`**
+5. `pnpm build` = `nuxi generate` + 生成根目录 `sitemap.xml` + 注入自包含字体 + 产物校验（`scripts/verify-output.mjs`），静态产物输出在 **`.output/public`**
 6. `pnpm preview` 用 `wrangler dev` 按 Cloudflare 的规则预览产物；`pnpm deploy` 构建并发布到 Cloudflare Workers
 
 > [!TIP]

@@ -2,7 +2,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
-import { PAGE_SIZE } from '../shared/site';
+// 显式 .ts 扩展名：本文件同时被 Vite（nuxt.config）与 Node（scripts/verify-output.mjs & generate-sitemap.mjs）
+// 直接 import，Node 的 ESM 解析不会补扩展名。
+import { PAGE_SIZE } from '../shared/site.ts';
 
 /**
  * 构建期文章索引（供 nuxt.config 的 prerender:routes 与页面取数使用）。
@@ -129,4 +131,16 @@ export function buildRoutes(): string[] {
   }
 
   return routes;
+}
+
+
+/** 可被搜索引擎收录的站点页面，不包含搜索、错误页、接口与订阅源。 */
+export function buildSitemapRoutes(): string[] {
+  return buildRoutes().filter(
+    (route) =>
+      route !== '/search/' &&
+      route !== '/404.html' &&
+      !route.startsWith('/api/') &&
+      !/\.(xml|json)$/.test(route),
+  );
 }

@@ -50,4 +50,9 @@ export const FRIEND_LINKS: SocialLink[] = [
     url: 'https://open.pidanui.eggycore.top',
     icon: 'i-lucide-globe',
   },
+  {
+    name: 'BSOD-MEMZ的个人基地',
+    url: 'https://xxtsoft.top',
+    icon: 'i-simple-icons-windows',
+  },
 ];

@@ -13,7 +13,7 @@ const year: string = '2026';
   <UFooter class="mt-16 border-t border-default bg-elevated/40">
     <template #top>
       <UContainer class="max-w-none px-4 sm:px-6 lg:px-8">
-        <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <!-- 品牌 + 站点导航 -->
           <div class="min-w-0">
             <NuxtLink class="flex items-center gap-2.5 text-lg font-bold text-default" to="/">
@@ -43,12 +43,12 @@ const year: string = '2026';
             </nav>
           </div>
 
-          <!-- 友情链接 -->
-          <div class="min-w-0">
+          <!-- 友情链接：加宽到两列，列表三列一行，对齐冷域观者站 -->
+          <div class="min-w-0 lg:col-span-2">
             <h2 class="mb-3 text-[13px] font-bold tracking-[0.5px] text-dimmed uppercase">
               友情链接
             </h2>
-            <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+            <div class="grid gap-2 sm:grid-cols-3">
               <a
                 v-for="link in FRIEND_LINKS"
                 :key="link.url"
@@ -63,8 +63,7 @@ const year: string = '2026';
             </div>
           </div>
 
-          <!-- 访客国家/地区：插件按加载时量到的宽度写死像素宽，网格项必须 min-w-0
-               才能在窄屏收缩（否则 677px 的固定宽把整行撑出视口） -->
+          <!-- 实时访客（Online Button）：在线人数按钮由 FeedPulse 注入，宽度固定 -->
           <div class="min-w-0 md:col-span-2 lg:col-span-1">
             <TrafficWidget />
           </div>

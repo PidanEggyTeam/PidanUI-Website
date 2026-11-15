@@ -323,8 +323,8 @@ html:not(.js) .news-search-noscript {
   display: block;
 }
 
-/* 访客统计依赖 JS：无 JS 时退化成去 FeedPulse 查看的链接 */
-html:not(.js) .flag-noscript {
+/* 在线访客按钮依赖 JS：无 JS 时退化成去 FeedPulse 查看的链接 */
+html:not(.js) .online-noscript {
   display: inline-block;
   margin-top: 6px;
   font-size: 12.5px;

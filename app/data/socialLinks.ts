@@ -3,7 +3,7 @@
  */
 export interface SocialLink {
   /** 站点名 */
-  name: string;
+  name?: string;
   /** 站点链接（站内写 / 开头的相对路径，站外写完整 URL） */
   url: string;
   /**
@@ -17,22 +17,22 @@ export interface SocialLink {
 /** 社交链接 */
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    name: 'GitHub',
+    // name: 'GitHub',
     url: 'https://github.com/PidanUI-Team',
     icon: 'i-simple-icons-github',
   },
   {
-    name: 'GitCode',
+    // name: 'GitCode',
     url: 'https://gitcode.com/PidanUI-Team',
     icon: 'i-lucide-git-branch',
   },
   {
-    name: '哔哩哔哩',
+    // name: '哔哩哔哩',
     url: 'https://space.bilibili.com/3546563248916693',
     icon: 'i-simple-icons-bilibili',
   },
   {
-    name: 'QQ 交流群',
+    // name: 'QQ 交流群',
     url: 'https://qm.qq.com/q/WiTRsJYre0',
     icon: 'i-simple-icons-tencentqq',
   },

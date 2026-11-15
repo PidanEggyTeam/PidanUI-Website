@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@12.11.2",
   "scripts": {
-    "dev": "nuxt dev",
+    "dev": "nuxi dev",
     "build": "nuxi generate && node scripts/generate-sitemap.mjs && node scripts/sync-fonts.mjs && node scripts/verify-output.mjs",
     "generate": "nuxi generate",
     "preview": "wrangler dev",

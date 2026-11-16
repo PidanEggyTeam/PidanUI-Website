@@ -24,7 +24,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   {
     // name: 'GitCode',
     url: 'https://gitcode.com/PidanUI-Team',
-    icon: 'i-lucide-git-branch',
+    icon: 'i-simple-icons-atomgit',
   },
   {
     // name: '哔哩哔哩',
@@ -48,11 +48,26 @@ export const FRIEND_LINKS: SocialLink[] = [
   {
     name: 'OpenPidanUI 官网',
     url: 'https://open.pidanui.eggycore.top',
-    icon: 'i-lucide-globe',
+    icon: 'i-lucide-globe-code',
+  },
+  {
+    name: 'EggyUI / PidanUI 文档站',
+    url: 'https://eggyuidocs.wordpress.com',
+    icon: 'i-simple-icons-wordpress',
   },
   {
     name: 'BSOD-MEMZ的个人基地',
     url: 'https://xxtsoft.top',
     icon: 'i-simple-icons-windows',
+  },
+  {
+    name: '红蓝灯的秘密基地',
+    url: 'https://cn-rbl.github.io',
+    icon: 'i-lucide-lightbulb',
+  },
+  {
+    name: '冷域观者的个人网站',
+    url: 'https://coldfield.skystarlight.top',
+    icon: 'i-lucide-snowflake',
   },
 ];

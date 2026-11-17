@@ -60,3 +60,5 @@ export function rehypeExternalLinksBlank() {
     walk(tree);
   };
 }
+
+export default rehypeExternalLinksBlank;

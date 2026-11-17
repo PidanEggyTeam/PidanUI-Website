@@ -1,5 +1,6 @@
 import { createRequire } from 'node:module';
 import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
 import { buildRoutes } from './build/post-index';
 import { rehypeExternalLinksBlank } from './build/rehype-external-links';
@@ -154,11 +155,13 @@ export default defineNuxtConfig({
         'lucide:git-branch',
         'lucide:git-pull-request',
         'lucide:globe',
+        'lucide:globe-code',
         'lucide:hard-drive',
         'lucide:hash',
         'lucide:house',
         'lucide:info',
         'lucide:layers',
+        'lucide:lightbulb',
         'lucide:menu',
         'lucide:messages-square',
         'lucide:monitor',
@@ -172,14 +175,19 @@ export default defineNuxtConfig({
         'lucide:search',
         'lucide:share-2',
         'lucide:shield-check',
+        'lucide:snowflake',
         'lucide:sparkles',
+        'lucide:star',
         'lucide:sun',
         'lucide:sun-moon',
         'lucide:triangle-alert',
         'lucide:x',
+        'simple-icons:atomgit',
         'simple-icons:bilibili',
         'simple-icons:github',
         'simple-icons:tencentqq',
+        'simple-icons:windows',
+        'simple-icons:wordpress',
       ],
     },
   },
@@ -251,7 +259,13 @@ export default defineNuxtConfig({
         rehypePlugins: {
           'rehype-katex': { output: 'htmlAndMathml' },
           // 站外链接一律新开标签页，站内相对路径/锚点保持原样
-          'rehype-external-links-blank': { instance: rehypeExternalLinksBlank },
+          'rehype-external-links-blank': {
+            instance: rehypeExternalLinksBlank,
+            options: {},
+            src: fileURLToPath(
+              new URL('./build/rehype-external-links.ts', import.meta.url),
+            ).replaceAll('\\', '/'),
+          },
         },
       },
     },

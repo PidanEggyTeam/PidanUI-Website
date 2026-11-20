@@ -29,6 +29,8 @@ interface PostDocument {
   date?: string;
   /** 摘要 */
   description?: string;
+  /** 作者（frontmatter 可选；未定义时回退 SITE.author） */
+  author?: string;
   /** 封面图（可为外链） */
   cover?: string;
   /** 分类名列表 */
@@ -90,7 +92,7 @@ const nextPost = computed(() =>
       <h1 class="post-title">{{ doc.title }}</h1>
 
       <div class="post-meta">
-        <span class="post-author">{{ SITE.author }}</span>
+        <span class="post-author">{{ doc.author || SITE.author }}</span>
         <time class="post-date" :datetime="dateISO">{{ dateText }}</time>
         <NuxtLink
           v-for="category in categories"

@@ -1,6 +1,10 @@
 {
   // assets-only Worker：没有 main 字段，纯静态资源，请求不计费。
-  // 与 OpenPidanUI 官网同一套部署方式，只是 worker 名称与构建产物一致。
+  // 部署不经过 GitHub Actions：在 Cloudflare 侧把仓库连上 Git（Workers Builds）
+  // 并按下表设置后，main 推送自动部署，非生产分支 / PR 自动生成预览：
+  //   build command  = pnpm build       （nuxi generate + sitemap + 字体 + 产物校验）
+  //   deploy command = npx wrangler deploy
+  // previews 声明启用 Worker Previews，预览实例与 main 的生产 Worker 相互独立。
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "pidanui-website",
   "compatibility_date": "2026-10-01",

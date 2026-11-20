@@ -18,6 +18,8 @@ export interface PostDoc {
   categories?: string[] | null;
   tags?: string[] | null;
   stickypost?: boolean | null;
+  // 文章作者（frontmatter 可选；未定义时由 toBasePost 回退 SITE.author）
+  author?: string | null;
 }
 
 /** 原始条目 → 轻量 Post（不含正文，供列表 / 侧栏 / 上下篇使用） */
@@ -35,6 +37,8 @@ export function toBasePost(doc: PostDoc): Post {
     tags: toArray(doc.tags),
     cover: doc.cover || '/images/default_cover.webp',
     description: doc.description ?? '',
+    // 未定义或空值时回退站点默认作者，保证每篇文章都有作者
+    author: doc.author || SITE.author,
   };
 }
 

@@ -18,6 +18,8 @@ export interface Post {
   cover: string;
   /** 摘要 */
   description: string;
+  /** 文章作者（frontmatter 未定义时回退 SITE.author） */
+  author: string;
   /**
    * 纯文本正文（本地检索用，截断）。
    * 仅检索语料（postsSearch.data.ts）会填充该字段；列表/侧栏用的轻量数据

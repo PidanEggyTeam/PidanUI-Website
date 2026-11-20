@@ -127,7 +127,7 @@ content.config.ts / nuxt.config.ts    # 内容集合定义 / 站点配置
 
 ## 内容与数据
 
-- 文章 frontmatter：`title`、`date`（`YYYY-MM-DD HH:mm:ss`）、`categories`、`tags`、`description`、`stickypost`（仅 `true` 才置顶）、`cover`（可外链）。字段类型在 `content.config.ts` 用 zod 声明，**新增字段先改 schema**。
+- 文章 frontmatter：`title`、`date`（`YYYY-MM-DD HH:mm:ss`）、`categories`、`tags`、`description`、`author`（可选，缺省回退 `SITE.author`）、`stickypost`（仅 `true` 才置顶）、`cover`（可外链）。字段类型在 `content.config.ts` 用 zod 声明，**新增字段先改 schema**。
 - `date` 由 YAML 1.2 解析为字符串，**必须**经 `shared/utils/date.ts` 的 `parsePostDate()` 按 UTC 解释，否则构建机时区不同会导致日期/年份漂移。
 - 默认封面是 `/images/default_cover.webp`（webp），缺失时由 `toBasePost` 兜底。
 - 数据链路：`server/routes/api/posts.json.ts`（轻量列表）与 `api/posts/<slug>/index.json`（单篇含正文）在构建期查询内容库并预渲染成静态 JSON；前端通过 `useAllPosts()` / `fetchAllPosts()` 读取。**不要在组件里直接调 `queryCollection`**——预渲染阶段拿不到请求上下文。

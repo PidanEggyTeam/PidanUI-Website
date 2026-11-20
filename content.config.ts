@@ -18,6 +18,8 @@ export default defineContentConfig({
         // 再由 shared/utils/date.ts 的 parsePostDate() 显式按 UTC 解释
         date: z.string(),
         description: z.string().optional(),
+        // 文章作者：frontmatter 未定义时由 toBasePost / usePostSeo 回退到 SITE.author
+        author: z.string().optional(),
         cover: z.string().optional(),
         categories: z.array(z.string()).default(() => []),
         tags: z.array(z.string()).default(() => []),

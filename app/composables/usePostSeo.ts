@@ -23,6 +23,8 @@ export function usePostSeo(doc: MaybeRefOrGetter<Record<string, any> | null | un
     const date = parsePostDate(d.value?.date);
     return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
   });
+  // 文章作者：frontmatter 未定义时回退站点默认作者
+  const author = computed(() => String(d.value?.author || SITE.author));
   // <title> 的 `· PidanUI` 后缀由 app.vue 的全局 titleTemplate 追加；
   // og / twitter 标签不经过模板，这里显式补，保持与 <title> 一致
   const pageTitle = computed(() => withSiteSuffix(title.value));
@@ -39,7 +41,7 @@ export function usePostSeo(doc: MaybeRefOrGetter<Record<string, any> | null | un
     twitterCard: 'summary_large_image',
     twitterTitle: pageTitle,
     articlePublishedTime: published,
-    articleAuthor: [SITE.author],
+    articleAuthor: [author.value],
     articleTag: () => toArray(d.value?.tags),
   });
 
@@ -55,7 +57,7 @@ export function usePostSeo(doc: MaybeRefOrGetter<Record<string, any> | null | un
             description: description.value,
             mainEntityOfPage: url.value,
             inLanguage: 'zh-CN',
-            author: { '@type': 'Organization', name: SITE.author, url: SITE.mainUrl },
+            author: { '@type': 'Organization', name: author.value, url: SITE.mainUrl },
             publisher: {
               '@type': 'Organization',
               name: SITE.brand,

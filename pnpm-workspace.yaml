@@ -6,8 +6,7 @@ nodeLinker: hoisted
 allowBuilds:
   esbuild: true
   '@parcel/watcher': true
-  # @nuxt/content 的构建期数据库（SQLite）需要编译原生绑定
-  better-sqlite3: true
+  # @nuxt/content 用 Node 内置的 node:sqlite，不再需要 better-sqlite3 原生绑定
   # @nuxt/ui 的传递依赖（vue-demi）需要 postinstall 写 Vue 版本适配入口
   vue-demi: true
   # wrangler 的运行时（workerd）需要下载对应平台的二进制

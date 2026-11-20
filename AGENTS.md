@@ -197,7 +197,7 @@ content.config.ts / nuxt.config.ts    # 内容集合定义 / 站点配置
 ## 配置与类型（易踩坑）
 
 - `tsconfig.json` 只是 `extends ./.nuxt/tsconfig.json`；别名规则：`@` / `~` → `app/`，`~~` → 仓库根，`#shared` → `shared/`，`#server` → `server/`。
-- `@nuxt/content` 需要 `better-sqlite3` 原生绑定：它已在 `pnpm-workspace.yaml` 的 `allowBuilds` 中放行，**不要在 CI 上加 `--ignore-scripts`**。
+- `@nuxt/content` 用 Node 内置的 `node:sqlite`（`experimental.sqliteConnector: 'native'`），**不需要 `better-sqlite3`**，也没有对应的 `allowBuilds` 条目；Node 22 会打一条 `ExperimentalWarning`，属正常。
 - 改了 `nuxt.config.ts` 里影响类型 / 别名的配置后跑一次 `pnpm exec nuxt prepare`，否则编辑器会报找不到自动导入。
 - 服务端路由里查询内容库必须 `queryCollection(event, 'posts')`（带 event）；文件名不要写 `[slug].json.ts` 这种「参数 + 点后缀」组合，Nitro 会把后缀并进参数——需要 JSON 后缀时用 `<dir>/index.json.ts`。
 - `nuxt preview` 不可用（静态预设没有 server 产物）：本地验收产物请用 `pnpm preview`（`wrangler dev`，与 Cloudflare 行为一致）或 `pnpm preview:static`（纯静态服务器）。

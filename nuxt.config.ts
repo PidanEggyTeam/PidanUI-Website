@@ -230,6 +230,10 @@ export default defineNuxtConfig({
   },
 
   content: {
+    // 用 Node 内置的 node:sqlite 做内容索引数据库，免掉 better-sqlite3 的原生编译
+    // （Windows 上少一个坑，CI 也不必再放行原生安装脚本）。Node 22 会打一条
+    // ExperimentalWarning，属正常，不影响构建。
+    experimental: { sqliteConnector: 'native' },
     build: {
       markdown: {
         toc: { depth: 3, searchDepth: 3 },

@@ -1,14 +1,16 @@
-name: Lint & Format
+name: Lint & Build
 
-# 代码风格守门：ESLint（可能出错的地方）+ Prettier（排版）+ 构建校验
+# 代码守门：ESLint（可能出错的地方）→ 构建校验
 #
-# 三个触发来源：
+# 触发来源：
 #   pull_request      —— 所有 PR（含 fork 发起的）都跑一次
 #   push              —— 所有分支推送（含 main）都跑，部署前先过这一关
 #   workflow_dispatch —— 需要手动重跑时
 #
 # 部署已改为 Cloudflare Workers（维护者本地执行 `pnpm deploy`），仓库里不再有
 # GitHub Pages 部署流水线；构建校验因此挂在这里，保证「检查不过就不该发版」。
+#
+# 排版检查（Prettier）已拆到独立的 prettier.yml，两者互不阻塞。
 on:
   push:
   pull_request:
@@ -23,7 +25,7 @@ concurrency:
 
 jobs:
   quality:
-    name: ESLint + Prettier
+    name: ESLint + Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -32,30 +34,17 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: latest
           cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # 先跑 ESLint：失败则 job 直接终止，Prettier 与 Build 都不会执行
+      # ESLint 先跑：任何 lint 报错都会让本 job 直接失败，
+      # 后续 Build 步骤因此不会被触发（无需额外 if 条件）
       - name: ESLint
         run: pnpm run lint
 
-      # Prettier 失败不阻断后续步骤，但结果会被记录到 outcome
-      - name: Prettier (format:check)
-        id: prettier
-        continue-on-error: true
-        run: pnpm run format:check
-
       # 构建同时验证预渲染：failOnError 下任何缺页都会让这一步失败
-      # 只有 ESLint 通过才会走到这里（Prettier 失败已被 continue-on-error 放行）
       - name: Build
         run: pnpm run build
-
-      # 汇总：Prettier 失败则让整个 job 失败（Build 已经跑完了）
-      - name: Fail if Prettier failed
-        if: steps.prettier.outcome == 'failure'
-        run: |
-          echo "::error::Prettier format check failed. See the 'Prettier (format:check)' step for details."
-          exit 1

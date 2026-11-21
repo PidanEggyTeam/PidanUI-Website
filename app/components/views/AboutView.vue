@@ -79,8 +79,7 @@ const badges = ['非盈利', '粉丝向 · 非商用', '持续维护'];
       <AboutSection id="about-composition" title="项目构成" icon="i-lucide-boxes">
         <ul class="list-disc space-y-2 pl-5">
           <li v-for="item in COMPOSITION" :key="item.name">
-            <strong class="font-semibold text-default">{{ item.name }}</strong
-            >：{{ item.desc }}
+            <strong class="font-semibold text-default">{{ item.name }}</strong>：{{ item.desc }}
           </li>
         </ul>
       </AboutSection>
@@ -88,8 +87,7 @@ const badges = ['非盈利', '粉丝向 · 非商用', '持续维护'];
       <AboutSection id="about-distribution" title="分发方式" icon="i-lucide-share-2">
         <ul class="list-disc space-y-2 pl-5">
           <li v-for="item in DISTRIBUTION" :key="item.name">
-            <strong class="font-semibold text-default">{{ item.name }}</strong
-            >：{{ item.desc }}
+            <strong class="font-semibold text-default">{{ item.name }}</strong>：{{ item.desc }}
           </li>
         </ul>
       </AboutSection>
